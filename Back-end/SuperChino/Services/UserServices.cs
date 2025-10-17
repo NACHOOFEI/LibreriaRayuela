@@ -1,0 +1,75 @@
+﻿using AutoMapper;
+using SuperChino.Enums;
+using SuperChino.Models.Rol;
+using SuperChino.Models.User;
+using SuperChino.Models.User.Dto;
+using SuperChino.Repositories;
+using SuperChino.Utils;
+using System.Net;
+
+namespace SuperChino.Services
+{
+    public class UserServices
+    {
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _repo;
+        private readonly RolServices _rolServices;
+        public UserServices(IMapper mapper, IUserRepository repo)
+        {
+            _mapper = mapper;
+            _repo = repo;
+        }
+
+        async public Task<User> GetOnByIdOrException(int id)
+        {
+            var user =  await _repo.GetOne(x => x.Id == id);
+
+            if(user == null)
+            {
+                throw new HttpResponseError(
+                    HttpStatusCode.NotFound,
+                    $"no se encontro el usuario con el id : {id}"
+                    );
+            }
+            return user;
+        }
+
+        async public Task<User> GetOnById(int id) => await GetOnByIdOrException(id);
+
+        async public Task<User> CreateOne(RegisterDTO register)
+        {
+            var user = _mapper.Map<User>(register);
+
+            var rolDefault = await _rolServices.GetOneByName(ROL.USER);
+
+            user.Roles = new List<Rol>() { rolDefault };
+
+            await _repo.CreateOne(user);
+
+            return user;
+        }
+
+        async public Task<User> UpdateOne(User user)
+        {
+            await _repo.UpdateOne(user);
+            return user;
+        }
+
+        async public Task<User> GetOneByEmail(string email)
+        {
+            User user;
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                user = await _repo.GetOne( u =>  u.Email == email );
+            }
+            else
+            {
+                throw new HttpResponseError(HttpStatusCode.BadRequest, " el email no coincide con la password");
+            }
+            return user;
+        }
+
+
+    }
+}

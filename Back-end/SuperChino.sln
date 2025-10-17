@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperChino", "SuperChino\SuperChino.csproj", "{07DC4FB2-32F3-4491-AC94-E7B98177DE14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07DC4FB2-32F3-4491-AC94-E7B98177DE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07DC4FB2-32F3-4491-AC94-E7B98177DE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07DC4FB2-32F3-4491-AC94-E7B98177DE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07DC4FB2-32F3-4491-AC94-E7B98177DE14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE1CBC06-D4F1-435E-9836-6A56DF7B5EA1}
+	EndGlobalSection
+EndGlobal
