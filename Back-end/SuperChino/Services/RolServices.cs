@@ -7,9 +7,9 @@ namespace SuperChino.Services
 {
     public class RolServices
     {
-        private readonly IRepository _repo;
+        private readonly IrolRepository _repo;
 
-        public RolServices(IRepository repo)
+        public RolServices(IrolRepository repo)
         {
             _repo = repo;
         }

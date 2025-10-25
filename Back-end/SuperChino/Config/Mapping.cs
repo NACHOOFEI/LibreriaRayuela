@@ -16,7 +16,9 @@ namespace SuperChino.Config
 
 
             CreateMap<RegisterDTO, User>();
-            CreateMap<User,>();
+            CreateMap<User,UserWithRolesDTO>().ForMember(
+                dest => dest.Roles,
+                opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).ToList()));
         }
     }
 }
