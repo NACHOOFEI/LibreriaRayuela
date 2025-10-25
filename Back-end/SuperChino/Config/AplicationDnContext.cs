@@ -18,8 +18,6 @@ namespace SuperChino.Config
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
-
-
             modelBuilder.Entity<User>()
                 .HasMany(x => x.Roles)
                 .WithMany()

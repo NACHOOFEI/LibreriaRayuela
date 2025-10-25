@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperChino")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+971bf55f48149a7bc28a267225638bb056d7eafc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3db1ce42efa84d88cd275c233edde183fa860619")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperChino")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperChino")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
