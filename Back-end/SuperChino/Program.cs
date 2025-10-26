@@ -25,10 +25,10 @@ builder.Services.AddScoped<RolServices>();
 
 /// repositories 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<IrolRepository,RolRepository>();
+builder.Services.AddScoped<IRolRepository,RolRepository>();
 
 ///Db
-builder.Services.AddDbContext<AplicationDnContext>(option =>
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("devConnection"));
 });

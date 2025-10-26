@@ -1,29 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\",
+  "WorkspaceRootPath": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\models\\user\\dto\\userwithrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\user\\dto\\userwithrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\services\\rolservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\rolservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\rolservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\user\\dto\\userwithrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\user\\dto\\userwithrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\services\\encoderservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\encoderservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\encoderservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -34,17 +34,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "RolServices.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
               "RelativeDocumentMoniker": "SuperChino\\Services\\RolServices.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
               "RelativeToolTip": "SuperChino\\Services\\RolServices.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwB4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-25T18:49:25.051Z",
               "EditorCaption": ""
@@ -53,70 +53,62 @@
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Mapping.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
               "RelativeDocumentMoniker": "SuperChino\\Config\\Mapping.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
               "RelativeToolTip": "SuperChino\\Config\\Mapping.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-25T18:46:33.255Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-25T18:46:33.255Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "UserWithRolesDTO.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
               "RelativeDocumentMoniker": "SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
               "RelativeToolTip": "SuperChino\\Models\\User\\Dto\\UserWithRolesDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-25T18:45:53.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-25T18:45:53.977Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "SuperChino\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
               "RelativeToolTip": "SuperChino\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAIwF0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAF0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-25T17:34:32.062Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AuthServices.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
               "RelativeDocumentMoniker": "SuperChino\\Services\\AuthServices.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
               "RelativeToolTip": "SuperChino\\Services\\AuthServices.cs",
               "ViewState": "AgIAAIgAAAAAAAAAAAAqwKYAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-17T22:08:28.052Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-17T22:08:28.052Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "EncoderServices.cs",
-              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\EncoderServices.cs",
+              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\EncoderServices.cs",
               "RelativeDocumentMoniker": "SuperChino\\Services\\EncoderServices.cs",
-              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\EncoderServices.cs",
+              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\EncoderServices.cs",
               "RelativeToolTip": "SuperChino\\Services\\EncoderServices.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-17T21:55:42.094Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-17T21:55:42.094Z"
             }
           ]
         }
