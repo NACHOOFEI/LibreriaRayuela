@@ -21,11 +21,15 @@ builder.Services.AddAutoMapper(options => { }, typeof(Mapping));
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RolServices>();
 
+builder.Services.AddScoped<CategoryServices>();
+
 
 
 /// repositories 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRolRepository,RolRepository>();
+builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+
 
 ///Db
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
