@@ -6,9 +6,9 @@ namespace SuperChino.Repositories
     public interface IUserRepository : IRepository<User>{}
     public class UserRepository : Repository<User> , IUserRepository
     {
-        private readonly ApplicationDbContext _db;
+        private readonly AplicationDnContext _db;
 
-        public UserRepository(ApplicationDbContext db) : base(db) 
+        public UserRepository(AplicationDnContext db) : base(db) 
         {
             _db = db;
         }

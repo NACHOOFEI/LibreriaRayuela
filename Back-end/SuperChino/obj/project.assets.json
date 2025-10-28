@@ -4953,23 +4953,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lorenzo\\.nuget\\packages\\": {},
+    "C:\\Users\\nacho\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\SuperChino.csproj",
+      "projectUniqueName": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\SuperChino.csproj",
       "projectName": "SuperChino",
-      "projectPath": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\SuperChino.csproj",
-      "packagesPath": "C:\\Users\\Lorenzo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\obj\\",
+      "projectPath": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\SuperChino.csproj",
+      "packagesPath": "C:\\Users\\nacho\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Lorenzo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nacho\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5048,7 +5048,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
