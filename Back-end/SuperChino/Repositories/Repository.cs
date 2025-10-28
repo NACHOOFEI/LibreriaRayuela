@@ -19,10 +19,10 @@ namespace SuperChino.Repositories
 
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly AplicationDnContext _db;
+        private readonly ApplicationDbContext _db;
         internal DbSet<T> dbSet;
 
-        public Repository(AplicationDnContext db) 
+        public Repository(ApplicationDbContext db) 
         {
             _db = db;
             dbSet = _db.Set<T>();

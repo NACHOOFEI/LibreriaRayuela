@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using SuperChino.Models.Category;
+using SuperChino.Models.Category.Dto;
+using SuperChino.Models.Product;
+using SuperChino.Models.Product.Dto;
 using SuperChino.Models.User;
 using SuperChino.Models.User.Dto;
 
@@ -19,6 +23,15 @@ namespace SuperChino.Config
             CreateMap<User,UserWithRolesDTO>().ForMember(
                 dest => dest.Roles,
                 opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).ToList()));
+
+            CreateMap<CategoryInsertDTO, Category>();
+            CreateMap<Category, CategoryDTO>();
+            CreateMap<CategoryUpdateDTO, Category>();
+
+            CreateMap<ProductInsertDTO, Product>();
+            CreateMap<Product, ProductDTO>();
+            CreateMap<ProductUpdateDTO, Product>();
+
         }
     }
 }

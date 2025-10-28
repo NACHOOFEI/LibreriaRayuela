@@ -21,14 +21,21 @@ builder.Services.AddAutoMapper(options => { }, typeof(Mapping));
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RolServices>();
 
+builder.Services.AddScoped<CategoryServices>();
+builder.Services.AddScoped<ProductServices>();
+
 
 
 /// repositories 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
-builder.Services.AddScoped<IrolRepository,RolRepository>();
+builder.Services.AddScoped<IRolRepository,RolRepository>();
+builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+
 
 ///Db
-builder.Services.AddDbContext<AplicationDnContext>(option =>
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("devConnection"));
 });
