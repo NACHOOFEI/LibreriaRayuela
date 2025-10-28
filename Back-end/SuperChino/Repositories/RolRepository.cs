@@ -3,12 +3,12 @@ using SuperChino.Models.Rol;
 
 namespace SuperChino.Repositories
 {
-    public interface IRolRepository : IRepository<Rol> { }
-    public class RolRepository : Repository<Rol> , IRolRepository
+    public interface IrolRepository : IRepository<Rol> { }
+    public class RolRepository : Repository<Rol> , IrolRepository
     {
-        private readonly ApplicationDbContext _db;
+        private readonly AplicationDnContext _db;
 
-        public RolRepository(ApplicationDbContext db) : base(db)
+        public RolRepository(AplicationDnContext db) : base(db)
         {
             _db = db;
         }

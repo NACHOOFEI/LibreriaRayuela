@@ -7,9 +7,9 @@ namespace SuperChino.Services
 {
     public class RolServices
     {
-        private readonly IRolRepository _repo;
+        private readonly IrolRepository _repo;
 
-        public RolServices(IRolRepository repo)
+        public RolServices(IrolRepository repo)
         {
             _repo = repo;
         }
@@ -25,14 +25,14 @@ namespace SuperChino.Services
         {
             if (idsRol.Count == 0 || idsRol == null)
             {
-                throw new HttpResponseError( HttpStatusCode.BadRequest, "Por lo menos debe ingresar un Id");
+                throw new HttpResponseError( HttpStatusCode.BadRequest, "por lo menos debe ingresar un id");
             }
-            var rols = await _repo.GetAll(r => idsRol.Contains(r.Id));
-            if (rols.ToList().Count > 0)
+            var rols = await _repo.GetAll(r => idsRol.Contains(r.id));
+            if (rols.ToList().count > 0)
             {
                 return rols.ToList();
             }
-            throw new HttpResponseError(HttpStatusCode.BadRequest, "Ninguno de los Ids que ingresó coincide");
+            throw new HttpResponseError(HttpStatusCode.BadRequest, "nunguno de los ids que ingreso coincide");
          
         }
     }
