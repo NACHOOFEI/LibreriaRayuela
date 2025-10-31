@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SuperChino.Models.Category;
 using SuperChino.Models.Category.Dto;
+using SuperChino.Models.Customer;
+using SuperChino.Models.Customer.Dto;
 using SuperChino.Models.Product;
 using SuperChino.Models.Product.Dto;
 using SuperChino.Models.User;
@@ -32,6 +34,9 @@ namespace SuperChino.Config
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductUpdateDTO, Product>();
 
+            CreateMap<CustomerInsertDTO, Customer>();
+            CreateMap<Customer, CustomerDTO>();
+            CreateMap<CustomerUpdateDTO, Customer>();
         }
     }
 }

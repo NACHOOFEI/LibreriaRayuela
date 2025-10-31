@@ -5,7 +5,7 @@ using SuperChino.Services;
 
 namespace SuperChino.Controllers
 {
-    [Route("api/category")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
