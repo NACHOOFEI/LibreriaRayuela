@@ -1,98 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\",
+  "WorkspaceRootPath": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\categoryservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\categoryservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\productservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\productservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\config\\aplicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\config\\aplicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\config\\mapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\services\\productservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\productservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\category\\dto\\categoryinsertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\category\\dto\\categoryinsertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\product\\dto\\productinsertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\models\\product\\dto\\productinsertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\product\\dto\\productinsertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\category\\dto\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\category\\dto\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\category\\dto\\categoryupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\category\\dto\\categoryupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\product\\dto\\productupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\product\\dto\\productupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\product\\dto\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\product\\dto\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\product\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\product\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\rolservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\rolservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\enums\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\enums\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\models\\rol\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\models\\rol\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\lorenzo\\desktop\\progiv-project\\supermercado\\back-end\\superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\services\\authservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|c:\\users\\nacho\\desktop\\supermercado\\back-end\\superchino\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07DC4FB2-32F3-4491-AC94-E7B98177DE14}|SuperChino\\SuperChino.csproj|solutionrelative:superchino\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -102,305 +30,75 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ProductController.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\ProductController.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Controllers\\ProductController.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\ProductController.cs",
-              "RelativeToolTip": "SuperChino\\Controllers\\ProductController.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAA1wC4AAAAuAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Mapping.cs",
+              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
+              "RelativeDocumentMoniker": "SuperChino\\Config\\Mapping.cs",
+              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
+              "RelativeToolTip": "SuperChino\\Config\\Mapping.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACIAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:28:02.62Z",
+              "WhenOpened": "2025-10-31T03:57:47.791Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CategoryController.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\CategoryController.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Controllers\\CategoryController.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\CategoryController.cs",
-              "RelativeToolTip": "SuperChino\\Controllers\\CategoryController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA0AAAAAAAAAA==",
+              "Title": "ProductServices.cs",
+              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\ProductServices.cs",
+              "RelativeDocumentMoniker": "SuperChino\\Services\\ProductServices.cs",
+              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Services\\ProductServices.cs",
+              "RelativeToolTip": "SuperChino\\Services\\ProductServices.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAcwDQAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:27:12.98Z",
+              "WhenOpened": "2025-10-31T03:49:24.689Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CategoryServices.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\CategoryServices.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Services\\CategoryServices.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\CategoryServices.cs",
-              "RelativeToolTip": "SuperChino\\Services\\CategoryServices.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
+              "Title": "ProductInsertDTO.cs",
+              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
+              "RelativeDocumentMoniker": "SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
+              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
+              "RelativeToolTip": "SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:21:37.215Z",
+              "WhenOpened": "2025-10-31T03:47:32.088Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ProductServices.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\ProductServices.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Services\\ProductServices.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\ProductServices.cs",
-              "RelativeToolTip": "SuperChino\\Services\\ProductServices.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:21:31.798Z",
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\appsettings.json",
+              "RelativeDocumentMoniker": "SuperChino\\appsettings.json",
+              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\appsettings.json",
+              "RelativeToolTip": "SuperChino\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-31T03:13:27.161Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ProductRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\ProductRepository.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Repositories\\ProductRepository.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\ProductRepository.cs",
-              "RelativeToolTip": "SuperChino\\Repositories\\ProductRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:17:02.204Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CategoryRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\CategoryRepository.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Repositories\\CategoryRepository.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\CategoryRepository.cs",
-              "RelativeToolTip": "SuperChino\\Repositories\\CategoryRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:16:25.406Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Program.cs",
               "RelativeDocumentMoniker": "SuperChino\\Program.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Program.cs",
+              "ToolTip": "C:\\Users\\nacho\\Desktop\\SuperMercado\\Back-end\\SuperChino\\Program.cs",
               "RelativeToolTip": "SuperChino\\Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACwAAAAAAAAAAAAgwD4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T18:35:52.039Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "CategoryInsertDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryInsertDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Category\\Dto\\CategoryInsertDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryInsertDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Category\\Dto\\CategoryInsertDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:08:37.236Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ProductInsertDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Product\\Dto\\ProductInsertDTO.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAwAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:02:43.987Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Repository.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\Repository.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Repositories\\Repository.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\Repository.cs",
-              "RelativeToolTip": "SuperChino\\Repositories\\Repository.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAnwA0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:34:38.031Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\AplicationDbContext.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Config\\AplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\AplicationDbContext.cs",
-              "RelativeToolTip": "SuperChino\\Config\\AplicationDbContext.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAgwBwAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T23:28:13.411Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Mapping.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Config\\Mapping.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Config\\Mapping.cs",
-              "RelativeToolTip": "SuperChino\\Config\\Mapping.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAQwCAAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:32:56.21Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "CategoryDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Category\\Dto\\CategoryDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Category\\Dto\\CategoryDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:14:12.488Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CategoryUpdateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryUpdateDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Category\\Dto\\CategoryUpdateDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Category\\Dto\\CategoryUpdateDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Category\\Dto\\CategoryUpdateDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:09:57.21Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ProductUpdateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductUpdateDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Product\\Dto\\ProductUpdateDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductUpdateDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Product\\Dto\\ProductUpdateDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:12:00.736Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "ProductDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductDTO.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Product\\Dto\\ProductDTO.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Dto\\ProductDTO.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Product\\Dto\\ProductDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T15:59:05.98Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Product.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Product\\Product.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Product\\Product.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Product\\Product.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T17:25:09.835Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "ROL.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Enums\\ROL.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Enums\\ROL.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Enums\\ROL.cs",
-              "RelativeToolTip": "SuperChino\\Enums\\ROL.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T17:24:06.208Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "Rol.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Rol\\Rol.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Models\\Rol\\Rol.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Models\\Rol\\Rol.cs",
-              "RelativeToolTip": "SuperChino\\Models\\Rol\\Rol.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T17:22:52.98Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "SuperChino\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEYAAAAAAAAAAAAkwA0AAAAXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:33:59.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "RolServices.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Services\\RolServices.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\RolServices.cs",
-              "RelativeToolTip": "SuperChino\\Services\\RolServices.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:35:48.793Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\UserRepository.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Repositories\\UserRepository.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Repositories\\UserRepository.cs",
-              "RelativeToolTip": "SuperChino\\Repositories\\UserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:35:16.266Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "AuthServices.cs",
-              "DocumentMoniker": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
-              "RelativeDocumentMoniker": "SuperChino\\Services\\AuthServices.cs",
-              "ToolTip": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\Services\\AuthServices.cs",
-              "RelativeToolTip": "SuperChino\\Services\\AuthServices.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T18:35:33.601Z",
               "EditorCaption": ""
             }
           ]
