@@ -3,6 +3,8 @@ using SuperChino.Models.Category;
 using SuperChino.Models.Category.Dto;
 using SuperChino.Models.Customer;
 using SuperChino.Models.Customer.Dto;
+using SuperChino.Models.OrderItem;
+using SuperChino.Models.OrderItem.Dto;
 using SuperChino.Models.Product;
 using SuperChino.Models.Product.Dto;
 using SuperChino.Models.User;
@@ -37,6 +39,10 @@ namespace SuperChino.Config
             CreateMap<CustomerInsertDTO, Customer>();
             CreateMap<Customer, CustomerDTO>();
             CreateMap<CustomerUpdateDTO, Customer>();
+
+            CreateMap<OrderItemInsertDTO, OrderItem>();
+            CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<OrderItemUpdateDTO, OrderItem>();
         }
     }
 }
