@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "qiPc64msYbA=",
+  "dgSpecHash": "up29IbSXWag=",
   "success": true,
   "projectFilePath": "C:\\Users\\Lorenzo\\Desktop\\PROGIV-Project\\SuperMercado\\Back-end\\SuperChino\\SuperChino.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lorenzo\\.nuget\\packages\\automapper\\15.0.1\\automapper.15.0.1.nupkg.sha512",
+    "C:\\Users\\Lorenzo\\.nuget\\packages\\awssdk.core\\4.0.1.3\\awssdk.core.4.0.1.3.nupkg.sha512",
+    "C:\\Users\\Lorenzo\\.nuget\\packages\\awssdk.s3\\4.0.9.1\\awssdk.s3.4.0.9.1.nupkg.sha512",
     "C:\\Users\\Lorenzo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Lorenzo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\Lorenzo\\.nuget\\packages\\bcrypt.net-core\\1.6.0\\bcrypt.net-core.1.6.0.nupkg.sha512",

@@ -2,6 +2,8 @@
 using SuperChino.Models.Product;
 using SuperChino.Models.Product.Dto;
 using SuperChino.Repositories;
+using SuperChino.Utils;
+using System.Net;
 
 namespace SuperChino.Services
 {
@@ -9,10 +11,12 @@ namespace SuperChino.Services
     {
         private readonly IProductRepository _repo;
         private IMapper _mapper;
-        public ProductServices(IProductRepository repo, IMapper mapper)
+        private readonly S3Services _s3;
+        public ProductServices(IProductRepository repo, IMapper mapper, S3Services s3)
         {
             _repo = repo;
             _mapper = mapper;
+            _s3=s3;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
@@ -32,7 +36,15 @@ namespace SuperChino.Services
         }
         public async Task<ProductDTO> CreateOne(ProductInsertDTO productInsertDTO)
         {
+            if(productInsertDTO.Image == null || productInsertDTO.Image.Length == 0)
+            {
+                throw new HttpResponseError(HttpStatusCode.BadRequest,"Tienes que tener una imagen");
+            }
+            string imageUrl = await _s3.UploadFileAsync(productInsertDTO.Image);
+
             var product = _mapper.Map<Product>(productInsertDTO);
+            
+            product.ImageUrl = imageUrl;
 
             await _repo.CreateOne(product);
             await _repo.Save();
@@ -46,6 +58,15 @@ namespace SuperChino.Services
             var product = await _repo.GetOne(c => c.Id == id);
             if (product != null)
             {
+                if (productUpdateDTO.Image == null || productUpdateDTO.Image.Length == 0)
+                {
+                    throw new HttpResponseError(HttpStatusCode.BadRequest, "Tienes que tener una imagen");
+                }
+                string imageUrl = await _s3.UploadFileAsync(productUpdateDTO.Image);
+
+                product = _mapper.Map<Product>(productUpdateDTO);
+
+                product.ImageUrl = imageUrl;
                 product = _mapper.Map<ProductUpdateDTO, Product>(productUpdateDTO, product);
 
                 _repo.UpdateOne(product);

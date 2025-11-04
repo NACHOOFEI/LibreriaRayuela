@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[4.0.9.1, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[15.0.1, )"

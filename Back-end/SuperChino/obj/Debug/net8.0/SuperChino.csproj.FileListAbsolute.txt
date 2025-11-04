@@ -173,3 +173,5 @@ C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Deb
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.pdb
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.genruntimeconfig.cache
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\ref\SuperChino.dll
+C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\bin\Debug\net8.0\AWSSDK.S3.dll
