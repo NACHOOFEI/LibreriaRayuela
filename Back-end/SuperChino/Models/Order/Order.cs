@@ -9,9 +9,9 @@ namespace SuperChino.Models.Order
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public DateTime OrderDate { get; set; }
 
-        [Required]
         [ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }
         public Customer.Customer Customer { get; set; }
