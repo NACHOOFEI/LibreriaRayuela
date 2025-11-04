@@ -5,7 +5,12 @@ using SuperChino.Repositories;
 
 namespace SuperChino.Services
 {
-    public class OrderItemServices
+    public interface IOrderItemService
+    {
+        Task<OrderItemDTO> CreateOne(OrderItemInsertDTO orderItemInsertDTO);
+        // Se podria agregar mas si se necesita...
+    }
+    public class OrderItemServices : IOrderItemService
     {
         private readonly IOrderItemRepository _repo;
         private readonly IProductRepository _productRepository;

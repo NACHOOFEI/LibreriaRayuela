@@ -17,8 +17,8 @@ namespace SuperChino.Services
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
-            var categories = await _repo.GetAll();
-            return categories.Select(c => _mapper.Map<ProductDTO>(c));
+            var products = await _repo.GetAll();
+            return products.Select(c => _mapper.Map<ProductDTO>(c));
         }
         public async Task<ProductDTO> GetById(int id)
         {

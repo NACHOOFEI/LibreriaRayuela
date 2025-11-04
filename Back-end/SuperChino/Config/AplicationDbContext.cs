@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using SuperChino.Models.Category;
+using SuperChino.Models.Customer;
+using SuperChino.Models.Product;
 using SuperChino.Models.Rol;
 using SuperChino.Models.User;
 
@@ -15,7 +17,9 @@ namespace SuperChino.Config
 
         public DbSet<User> users { get; set; } 
         public DbSet<Rol> roles { get; set; }
-
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Product> products { get; set; }
+        public DbSet<Customer> customers { get; set; }
         public DbSet<Category> categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,8 +29,8 @@ namespace SuperChino.Config
                 .HasMany(x => x.Roles)
                 .WithMany()
                 .UsingEntity<RolUser>(
-                r => r.HasOne<Rol>().WithMany().HasForeignKey(x => x.RolId),
-                u => u.HasOne<User>().WithMany().HasForeignKey(x => x.UserId)
+                l => l.HasOne<Rol>().WithMany().HasForeignKey(x => x.RolId),
+                r => r.HasOne<User>().WithMany().HasForeignKey(x => x.UserId)
                 );
         }
 

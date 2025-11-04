@@ -24,6 +24,10 @@ builder.Services.AddScoped<RolServices>();
 builder.Services.AddScoped<CategoryServices>();
 builder.Services.AddScoped<ProductServices>();
 
+builder.Services.AddScoped<CustomerServices>();
+
+builder.Services.AddScoped<OrderItemServices>();
+builder.Services.AddScoped<OrderServices>();
 
 
 /// repositories 
