@@ -61,6 +61,10 @@ builder.Services.AddScoped<IEncoderServices,EncoderServices>();
 builder.Services.AddSingleton<S3Services>();
 
 
+builder.Services.AddScoped<CustomerServices>();
+
+builder.Services.AddScoped<OrderItemServices>();
+builder.Services.AddScoped<OrderServices>();
 
 
 /// repositories 

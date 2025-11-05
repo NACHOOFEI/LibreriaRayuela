@@ -21,8 +21,8 @@ namespace SuperChino.Services
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
-            var categories = await _repo.GetAll();
-            return categories.Select(c => _mapper.Map<ProductDTO>(c));
+            var products = await _repo.GetAll();
+            return products.Select(c => _mapper.Map<ProductDTO>(c));
         }
         public async Task<ProductDTO> GetById(int id)
         {
@@ -38,7 +38,7 @@ namespace SuperChino.Services
         {
             if(productInsertDTO.Image == null || productInsertDTO.Image.Length == 0)
             {
-                throw new HttpResponseError(HttpStatusCode.BadRequest,"tienes que tener una imagen");
+                throw new HttpResponseError(HttpStatusCode.BadRequest,"Tienes que tener una imagen");
             }
             string imageUrl = await _s3.UploadFileAsync(productInsertDTO.Image);
 
@@ -58,6 +58,15 @@ namespace SuperChino.Services
             var product = await _repo.GetOne(c => c.Id == id);
             if (product != null)
             {
+                if (productUpdateDTO.Image == null || productUpdateDTO.Image.Length == 0)
+                {
+                    throw new HttpResponseError(HttpStatusCode.BadRequest, "Tienes que tener una imagen");
+                }
+                string imageUrl = await _s3.UploadFileAsync(productUpdateDTO.Image);
+
+                product = _mapper.Map<Product>(productUpdateDTO);
+
+                product.ImageUrl = imageUrl;
                 product = _mapper.Map<ProductUpdateDTO, Product>(productUpdateDTO, product);
 
                 _repo.UpdateOne(product);

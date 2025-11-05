@@ -15,6 +15,7 @@ namespace SuperChino.Models.Product.Dto
 
         [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo")]
         public int? Stock { get; set; }
+        public IFormFile Image { get; set; }
 
         public string? ImageUrl { get; set; }
         public int? CategoryId { get; set; }

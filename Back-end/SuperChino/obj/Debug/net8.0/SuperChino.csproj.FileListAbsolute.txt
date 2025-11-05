@@ -173,6 +173,7 @@ C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Deb
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.pdb
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.genruntimeconfig.cache
 C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\ref\SuperChino.dll
+<<<<<<< HEAD
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.csproj.AssemblyReference.cache
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\rpswa.dswa.cache.json
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.GeneratedMSBuildEditorConfig.editorconfig
@@ -350,3 +351,7 @@ C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperCh
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\SuperChino.genruntimeconfig.cache
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\ref\SuperChino.dll
 C:\Users\nacho\Desktop\SuperMercado\Back-end\SuperChino\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+=======
+C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Lorenzo\Desktop\PROGIV-Project\SuperMercado\Back-end\SuperChino\bin\Debug\net8.0\AWSSDK.S3.dll
+>>>>>>> dffabc10eb5ecc1d7920979b8fa1057d7d374c68
