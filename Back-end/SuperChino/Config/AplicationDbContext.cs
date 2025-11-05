@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using SuperChino.Models.Category;
+using SuperChino.Models.Customer;
+using SuperChino.Models.Order;
+using SuperChino.Models.OrderItem;
+using SuperChino.Models.Product;
 using SuperChino.Models.Rol;
 using SuperChino.Models.User;
 
@@ -13,11 +17,15 @@ namespace SuperChino.Config
             
         }
 
-        public DbSet<User> users { get; set; } 
-        public DbSet<Rol> roles { get; set; }
+        public DbSet<User> Users { get; set; } 
+        public DbSet<Rol> Roles { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Category> categories { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();

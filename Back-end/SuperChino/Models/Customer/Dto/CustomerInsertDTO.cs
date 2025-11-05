@@ -22,7 +22,7 @@ namespace SuperChino.Models.Customer.Dto
         [MaxLength(100, ErrorMessage = "No más de 100 caracteres")]
         public string? Adress { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
     }
 }

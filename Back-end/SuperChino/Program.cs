@@ -70,6 +70,7 @@ builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
+builder.Services.AddAutoMapper(opst => { } ,typeof(Mapping));
 
 ///Db
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
@@ -124,6 +125,14 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
+app.UseCors(opst =>
+{
+    opst.AllowAnyMethod();
+    opst.AllowAnyHeader();
+    opst.WithOrigins("http://localhost:5173");
+    opst.AllowCredentials();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -132,6 +141,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

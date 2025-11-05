@@ -7,10 +7,10 @@ namespace SuperChino.Services
 {
     public class OrderItemServices
     {
-        private readonly IOrderItemRepository _repo;
+        private readonly OrderItemRepository _repo;
         private readonly IProductRepository _productRepository;
         private IMapper _mapper;
-        public OrderItemServices(IOrderItemRepository repo, IMapper mapper, IProductRepository productRepository)
+        public OrderItemServices(OrderItemRepository repo, IMapper mapper, IProductRepository productRepository)
         {
             _repo = repo;
             _mapper = mapper;

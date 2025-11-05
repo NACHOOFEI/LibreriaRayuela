@@ -2125,7 +2125,7 @@
   {
     "ContainingType": "SuperChino.Controllers.CategoryController",
     "Method": "GetAll",
-    "RelativePath": "api/category",
+    "RelativePath": "api/categories",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2145,7 +2145,7 @@
   {
     "ContainingType": "SuperChino.Controllers.CategoryController",
     "Method": "CreateOne",
-    "RelativePath": "api/category",
+    "RelativePath": "api/categories",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -2171,7 +2171,7 @@
   {
     "ContainingType": "SuperChino.Controllers.CategoryController",
     "Method": "GetById",
-    "RelativePath": "api/category/{id}",
+    "RelativePath": "api/categories/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2197,7 +2197,7 @@
   {
     "ContainingType": "SuperChino.Controllers.CategoryController",
     "Method": "UpdateOne",
-    "RelativePath": "api/category/{id}",
+    "RelativePath": "api/categories/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -2228,7 +2228,7 @@
   {
     "ContainingType": "SuperChino.Controllers.CategoryController",
     "Method": "DeleteOne",
-    "RelativePath": "api/category/{id}",
+    "RelativePath": "api/categories/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -2252,9 +2252,267 @@
     ]
   },
   {
+    "ContainingType": "SuperChino.Controllers.CustomerController",
+    "Method": "GetAll",
+    "RelativePath": "api/customers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SuperChino.Models.Customer.Dto.CustomerDTO, SuperChino, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.CustomerController",
+    "Method": "CreateOne",
+    "RelativePath": "api/customers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerInsertDTO",
+        "Type": "SuperChino.Models.Customer.Dto.CustomerInsertDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.Customer.Dto.CustomerDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.CustomerController",
+    "Method": "GetById",
+    "RelativePath": "api/customers/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.Customer.Dto.CustomerDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.CustomerController",
+    "Method": "UpdateOne",
+    "RelativePath": "api/customers/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "customerUpdateDTO",
+        "Type": "SuperChino.Models.Customer.Dto.CustomerUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.Customer.Dto.CustomerDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.CustomerController",
+    "Method": "DeleteOne",
+    "RelativePath": "api/customers/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.Customer.Dto.CustomerDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.OrderItemController",
+    "Method": "GetAll",
+    "RelativePath": "api/orderitems",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SuperChino.Models.OrderItem.Dto.OrderItemDTO, SuperChino, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.OrderItemController",
+    "Method": "CreateOne",
+    "RelativePath": "api/orderitems",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderItemInsertDTO",
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemInsertDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.OrderItemController",
+    "Method": "GetById",
+    "RelativePath": "api/orderitems/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.OrderItemController",
+    "Method": "UpdateOne",
+    "RelativePath": "api/orderitems/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "orderItemUpdateDTO",
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SuperChino.Controllers.OrderItemController",
+    "Method": "DeleteOne",
+    "RelativePath": "api/orderitems/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SuperChino.Models.OrderItem.Dto.OrderItemDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "SuperChino.Controllers.ProductController",
     "Method": "GetAll",
-    "RelativePath": "api/product",
+    "RelativePath": "api/products",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2268,21 +2526,55 @@
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "SuperChino.Utils.HttpMessage",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
       }
     ]
   },
   {
     "ContainingType": "SuperChino.Controllers.ProductController",
     "Method": "CreateOne",
-    "RelativePath": "api/product",
+    "RelativePath": "api/products",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "productInsertDTO",
-        "Type": "SuperChino.Models.Product.Dto.ProductInsertDTO",
-        "IsRequired": true
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Price",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Stock",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategoryId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -2294,13 +2586,27 @@
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "SuperChino.Utils.ValidationErrorResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 403
       }
     ]
   },
   {
     "ContainingType": "SuperChino.Controllers.ProductController",
     "Method": "GetById",
-    "RelativePath": "api/product/{id}",
+    "RelativePath": "api/products/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2313,20 +2619,38 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "SuperChino.Models.Product.Dto.ProductDTO",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SuperChino.Models.Product.Dto.ProductDTO, SuperChino, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "SuperChino.Utils.HttpMessage",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "SuperChino.Utils.HttpMessage",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
       }
     ]
   },
   {
     "ContainingType": "SuperChino.Controllers.ProductController",
     "Method": "UpdateOne",
-    "RelativePath": "api/product/{id}",
+    "RelativePath": "api/products/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -2351,13 +2675,27 @@
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "SuperChino.Utils.ValidationErrorResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 403
       }
     ]
   },
   {
     "ContainingType": "SuperChino.Controllers.ProductController",
     "Method": "DeleteOne",
-    "RelativePath": "api/product/{id}",
+    "RelativePath": "api/products/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -2370,13 +2708,27 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "SuperChino.Models.Product.Dto.ProductDTO",
+        "Type": "SuperChino.Utils.HttpMessage",
         "MediaTypes": [
           "text/plain",
           "application/json",
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "SuperChino.Utils.HttpMessage",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 403
       }
     ]
   }
