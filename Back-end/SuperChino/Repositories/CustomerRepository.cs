@@ -1,5 +1,8 @@
-﻿using SuperChino.Config;
+﻿using Microsoft.EntityFrameworkCore;
+using SuperChino.Config;
 using SuperChino.Models.Customer;
+using SuperChino.Models.Customer.Dto;
+using System.Linq.Expressions;
 
 namespace SuperChino.Repositories
 {
@@ -11,5 +14,13 @@ namespace SuperChino.Repositories
         {
             _db = db;
         }
+
+        public async Task<Customer?> GetByUserIdAsync(int userId)
+        {
+            return await dbSet
+                .Include(c => c.User) 
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+        }
+
     }
 }

@@ -3,10 +3,14 @@ using SuperChino.Models.OrderItem;
 
 namespace SuperChino.Repositories
 {
-    public interface IOrderItemRepository : IRepository<OrderItem> { }
-    public class OrderItemRepository : Repository<OrderItem>, IOrderItemRepository
+    public interface IOrderItems : IRepository<OrderItem>
+    {
+
+    }
+    public class OrderItemRepository : Repository<OrderItem>,IOrderItems
     {
         private readonly ApplicationDbContext _db;
+
         public OrderItemRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;

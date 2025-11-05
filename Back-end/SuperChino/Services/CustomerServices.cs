@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SuperChino.Models.Customer;
 using SuperChino.Models.Customer.Dto;
+using SuperChino.Models.User;
 using SuperChino.Repositories;
 
 namespace SuperChino.Services
@@ -9,10 +10,12 @@ namespace SuperChino.Services
     {
         private readonly ICustomerRepository _repo;
         private IMapper _mapper;
-        public CustomerServices(ICustomerRepository repo, IMapper mapper)
+        private CustomerRepository _customerRepository;
+        public CustomerServices(ICustomerRepository repo, IMapper mapper,CustomerRepository customerrepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _customerRepository = customerrepo;
         }
 
         public async Task<IEnumerable<CustomerDTO>> GetAll()
@@ -32,13 +35,19 @@ namespace SuperChino.Services
         }
         public async Task<CustomerDTO> CreateOne(CustomerInsertDTO customerInsertDTO)
         {
+            var existingCustomer = await _customerRepository.GetByUserIdAsync(customerInsertDTO.UserId);
+
+            if (existingCustomer != null)
+            {
+                return _mapper.Map<CustomerDTO>(existingCustomer);
+            }
+
             var customer = _mapper.Map<Customer>(customerInsertDTO);
 
-            await _repo.CreateOne(customer);
-            await _repo.Save();
+            await _customerRepository.CreateOne(customer);
+            await _customerRepository.Save();
 
-            var customerDto = _mapper.Map<CustomerDTO>(customer);
-            return customerDto;
+            return _mapper.Map<CustomerDTO>(customer);
         }
 
         public async Task<CustomerDTO> UpdateOne(int id, CustomerUpdateDTO customerUpdateDTO)
