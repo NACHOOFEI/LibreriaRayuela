@@ -35,11 +35,12 @@ export default function AdminPanel() {
   const loadProductos = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/products");
-      setProductos(res.data);
+      const res = await api.get("/api/products");
+      setProductos(res.data || []);
     } catch (error) {
       console.error("Error cargando productos:", error);
-      alert("Error cargando productos");
+      const mensaje = error.response?.data?.message || error.message;
+      alert("Error cargando productos: " + mensaje);
     } finally {
       setLoading(false);
     }
@@ -49,25 +50,24 @@ export default function AdminPanel() {
     try {
       setLoading(true);
       if (editingId) {
-        const response = await api.put(`/products/${editingId}`, data);
-        setProductos(
-          productos.map((p) => (p.id === editingId ? response.data : p))
-        );
+        await api.put(`/api/products/${editingId}`, data);
       } else {
-        const response = await api.post("/products", data);
-        setProductos([response.data, ...productos]);
+        await api.post("/api/products", data);
       }
-      // Recargamos los productos para asegurarnos de tener los datos más actuales
+      // Recargar productos para tener la lista actualizada
       await loadProductos();
       reset();
       setShowForm(false);
       setEditingId(null);
+      alert(
+        editingId
+          ? "Producto actualizado con éxito"
+          : "Producto creado con éxito"
+      );
     } catch (error) {
       console.error("Error al guardar producto:", error);
-      alert(
-        "Error al guardar producto: " +
-          (error.response?.data?.message || error.message)
-      );
+      const mensaje = error.response?.data?.message || error.message;
+      alert("Error al guardar producto: " + mensaje);
     } finally {
       setLoading(false);
     }
@@ -86,18 +86,13 @@ export default function AdminPanel() {
     if (!confirm("¿Eliminar este producto?")) return;
     try {
       setLoading(true);
-      await api.delete(`/products/${id}`);
-      // Actualizar el estado local inmediatamente
-      setProductos(productos.filter((p) => p.id !== id));
-      // Recargar productos del servidor para asegurarnos
-      await loadProductos();
+      await api.delete(`/api/products/${id}`);
+      await loadProductos(); // Recargar lista después de eliminar
+      alert("Producto eliminado con éxito");
     } catch (error) {
       console.error("Error al eliminar:", error);
-      alert(
-        "Error al eliminar: " + (error.response?.data?.message || error.message)
-      );
-      // Si hubo error, recargamos los productos para asegurar consistencia
-      await loadProductos();
+      const mensaje = error.response?.data?.message || error.message;
+      alert("Error al eliminar: " + mensaje);
     } finally {
       setLoading(false);
     }

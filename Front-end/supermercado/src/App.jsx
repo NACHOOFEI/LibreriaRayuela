@@ -7,22 +7,33 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Cart from "./pages/cart";
 import Elementos from "./pages/elementos";
-import AdminPanel from "./pages/adminPanel";
 import ProtectedRoute from "./components/protectedRoute";
 
+// Componentes cargados de manera perezosa
 const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
+const AdminPanel = lazy(() => import("./pages/adminPanel"));
+const CreateProduct = lazy(() => import("./pages/createProduct"));
 
 export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <Suspense fallback={<Loader />}>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <Loader />
+          </div>
+        }
+      >
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/carrito" component={Cart} />
           <Route path="/elementos" component={Elementos} />
+          <Route path="/elementos/:id">
+            {(params) => <ElementoDetail id={params.id} />}
+          </Route>
           <Route path="/admin">
             {() => (
               <ProtectedRoute>
@@ -30,8 +41,22 @@ export default function App() {
               </ProtectedRoute>
             )}
           </Route>
+          <Route path="/admin/productos/nuevo">
+            {() => (
+              <ProtectedRoute>
+                <CreateProduct />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/productos/editar/:id">
+            {(params) => (
+              <ProtectedRoute>
+                <CreateProduct id={params.id} />
+              </ProtectedRoute>
+            )}
+          </Route>
           <Route path="/elementos/:id">
-            {(params) => <ElementoDetail params={params} />}
+            {(params) => <ElementoDetail id={params.id} />}
           </Route>
         </Switch>
       </Suspense>

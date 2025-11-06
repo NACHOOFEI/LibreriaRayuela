@@ -1,29 +1,99 @@
 import api from "../api/api";
 
-const login = async (email , password) => {
-    const response = await api.post("auth/login", [email,password]);
-    localStorage.setItem('token', response.data.token);
-    return response.data;
+const TOKEN_KEY = "token";
 
-}
+/**
+ * Intenta iniciar sesión con las credenciales proporcionadas
+ * @param {Object} credentials - Credenciales del usuario
+ * @param {string} credentials.email - Email del usuario
+ * @param {string} credentials.password - Contraseña del usuario
+ * @returns {Promise<Object>} Datos del usuario y token
+ * @throws {Error} Si las credenciales son inválidas o hay un error de red
+ */
+const login = async (credentials) => {
+  try {
+    const response = await api.post("/api/auth/login", credentials);
+    const { token, ...userData } = response.data;
 
+    // Guardar el token
+    localStorage.setItem(TOKEN_KEY, token);
 
+    return userData;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      throw new Error("Credenciales inválidas");
+    }
+    throw new Error(
+      "Error al iniciar sesión: " +
+        (error.response?.data?.message || error.message)
+    );
+  }
+};
+
+/**
+ * Registra un nuevo usuario
+ * @param {Object} userData - Datos del nuevo usuario
+ * @param {string} userData.email - Email del usuario
+ * @param {string} userData.password - Contraseña del usuario
+ * @param {string} userData.name - Nombre del usuario
+ * @returns {Promise<Object>} Datos del usuario registrado
+ * @throws {Error} Si hay un error en el registro
+ */
 const register = async (userData) => {
-    const response = await api.post("auth/register", userData);
+  try {
+    const response = await api.post("/api/auth/register", userData);
     return response.data;
-}
+  } catch (error) {
+    if (error.response?.status === 400) {
+      throw new Error(
+        "Datos de registro inválidos: " + (error.response?.data?.message || "")
+      );
+    }
+    throw new Error(
+      "Error al registrar: " + (error.response?.data?.message || error.message)
+    );
+  }
+};
 
+/**
+ * Cierra la sesión del usuario actual
+ * @returns {Promise<void>}
+ */
 const logout = async () => {
+  try {
+    // Solo intentamos hacer logout en el backend si hay un token
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      await api.post("/api/auth/logout");
+    }
+  } catch (error) {
+    console.warn("Error al hacer logout en el servidor:", error);
+  } finally {
+    // Siempre eliminamos el token local
+    localStorage.removeItem(TOKEN_KEY);
+  }
+};
 
-    const response = await api.post("auth/logout");
-    localStorage.removeItem('token');
-    return response.data;
+/**
+ * Verifica si hay un usuario autenticado
+ * @returns {boolean}
+ */
+const isAuthenticated = () => {
+  return !!localStorage.getItem(TOKEN_KEY);
+};
 
-}
-
+/**
+ * Obtiene el token actual
+ * @returns {string|null}
+ */
+const getToken = () => {
+  return localStorage.getItem(TOKEN_KEY);
+};
 
 export default {
-    login,
-    register,
-    logout
+  login,
+  register,
+  logout,
+  isAuthenticated,
+  getToken,
 };
