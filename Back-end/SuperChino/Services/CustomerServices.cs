@@ -10,12 +10,12 @@ namespace SuperChino.Services
     {
         private readonly ICustomerRepository _repo;
         private IMapper _mapper;
-        private CustomerRepository _customerRepository;
-        public CustomerServices(ICustomerRepository repo, IMapper mapper,CustomerRepository customerrepo)
+       
+        public CustomerServices(ICustomerRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
-            _customerRepository = customerrepo;
+          
         }
 
         public async Task<IEnumerable<CustomerDTO>> GetAll()
@@ -35,7 +35,7 @@ namespace SuperChino.Services
         }
         public async Task<CustomerDTO> CreateOne(CustomerInsertDTO customerInsertDTO)
         {
-            var existingCustomer = await _customerRepository.GetByUserIdAsync(customerInsertDTO.UserId);
+            var existingCustomer = await _repo.GetByUserIdAsync(customerInsertDTO.UserId);
 
             if (existingCustomer != null)
             {
@@ -44,8 +44,8 @@ namespace SuperChino.Services
 
             var customer = _mapper.Map<Customer>(customerInsertDTO);
 
-            await _customerRepository.CreateOne(customer);
-            await _customerRepository.Save();
+            await _repo.CreateOne(customer);
+            await _repo.Save();
 
             return _mapper.Map<CustomerDTO>(customer);
         }
