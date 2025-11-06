@@ -6,10 +6,14 @@ using System.Linq.Expressions;
 
 namespace SuperChino.Repositories
 {
-    public interface ICustomerRepository : IRepository<Customer> { }
+    public interface ICustomerRepository : IRepository<Customer>
+    {
+        Task<Customer?> GetByUserIdAsync(int userId);
+    }
     public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
         private readonly ApplicationDbContext _db;
+
         public CustomerRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
@@ -18,9 +22,9 @@ namespace SuperChino.Repositories
         public async Task<Customer?> GetByUserIdAsync(int userId)
         {
             return await dbSet
-                .Include(c => c.User) 
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
-
     }
+
 }
