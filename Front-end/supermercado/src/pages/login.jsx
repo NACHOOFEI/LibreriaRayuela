@@ -24,9 +24,26 @@ export default function Login() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // mock login
-      await new Promise((r) => setTimeout(r, 500));
-      login({ email: data.email, name: data.email.split("@")[0] });
+      const response = await fetch("https://localhost:7158/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Credenciales inválidas");
+      }
+
+      const userData = await response.json();
+      // Guardar el token
+      localStorage.setItem("token", userData.token);
+      // Guardar los datos del usuario
+      login({
+        email: data.email,
+        name: userData.name || data.email.split("@")[0],
+      });
       navigate("/");
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
@@ -37,39 +54,123 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 mt-12">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Iniciar Sesión</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="block mb-1">Email</label>
-            <input
-              type="email"
-              {...register("email")}
-              className="w-full border px-3 py-2 rounded"
-            />
-            {errors.email && (
-              <p className="text-red-600">{errors.email.message}</p>
-            )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
+      <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 transform transition-all hover:scale-[1.02]">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Bienvenido
+          </h1>
+          <p className="text-gray-600 mt-2">Inicia sesión para continuar</p>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 block">
+              Email
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                {...register("email")}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+                placeholder="ejemplo@email.com"
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500 flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
           </div>
-          <div>
-            <label className="block mb-1">Contraseña</label>
-            <input
-              type="password"
-              {...register("password")}
-              className="w-full border px-3 py-2 rounded"
-            />
-            {errors.password && (
-              <p className="text-red-600">{errors.password.message}</p>
-            )}
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 block">
+              Contraseña
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                {...register("password")}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+                placeholder="••••••••"
+              />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500 flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
           </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg px-4 py-3 font-medium
+              transition-all hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+              disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Iniciando sesión...
+              </div>
+            ) : (
+              "Iniciar Sesión"
+            )}
           </button>
+
+          <div className="text-center text-sm text-gray-600 mt-4">
+            ¿No tienes cuenta?{" "}
+            <a
+              href="/register"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Regístrate aquí
+            </a>
+          </div>
         </form>
       </div>
     </div>
