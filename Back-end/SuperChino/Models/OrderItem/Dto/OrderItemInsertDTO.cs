@@ -10,5 +10,7 @@ namespace SuperChino.Models.OrderItem.Dto
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "La cantidad no puede ser negativa")]
         public int Quantity { get; set; }
+
+        public int? OrderId { get; set; }
     }
 }

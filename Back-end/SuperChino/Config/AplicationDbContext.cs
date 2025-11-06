@@ -35,6 +35,13 @@ namespace SuperChino.Config
                 l => l.HasOne<Rol>().WithMany().HasForeignKey(x => x.RolId),
                 r => r.HasOne<User>().WithMany().HasForeignKey(x => x.UserId)
                 );
+
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Items)
+                .WithOne()
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
