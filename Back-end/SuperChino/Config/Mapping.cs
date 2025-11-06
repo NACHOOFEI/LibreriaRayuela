@@ -14,7 +14,7 @@ using SuperChino.Models.User.Dto;
 
 namespace SuperChino.Config
 {
-    public class Mapping :Profile
+    public class Mapping : Profile
     {
         public Mapping()
         {

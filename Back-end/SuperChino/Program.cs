@@ -50,22 +50,21 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAutoMapper(options => { }, typeof(Mapping));
 
 ///Services
+builder.Services.AddScoped<AuthServices>();
 
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<RolServices>();
 builder.Services.AddScoped<CategoryServices>();
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<CategoryServices>();
-builder.Services.AddScoped<CustomerServices>();
+
 builder.Services.AddScoped<IEncoderServices,EncoderServices>();
 builder.Services.AddSingleton<S3Services>();
-
 
 builder.Services.AddScoped<CustomerServices>();
 
 builder.Services.AddScoped<OrderItemServices>();
 builder.Services.AddScoped<OrderServices>();
-
 
 /// repositories 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
@@ -73,6 +72,9 @@ builder.Services.AddScoped<IRolRepository,RolRepository>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 builder.Services.AddAutoMapper(opst => { } ,typeof(Mapping));
 

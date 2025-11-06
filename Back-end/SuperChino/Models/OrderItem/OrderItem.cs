@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SuperChino.Models.OrderItem
 {
@@ -20,5 +21,11 @@ namespace SuperChino.Models.OrderItem
 
         public decimal UnitPrice { get; set; }
         public decimal Subtotal {  get; set; }
+
+        [JsonIgnore]
+        [Required]
+        [ForeignKey(nameof(Order))]
+        public int OrderId { get; set; }
+        public Order.Order Order { get; set; }
     }
 }
