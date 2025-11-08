@@ -70,6 +70,11 @@ namespace SuperChino.Services
             return user;
         }
 
+        async public Task<IEnumerable<UserWithRolesDTO>> GetUsers()
+        {
+                    IEnumerable<User> users = await _repo.GetAll();
+                    return _mapper.Map<IEnumerable<UserWithRolesDTO>>(users);
+        }
 
     }
 }
