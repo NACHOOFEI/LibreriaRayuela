@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SuperChino.Models.OrderItem;
 using SuperChino.Models.OrderItem.Dto;
+using SuperChino.Models.Product;
+using SuperChino.Models.Product.Dto;
 using SuperChino.Repositories;
 
 namespace SuperChino.Services
@@ -11,11 +13,13 @@ namespace SuperChino.Services
         private readonly IOrderItemRepository _repo;
         private readonly IProductRepository _productRepository;
         private IMapper _mapper;
-        public OrderItemServices(IOrderItemRepository repo, IMapper mapper, IProductRepository productRepository)
+        private readonly ProductServices _products;
+        public OrderItemServices(IOrderItemRepository repo, IMapper mapper, IProductRepository productRepository, ProductServices products)
         {
             _repo = repo;
             _mapper = mapper;
             _productRepository = productRepository;
+            _products=products;
         }
 
         //public async Task<IEnumerable<OrderItemDTO>> GetAll()
@@ -38,6 +42,13 @@ namespace SuperChino.Services
             var product = await _productRepository.GetOne(p => p.Id == orderItemInsertDto.ProductId)
                 ?? throw new Exception("El producto especificado no existe.");
 
+            if (orderItemInsertDto.Quantity <= 0)
+                throw new Exception("La cantidad debe ser mayor a 0.");
+
+            if (product.Stock < orderItemInsertDto.Quantity)
+                throw new Exception("No hay stock suficiente.");
+
+
             var orderItem = _mapper.Map<OrderItem>(orderItemInsertDto);
 
             
@@ -45,9 +56,9 @@ namespace SuperChino.Services
             orderItem.UnitPrice = product.Price;
             orderItem.Subtotal = orderItem.UnitPrice * orderItem.Quantity;
 
+            await _products.RestarStock(orderItem.ProductId, orderItem.Quantity);
             await _repo.CreateOne(orderItem);
             await _repo.Save();
-
             return _mapper.Map<OrderItemDTO>(orderItem);
         }
 
