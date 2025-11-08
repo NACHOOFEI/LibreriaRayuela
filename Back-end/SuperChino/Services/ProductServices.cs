@@ -91,5 +91,27 @@ namespace SuperChino.Services
             }
             return null;
         }
+        public async Task RestarStock(int productId, int quantity)
+        {
+            var product = await _repo.GetOne(p => p.Id == productId)
+                ?? throw new Exception("El producto no existe.");
+
+            if (product.Stock < quantity)
+                throw new Exception("No hay stock suficiente.");
+
+            product.Stock -= quantity;
+            _repo.UpdateOne(product);
+            await _repo.Save();
+        }
+        public async Task SumarStock(int productId, int quantity)
+        {
+            var product = await _repo.GetOne(p => p.Id == productId)
+                ?? throw new Exception("El producto no existe.");
+
+            product.Stock += quantity; // No validar acá
+
+            _repo.UpdateOne(product);
+            await _repo.Save();
+        }
     }
 }
