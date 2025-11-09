@@ -152,5 +152,39 @@ namespace SuperChino.Controllers
             }
         }
 
+        [HttpPatch("{id}/restar-stock")]
+        [Authorize(Roles = ROL.ADMIN)]
+        [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RestarStock(int id, [FromBody] ProductUpdateStockDTO dto)
+        {
+            try
+            {
+                await _services.RestarStock(id, dto.Quantity);
+                return Ok(new HttpMessage("Stock actualizado correctamente."));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new HttpMessage(ex.Message));
+            }
+        }
+
+        [HttpPatch("{id}/sumar-stock")]
+        [Authorize(Roles = ROL.ADMIN)]
+        [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SumarStock(int id, [FromBody] ProductUpdateStockDTO dto)
+        {
+            try
+            {
+                await _services.SumarStock(id, dto.Quantity);
+                return Ok(new HttpMessage("Stock actualizado correctamente."));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new HttpMessage(ex.Message));
+            }
+        }
+
     }
 }
