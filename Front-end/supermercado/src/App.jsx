@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from "react";
-import { Route, Switch } from "wouter";
+import React, { Suspense, lazy, useEffect } from "react";
+import { Route, Switch, useLocation } from "wouter";
 import Navbar from "./components/navBar";
 import Loader from "./components/loader";
 import Home from "./pages/home";
@@ -8,6 +8,7 @@ import Register from "./pages/register";
 import Cart from "./pages/cart";
 import Elementos from "./pages/elementos";
 import ProtectedRoute from "./components/protectedRoute";
+import { useAuthStore } from "./store/authStore";
 
 // Componentes cargados de manera perezosa
 const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
@@ -15,9 +16,18 @@ const AdminPanel = lazy(() => import("./pages/adminPanel"));
 const CreateProduct = lazy(() => import("./pages/createProduct"));
 
 export default function App() {
+  const [location] = useLocation();
+  const hideNavbar = location === "/login" || location === "/register";
+  const hydrate = useAuthStore((s) => s.hydrate);
+
+  // Rehidratamos la sesión (por si el usuario recargó la página).
+  // Se ejecuta una sola vez al montar la App.
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -36,21 +46,21 @@ export default function App() {
           </Route>
           <Route path="/admin">
             {() => (
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="Admin">
                 <AdminPanel />
               </ProtectedRoute>
             )}
           </Route>
           <Route path="/admin/productos/nuevo">
             {() => (
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="Admin">
                 <CreateProduct />
               </ProtectedRoute>
             )}
           </Route>
           <Route path="/admin/productos/editar/:id">
             {(params) => (
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="Admin">
                 <CreateProduct id={params.id} />
               </ProtectedRoute>
             )}

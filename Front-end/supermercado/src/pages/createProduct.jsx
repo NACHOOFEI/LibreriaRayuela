@@ -1,8 +1,9 @@
+import React, { useState } from "react";
 import axiosServices from "../services/axiosServices";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import { useMutation } from "react-query";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -54,7 +55,9 @@ const productSchema = z.object({
 });
 
 export default function CreateProduct() {
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
+  const [formError, setFormError] = useState("");
+  const [formSuccess, setFormSuccess] = useState("");
 
   const mutation = useMutation({
     mutationKey: ["createProduct"],
@@ -65,13 +68,15 @@ export default function CreateProduct() {
       });
     },
     onSuccess: () => {
-      alert("Producto creado con éxito!");
+      setFormSuccess("Producto creado con éxito");
+      setFormError("");
       reset();
       navigate("/admin");
     },
     onError: (error) => {
       console.error(error);
-      alert(
+      setFormSuccess("");
+      setFormError(
         "Error al crear producto: " +
           (error.response?.data?.message || error.message)
       );
@@ -99,6 +104,16 @@ export default function CreateProduct() {
 
   return (
     <>
+      {formError && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+          {formError}
+        </div>
+      )}
+      {formSuccess && (
+        <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+          {formSuccess}
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="">Nombre</label>
