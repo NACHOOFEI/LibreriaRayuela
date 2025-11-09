@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAuthStore } from "../store/authStore";
 import { useLocation } from "wouter";
+import auth from "../services/authServices";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -14,6 +15,7 @@ export default function Login() {
   const { login } = useAuthStore();
   const [, navigate] = useLocation();
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const {
     register,
@@ -22,32 +24,27 @@ export default function Login() {
   } = useForm({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data) => {
+    setFormError("");
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:7158/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      // Usa el servicio centralizado con axios e interceptores
+      const userData = await auth.login({
+        email: data.email,
+        password: data.password,
       });
 
-      if (!response.ok) {
-        throw new Error("Credenciales inválidas");
-      }
-
-      const userData = await response.json();
-      // Guardar el token
-      localStorage.setItem("token", userData.token);
-      // Guardar los datos del usuario
+      // Asumimos que el backend devuelve "role" en userData; si no, se asigna "User"
       login({
         email: data.email,
         name: userData.name || data.email.split("@")[0],
+        role: userData.role || "User",
+        ...userData,
       });
       navigate("/");
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
-      alert("Error al iniciar sesión. Por favor, intente nuevamente.");
+      // Mostrar error dentro del cuadro, no notificación
+      setFormError(error.message || "Error al iniciar sesión");
     } finally {
       setLoading(false);
     }
@@ -62,6 +59,25 @@ export default function Login() {
           </h1>
           <p className="text-gray-600 mt-2">Inicia sesión para continuar</p>
         </div>
+
+        {/* Mensaje de error general del formulario */}
+        {formError && (
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10A8 8 0 11.001 9.999 8 8 0 0118 10zM9 5a1 1 0 012 0v5a1 1 0 11-2 0V5zm1 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>{formError}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">

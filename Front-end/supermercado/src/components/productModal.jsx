@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { Loader2, Plus, Minus, X } from "lucide-react";
+import { useCartStore } from "../store/cartStore";
 
 export default function ProductModal({ product, onClose, onAdd }) {
   const [isAdding, setIsAdding] = useState(false);
   const [cantidad, setCantidad] = useState(1);
   const stock = product?.stock ?? 0;
   const isOutOfStock = stock === 0;
-  const wouldExceedStock = cantidad >= stock;
+  const cartItems = useCartStore((s) => s.items);
+  const existing = cartItems.find((p) => p.id === product?.id);
+  const alreadyInCart = existing?.quantity || 0;
+  const remaining = Math.max(0, stock - alreadyInCart);
+  const wouldExceedStock = cantidad > remaining;
 
   if (!product) return null;
 
@@ -39,8 +44,8 @@ export default function ProductModal({ product, onClose, onAdd }) {
               </button>
               <span className="font-semibold w-10 text-center">{cantidad}</span>
               <button
-                onClick={() => setCantidad((c) => c + 1)}
-                disabled={wouldExceedStock}
+                onClick={() => setCantidad((c) => Math.min(c + 1, remaining))}
+                disabled={wouldExceedStock || remaining <= 0}
                 className="bg-gray-200 p-1 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus size={20} />
@@ -48,7 +53,12 @@ export default function ProductModal({ product, onClose, onAdd }) {
             </div>
             {stock > 0 && (
               <span className="text-sm text-gray-500">
-                {stock} unidades disponibles
+                {remaining} unidades disponibles (total stock {stock})
+              </span>
+            )}
+            {remaining === 0 && (
+              <span className="text-sm text-red-500 font-medium">
+                Ya tienes el máximo en el carrito.
               </span>
             )}
           </div>
@@ -56,15 +66,21 @@ export default function ProductModal({ product, onClose, onAdd }) {
             onClick={async () => {
               setIsAdding(true);
               try {
-                await onAdd(product, cantidad);
+                // Clamp cantidad por seguridad adicional
+                const finalCantidad = Math.min(cantidad, remaining);
+                if (finalCantidad > 0) {
+                  await onAdd(product, finalCantidad);
+                }
                 onClose();
               } finally {
                 setIsAdding(false);
               }
             }}
-            disabled={isAdding || isOutOfStock || wouldExceedStock}
+            disabled={
+              isAdding || isOutOfStock || remaining <= 0 || wouldExceedStock
+            }
             className={`flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors ${
-              isAdding || isOutOfStock || wouldExceedStock
+              isAdding || isOutOfStock || remaining <= 0 || wouldExceedStock
                 ? "opacity-75 cursor-not-allowed"
                 : ""
             }`}
@@ -72,6 +88,8 @@ export default function ProductModal({ product, onClose, onAdd }) {
             {isAdding ? <Loader2 size={20} className="animate-spin" /> : null}
             {isOutOfStock
               ? "Sin stock"
+              : remaining <= 0
+              ? "Stock máximo"
               : `Agregar $${product.price * cantidad}`}
           </button>
         </div>

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { useCartStore } from "../store/cartStore";
 import { ShoppingCart, Loader2 } from "lucide-react";
 
 export default function ProductCard({ product, onAdd, onOpen }) {
   const [isAdding, setIsAdding] = useState(false);
+  const cartItems = useCartStore((s) => s.items);
+  const existing = cartItems.find((p) => p.id === product.id);
+  const currentQty = existing?.quantity || 0;
+  const maxStock = typeof product.stock === "number" ? product.stock : Infinity;
+  const atMax = currentQty >= maxStock && maxStock !== Infinity;
 
   const handleAdd = async () => {
     setIsAdding(true);
@@ -17,7 +23,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
       onClick={(e) => {
         if (!e.target.closest("button")) onOpen(product);
       }}
-      className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+      className="group relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
     >
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
@@ -59,12 +65,12 @@ export default function ProductCard({ product, onAdd, onOpen }) {
 
         <button
           onClick={handleAdd}
-          disabled={isAdding}
+          disabled={isAdding || atMax}
           className={`
             flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl
             font-medium text-sm transition-all duration-300
             ${
-              isAdding
+              isAdding || atMax
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-lg hover:shadow-purple-500/30"
             }
@@ -78,17 +84,18 @@ export default function ProductCard({ product, onAdd, onOpen }) {
           ) : (
             <>
               <ShoppingCart size={18} />
-              Agregar al carrito
+              {atMax ? "Stock máximo" : "Agregar al carrito"}
             </>
           )}
         </button>
+        {atMax && (
+          <p className="mt-2 text-xs text-red-500 font-medium text-center">
+            Alcanzaste el stock máximo ({maxStock}).
+          </p>
+        )}
       </div>
 
-      {product.discount && (
-        <div className="absolute top-4 right-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full transform rotate-3 shadow-lg">
-          -{product.discount}% OFF
-        </div>
-      )}
+      {/* Descuento removido de la UI */}
     </div>
   );
 }
