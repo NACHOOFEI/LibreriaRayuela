@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "../api/api";
+import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
 
 const elementoSchema = z.object({
@@ -16,9 +17,19 @@ const elementoSchema = z.object({
 export default function AdminPanel() {
   const { user } = useAuthStore();
   const [productos, setProductos] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  // UI/table enhancement state
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("todos");
+  const [sortConfig, setSortConfig] = useState({ key: "id", dir: "asc" });
+  const formRef = useRef(null);
+  const tableRef = useRef(null);
+  const [highlightId, setHighlightId] = useState(null);
 
   const {
     register,
@@ -29,18 +40,23 @@ export default function AdminPanel() {
   } = useForm({ resolver: zodResolver(elementoSchema) });
 
   useEffect(() => {
-    loadProductos();
+    loadData();
   }, []);
 
-  const loadProductos = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/api/products");
-      setProductos(res.data || []);
+      setErrorMsg("");
+      const [resProd, resUsers] = await Promise.all([
+        api.get("/api/products"),
+        api.get("/api/users").catch(() => ({ data: [] })),
+      ]);
+      setProductos(resProd.data || []);
+      setUsuarios(resUsers.data || []);
     } catch (error) {
       console.error("Error cargando productos:", error);
       const mensaje = error.response?.data?.message || error.message;
-      alert("Error cargando productos: " + mensaje);
+      setErrorMsg("Error cargando productos: " + mensaje);
     } finally {
       setLoading(false);
     }
@@ -49,25 +65,50 @@ export default function AdminPanel() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      setErrorMsg("");
+      setSuccessMsg("");
+      // Normalizar payload numérico para evitar que algún valor llegue como string
+      const payload = {
+        ...data,
+        price: Number(data.price),
+        stock: Number.isFinite(data.stock) ? data.stock : 0,
+      };
+      let resp;
       if (editingId) {
-        await api.put(`/api/products/${editingId}`, data);
+        resp = await api.put(`/api/products/${editingId}`, payload);
       } else {
-        await api.post("/api/products", data);
+        resp = await api.post("/api/products", payload);
       }
-      // Recargar productos para tener la lista actualizada
-      await loadProductos();
+      // Después de crear/editar recargamos desde la fuente para asegurar persistencia (mock/localStorage/backend)
+      await loadData();
       reset();
       setShowForm(false);
       setEditingId(null);
-      alert(
+      setSuccessMsg(
         editingId
           ? "Producto actualizado con éxito"
           : "Producto creado con éxito"
       );
+      // Al guardar, limpiar filtros para que el producto aparezca en la lista principal
+      setSearch("");
+      setCategoryFilter("todos");
+      // Desplazar a la tabla principal
+      setTimeout(() => {
+        tableRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 50);
+      // Resaltar la fila creada/actualizada durante ~1.8s
+      const updatedId = editingId || resp?.data?.id;
+      if (updatedId) {
+        setHighlightId(updatedId);
+        setTimeout(() => setHighlightId(null), 1800);
+      }
     } catch (error) {
       console.error("Error al guardar producto:", error);
       const mensaje = error.response?.data?.message || error.message;
-      alert("Error al guardar producto: " + mensaje);
+      setErrorMsg("Error al guardar producto: " + mensaje);
     } finally {
       setLoading(false);
     }
@@ -81,45 +122,291 @@ export default function AdminPanel() {
     setValue("category", p.category);
     setValue("stock", p.stock ?? 0);
     setShowForm(true);
+    requestAnimationFrame(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
   const handleDelete = async (id) => {
     if (!confirm("¿Eliminar este producto?")) return;
     try {
       setLoading(true);
+      setErrorMsg("");
+      setSuccessMsg("");
       await api.delete(`/api/products/${id}`);
-      await loadProductos(); // Recargar lista después de eliminar
-      alert("Producto eliminado con éxito");
+      await loadData();
+      setSuccessMsg("Producto eliminado con éxito");
     } catch (error) {
       console.error("Error al eliminar:", error);
       const mensaje = error.response?.data?.message || error.message;
-      alert("Error al eliminar: " + mensaje);
+      setErrorMsg("Error al eliminar: " + mensaje);
     } finally {
       setLoading(false);
     }
   };
 
+  // Métricas derivadas
+  const totalProductos = productos.length;
+  const totalUsuarios = usuarios.length;
+  const productosPorCategoria = useMemo(() => {
+    const map = new Map();
+    for (const p of productos) {
+      map.set(p.category, (map.get(p.category) || 0) + 1);
+    }
+    return Array.from(map, ([label, value]) => ({ label, value })).sort(
+      (a, b) => b.value - a.value
+    );
+  }, [productos]);
+  const stockTotal = useMemo(
+    () => productos.reduce((acc, p) => acc + (p.stock ?? 0), 0),
+    [productos]
+  );
+  // Removido cálculo de precio promedio (ya no se muestra en UI)
+
+  // Derivar categorías únicas para filtros
+  const categoriasUnicas = useMemo(() => {
+    const setCat = new Set(productos.map((p) => p.category));
+    return Array.from(setCat).sort();
+  }, [productos]);
+
+  // Filtrado + búsqueda + ordenamiento
+  const productosFiltrados = useMemo(() => {
+    let data = productos.slice();
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      data = data.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          String(p.id).includes(q) ||
+          p.category.toLowerCase().includes(q)
+      );
+    }
+    if (categoryFilter !== "todos") {
+      data = data.filter((p) => p.category === categoryFilter);
+    }
+    if (sortConfig.key) {
+      data.sort((a, b) => {
+        const { key, dir } = sortConfig;
+        let va = a[key];
+        let vb = b[key];
+        if (key === "title" || key === "category" || key === "description") {
+          va = String(va).toLowerCase();
+          vb = String(vb).toLowerCase();
+        }
+        if (va < vb) return dir === "asc" ? -1 : 1;
+        if (va > vb) return dir === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return data;
+  }, [productos, search, categoryFilter, sortConfig]);
+
+  // Separar por stock
+  const sinStock = useMemo(
+    () => productosFiltrados.filter((p) => (p.stock ?? 0) === 0),
+    [productosFiltrados]
+  );
+  const conStock = useMemo(
+    () => productosFiltrados.filter((p) => (p.stock ?? 0) > 0),
+    [productosFiltrados]
+  );
+
+  const toggleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return { key, dir: prev.dir === "asc" ? "desc" : "asc" };
+      }
+      return { key, dir: "asc" };
+    });
+  };
+
+  // Scroll automático cuando el formulario se muestra
+  useEffect(() => {
+    if (showForm) {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showForm]);
+
+  // ---- UI enriquecida de estadísticas ----
+  const statsHeader = (
+    <div className="grid gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="bg-white rounded-2xl shadow p-6 border border-blue-50">
+        <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+          Usuario
+        </h2>
+        <p className="text-lg font-medium text-gray-800 truncate">
+          {user?.email}
+        </p>
+        <p className="text-xs text-gray-500 mt-1">Rol: {user?.role || "—"}</p>
+      </div>
+      <div className="bg-white rounded-2xl shadow p-6 border border-purple-50">
+        <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+          Total productos
+        </h2>
+        <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          {totalProductos}
+        </p>
+        <p className="text-xs text-gray-500 mt-1">
+          Stock acumulado: {stockTotal}
+        </p>
+      </div>
+      <div className="bg-white rounded-2xl shadow p-6 border border-green-50">
+        <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+          Usuarios
+        </h2>
+        <p className="text-4xl font-bold text-green-600">{totalUsuarios}</p>
+        <p className="text-xs text-gray-500 mt-1">(mock)</p>
+      </div>
+    </div>
+  );
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between mb-6">
         <h1 className="text-3xl font-bold">Panel de Administración</h1>
         <button
           onClick={() => {
-            setShowForm(!showForm);
+            const abrir = !showForm;
+            setShowForm(abrir);
             reset();
             setEditingId(null);
+            if (abrir) {
+              setTimeout(() => {
+                formRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }, 50);
+            }
           }}
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
           {showForm ? "Cancelar" : "Nuevo Producto"}
         </button>
       </div>
-      <div className="bg-blue-100 p-4 mb-6">
-        Usuario: <strong>{user?.email}</strong>
+      {statsHeader}
+
+      {/* Barra de controles de tabla */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-6 bg-white/60 backdrop-blur rounded-xl p-4 border border-gray-200">
+        <div className="flex-1 grid gap-4 md:grid-cols-3">
+          <div className="flex flex-col">
+            <label className="text-xs font-semibold text-gray-600 mb-1">
+              Buscar
+            </label>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="id, título o categoría..."
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-xs font-semibold text-gray-600 mb-1">
+              Categoría
+            </label>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="todos">Todas</option>
+              {categoriasUnicas.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-xs font-semibold text-gray-600 mb-1">
+              Orden actual
+            </label>
+            <div className="text-xs px-3 py-2 border rounded-lg bg-gray-50 text-gray-700">
+              {sortConfig.key} ({sortConfig.dir})
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              setSearch("");
+              setCategoryFilter("todos");
+              setSortConfig({ key: "id", dir: "asc" });
+            }}
+            className="px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700"
+          >
+            Reset
+          </button>
+          <button
+            onClick={() => {
+              // Exportar CSV rápido
+              const header = ["id", "title", "price", "category", "stock"].join(
+                ","
+              );
+              const rows = productosFiltrados.map((p) =>
+                [p.id, p.title, p.price, p.category, p.stock ?? 0].join(",")
+              );
+              const csv = [header, ...rows].join("\n");
+              const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "productos.csv";
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="px-4 py-2 text-sm rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow"
+          >
+            Exportar CSV
+          </button>
+        </div>
       </div>
+
+      {productosPorCategoria.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700 flex items-center">
+            <svg
+              className="w-5 h-5 mr-2 text-purple-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 3v18h18"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M7 15l4-8 4 6 3-4"
+              />
+            </svg>
+            Productos por categoría
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            <StatsChart data={productosPorCategoria} type="bar" height={320} />
+            <StatsChart data={productosPorCategoria} type="pie" height={320} />
+          </div>
+        </div>
+      )}
+
+      {errorMsg && (
+        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+          {errorMsg}
+        </div>
+      )}
+      {successMsg && (
+        <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+          {successMsg}
+        </div>
+      )}
 
       {showForm && (
         <form
-          className="bg-white p-6 rounded shadow mb-6"
+          ref={formRef}
+          className="bg-white p-6 rounded shadow mb-6 scroll-mt-24"
           onSubmit={handleSubmit(onSubmit)}
         >
           {["title", "price", "description", "category", "stock"].map((f) => {
@@ -159,53 +446,182 @@ export default function AdminPanel() {
         </form>
       )}
 
-      <table className="w-full bg-white rounded shadow">
-        <thead className="bg-gray-100">
-          <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Precio</th>
-            <th>Categoría</th>
-            <th>Stock</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
+      <div
+        ref={tableRef}
+        className="relative overflow-auto rounded-xl shadow ring-1 ring-gray-200"
+      >
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-50 sticky top-0 z-10 text-xs uppercase text-gray-600">
             <tr>
-              <td colSpan="5">Cargando...</td>
-            </tr>
-          ) : productos.length === 0 ? (
-            <tr>
-              <td colSpan="5">No hay productos</td>
-            </tr>
-          ) : (
-            productos.map((p) => (
-              <tr key={p.id} className="border-t">
-                <td>{p.id}</td>
-                <td>{p.title.substring(0, 30)}...</td>
-                <td>${p.price}</td>
-                <td>{p.category}</td>
-                <td>{p.stock ?? 0}</td>
-                <td>
+              {[
+                { key: "id", label: "ID" },
+                { key: "title", label: "Título" },
+                { key: "price", label: "Precio" },
+                { key: "category", label: "Categoría" },
+                { key: "stock", label: "Stock" },
+              ].map((col) => (
+                <th key={col.key} className="font-semibold text-left">
                   <button
-                    onClick={() => handleEdit(p)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                    type="button"
+                    onClick={() => toggleSort(col.key)}
+                    className="flex items-center gap-1 py-3 px-4 hover:text-blue-600 transition"
                   >
-                    Editar
+                    {col.label}
+                    {sortConfig.key === col.key && (
+                      <span className="text-[10px]">
+                        {sortConfig.dir === "asc" ? "▲" : "▼"}
+                      </span>
+                    )}
                   </button>
-                  <button
-                    onClick={() => handleDelete(p.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Eliminar
-                  </button>
+                </th>
+              ))}
+              <th className="font-semibold text-left py-3 px-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {loading ? (
+              <tr>
+                <td colSpan="6" className="p-4 text-center text-gray-500">
+                  Cargando...
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : conStock.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="p-4 text-center text-gray-500">
+                  {productos.length === 0
+                    ? "No hay productos"
+                    : "Sin resultados (no hay productos con stock > 0)"}
+                </td>
+              </tr>
+            ) : (
+              conStock.map((p) => (
+                <tr
+                  key={p.id}
+                  className={`group transition-colors ${
+                    highlightId === p.id
+                      ? "bg-yellow-50 ring-2 ring-yellow-300"
+                      : "hover:bg-blue-50/40"
+                  }`}
+                >
+                  <td className="px-4 py-3 tabular-nums text-gray-700">
+                    {p.id}
+                  </td>
+                  <td className="px-4 py-3 max-w-xs">
+                    <span className="font-medium text-gray-800">
+                      {p.title.length > 40
+                        ? p.title.substring(0, 40) + "…"
+                        : p.title}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-700">${p.price}</td>
+                  <td className="px-4 py-3">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[11px] font-semibold">
+                      {p.category}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-full text-[11px] font-semibold ${
+                        (p.stock ?? 0) === 0
+                          ? "bg-red-100 text-red-700"
+                          : (p.stock ?? 0) < 10
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {p.stock ?? 0}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2 opacity-80 group-hover:opacity-100 transition">
+                      <button
+                        onClick={() => handleEdit(p)}
+                        className="px-2 py-1 rounded-md bg-yellow-500/90 hover:bg-yellow-600 text-white text-xs font-semibold shadow-sm"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p.id)}
+                        className="px-2 py-1 rounded-md bg-red-600/90 hover:bg-red-700 text-white text-xs font-semibold shadow-sm"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {sinStock.length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-red-600">
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-700 text-sm font-semibold">
+              0
+            </span>
+            Productos sin stock
+            <span className="text-sm font-normal text-red-500">
+              ({sinStock.length})
+            </span>
+          </h2>
+          <div className="relative overflow-auto rounded-xl shadow ring-1 ring-red-200">
+            <table className="min-w-full text-sm">
+              <thead className="bg-red-50 text-xs uppercase text-red-600">
+                <tr>
+                  <th className="text-left py-2 px-3">ID</th>
+                  <th className="text-left py-2 px-3">Título</th>
+                  <th className="text-left py-2 px-3">Precio</th>
+                  <th className="text-left py-2 px-3">Categoría</th>
+                  <th className="text-left py-2 px-3">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-red-100">
+                {sinStock.map((p) => (
+                  <tr
+                    key={p.id}
+                    className={`bg-white transition ${
+                      highlightId === p.id
+                        ? "bg-yellow-50 ring-2 ring-yellow-300"
+                        : "hover:bg-red-50/60"
+                    }`}
+                  >
+                    <td className="px-3 py-2 tabular-nums">{p.id}</td>
+                    <td className="px-3 py-2 max-w-xs">
+                      {p.title.length > 50
+                        ? p.title.substring(0, 50) + "…"
+                        : p.title}
+                    </td>
+                    <td className="px-3 py-2">${p.price}</td>
+                    <td className="px-3 py-2">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-semibold">
+                        {p.category}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEdit(p)}
+                          className="px-2 py-1 rounded-md bg-yellow-500/90 hover:bg-yellow-600 text-white text-xs font-semibold shadow-sm"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          className="px-2 py-1 rounded-md bg-red-600/90 hover:bg-red-700 text-white text-xs font-semibold shadow-sm"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

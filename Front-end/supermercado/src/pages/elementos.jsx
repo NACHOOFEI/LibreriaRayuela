@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "wouter";
 import api from "../api/api";
 import ProductCard from "../components/productCard";
+import ProductModal from "../components/productModal";
 import { useCartStore } from "../store/cartStore";
+import { useAuthStore } from "../store/authStore";
+import AuthPrompt from "../components/authPrompt";
 
 export default function Elementos() {
   // Estados para productos y paginación
@@ -18,6 +21,9 @@ export default function Elementos() {
 
   // Estado global del carrito
   const { addToCart } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [modalProducto, setModalProducto] = useState(null);
 
   // Constantes de paginación
   const ITEMS_POR_PAGINA = 8;
@@ -162,7 +168,14 @@ export default function Elementos() {
               <ProductCard
                 key={producto.id}
                 product={producto}
-                onAdd={() => addToCart(producto)}
+                onAdd={() => {
+                  if (!isAuthenticated) {
+                    setShowAuthPrompt(true);
+                    return;
+                  }
+                  addToCart(producto);
+                }}
+                onOpen={(prod) => setModalProducto(prod)}
               />
             ))}
           </div>
@@ -209,6 +222,23 @@ export default function Elementos() {
               aplicados.
             </div>
           )}
+          {modalProducto && (
+            <ProductModal
+              product={modalProducto}
+              onClose={() => setModalProducto(null)}
+              onAdd={(prod, cant) => {
+                if (!isAuthenticated) {
+                  setShowAuthPrompt(true);
+                  return;
+                }
+                addToCart(prod, cant);
+              }}
+            />
+          )}
+          <AuthPrompt
+            isOpen={showAuthPrompt}
+            onClose={() => setShowAuthPrompt(false)}
+          />
         </>
       )}
     </div>
