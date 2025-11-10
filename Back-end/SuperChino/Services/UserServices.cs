@@ -14,10 +14,11 @@ namespace SuperChino.Services
         private readonly IMapper _mapper;
         private readonly IUserRepository _repo;
         private readonly RolServices _rolServices;
-        public UserServices(IMapper mapper, IUserRepository repo)
+        public UserServices(IMapper mapper, IUserRepository repo, RolServices rolServices)
         {
             _mapper = mapper;
             _repo = repo;
+            _rolServices = rolServices;
         }
 
         async public Task<User> GetOnByIdOrException(int id)
@@ -43,6 +44,11 @@ namespace SuperChino.Services
             var rolDefault = await _rolServices.GetOneByName(ROL.USER);
 
             user.Roles = new List<Rol>() { rolDefault };
+
+            foreach (var role in user.Roles)
+            {
+                var rolExist = await _rolServices.GetOneByName(role.Name);
+            }
 
             await _repo.CreateOne(user);
 

@@ -18,6 +18,10 @@ namespace SuperChino.Services
         async public Task<Rol> GetOneByName(string name)
         {
             var rol = await _repo.GetOne(r => r.Name == name);
+            if (rol == null)
+            {
+                throw new Exception("No existe el rol solicitado.");
+            }
             return rol;
         }
 
