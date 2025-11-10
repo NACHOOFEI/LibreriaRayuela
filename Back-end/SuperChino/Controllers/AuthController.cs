@@ -42,11 +42,11 @@ namespace SuperChino.Controllers
 
 
         [HttpPost("login")]
-        async public Task<ActionResult<User>> LoginController([FromBody] LoginDTO login, HttpContext context)
+        async public Task<ActionResult<LoginResposeDTO>> LoginController([FromBody] LoginDTO login)
         {
             try
             {
-                var res = await _authServices.Login(login, context);
+                var res = await _authServices.Login(login, HttpContext);
                 return Ok(res);
             }
             catch (HttpResponseError ex)
