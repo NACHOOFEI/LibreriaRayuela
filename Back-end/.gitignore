@@ -29,3 +29,5 @@ project.lock.json
 appsettings*.Development.json
 appsettings*.Local.json
 
+*/Migrations/
+*/appsettings.json

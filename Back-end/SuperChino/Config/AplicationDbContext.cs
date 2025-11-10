@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SuperChino.Enums;
 using SuperChino.Models.Category;
 using SuperChino.Models.Customer;
 using SuperChino.Models.Order;
@@ -13,10 +14,10 @@ namespace SuperChino.Config
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
-        public DbSet<User> Users { get; set; } 
+        public DbSet<User> Users { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -37,9 +38,16 @@ namespace SuperChino.Config
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Items)
-                .WithOne()
-                .HasForeignKey(oi => oi.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(i => i.Order)
+                .HasForeignKey(i => i.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Seeding de roles
+            modelBuilder.Entity<Rol>().HasData(
+                new Rol { Id = 1, Name = ROL.USER },
+                new Rol { Id = 2, Name = ROL.ADMIN }
+            );
+
         }
 
     }

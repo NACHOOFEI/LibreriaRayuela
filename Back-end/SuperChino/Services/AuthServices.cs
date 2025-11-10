@@ -77,7 +77,7 @@ namespace SuperChino.Services
                 throw new HttpResponseError(HttpStatusCode.BadRequest, "el email no coincide y contrasenia");
             }
 
-            bool isPassMatch = _encoderServices.Verify(login.Password, user.PasswordHash);
+            bool isPassMatch = _encoderServices.Verify(login.Password, user.Password);
 
             if (!isPassMatch)
             {
