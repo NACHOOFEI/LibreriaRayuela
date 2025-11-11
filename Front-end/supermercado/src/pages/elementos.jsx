@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "wouter";
-import api from "../api/api";
+import { useProducts } from "../services/queries";
 import ProductCard from "../components/productCard";
 import ProductModal from "../components/productModal";
 import { useCartStore } from "../store/cartStore";
@@ -9,9 +9,7 @@ import AuthPrompt from "../components/authPrompt";
 
 export default function Elementos() {
   // Estados para productos y paginación
-  const [productos, setProductos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: productos = [], isLoading: loading, error } = useProducts();
 
   // Estados para filtros
   const [busqueda, setBusqueda] = useState("");
@@ -28,27 +26,13 @@ export default function Elementos() {
   // Constantes de paginación
   const ITEMS_POR_PAGINA = 8;
 
-  useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await api.get("/api/products");
-        setProductos(res.data);
-      } catch (err) {
-        setError(
-          "Error al cargar los productos. Por favor, intente nuevamente."
-        );
-        console.error("Error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProductos();
-  }, []);
+  // productos se resuelve por hook
 
   // Obtener categorías únicas
-  const categorias = ["all", ...new Set(productos.map((p) => p.category))];
+  const categorias = useMemo(
+    () => ["all", ...new Set(productos.map((p) => p.category))],
+    [productos]
+  );
 
   // Filtrar y ordenar productos
   const productosFiltrados = productos

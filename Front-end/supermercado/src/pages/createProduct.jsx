@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "wouter";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -58,6 +58,7 @@ export default function CreateProduct() {
   const [, navigate] = useLocation();
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationKey: ["createProduct"],
@@ -71,6 +72,8 @@ export default function CreateProduct() {
       setFormSuccess("Producto creado con éxito");
       setFormError("");
       reset();
+      // invalidar caches relacionadas
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       navigate("/admin");
     },
     onError: (error) => {

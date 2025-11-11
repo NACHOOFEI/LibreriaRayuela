@@ -21,7 +21,18 @@ export default function Home() {
       setLoading(true);
       setError(null);
       const res = await api.get("/api/products");
-      setProductos(res.data);
+      // Normalizar respuesta: algunos backends devuelven { data: [...] } u { products: [...] }
+      const payload = res?.data;
+      let items = payload;
+      if (payload && typeof payload === "object") {
+        if (Array.isArray(payload)) items = payload;
+        else if (Array.isArray(payload.data)) items = payload.data;
+        else if (Array.isArray(payload.products)) items = payload.products;
+        else if (Array.isArray(payload.items)) items = payload.items;
+        else items = [];
+      }
+      if (!Array.isArray(items)) items = [];
+      setProductos(items);
     } catch (err) {
       console.error(err);
       const msg =
@@ -57,19 +68,6 @@ export default function Home() {
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Reintentar
-          </button>
-          <button
-            onClick={() => {
-              try {
-                localStorage.setItem("useMock", "true");
-                window.location.reload();
-              } catch (e) {
-                console.warn("No se pudo activar el mock automáticamente", e);
-              }
-            }}
-            className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg border hover:bg-gray-200"
-          >
-            Activar Mock y recargar
           </button>
         </div>
       </div>
