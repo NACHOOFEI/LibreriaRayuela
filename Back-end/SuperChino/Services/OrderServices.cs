@@ -11,14 +11,16 @@ namespace SuperChino.Services
         private readonly IOrderRepository _repo;
         private readonly ICustomerRepository _customerRepository;
         private readonly OrderItemServices _orderItemService;
+        private readonly WhatsAppServices _appServices;
  
         private IMapper _mapper;
-        public OrderServices(IOrderRepository repo, IMapper mapper, ICustomerRepository customerRepository, OrderItemServices orderItemService)
+        public OrderServices(IOrderRepository repo, IMapper mapper, ICustomerRepository customerRepository, OrderItemServices orderItemService, WhatsAppServices appServices)
         {
             _repo = repo;
             _mapper = mapper;
             _customerRepository = customerRepository;
             _orderItemService = orderItemService;
+            _appServices=appServices;
         }
 
         public async Task<IEnumerable<OrderDTO>> GetAll()
@@ -61,7 +63,7 @@ namespace SuperChino.Services
             order.Total = order.Items.Sum(i => i.Subtotal);
 
             await _repo.Save();
-
+            await _appServices.EnviarMensajeDePago(customer.Phone, order.Total);
             return _mapper.Map<OrderDTO>(order);
         }
 
