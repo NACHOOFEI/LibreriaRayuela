@@ -12,6 +12,6 @@ namespace SuperChino.Models.User
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
 
-        public List<Rol.Rol> Roles { get; set; }
+        public List<Rol.Rol> Roles { get; set; } = new();
     }
 }

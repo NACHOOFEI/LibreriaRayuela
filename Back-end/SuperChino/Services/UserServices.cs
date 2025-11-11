@@ -67,7 +67,7 @@ namespace SuperChino.Services
 
             if (!string.IsNullOrEmpty(email))
             {
-                user = await _repo.GetOne( u =>  u.Email == email );
+                user = await _repo.GetOneWithRoles( u =>  u.Email == email );
             }
             else
             {

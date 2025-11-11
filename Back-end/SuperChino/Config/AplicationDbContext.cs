@@ -24,6 +24,7 @@ namespace SuperChino.Config
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<RolUser> RolUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
@@ -43,6 +44,9 @@ namespace SuperChino.Config
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Seeding de datos
+            modelBuilder.Entity<RolUser>()
+    .HasKey(ru => new { ru.UserId, ru.RolId });
+
 
             modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Name = ROL.USER },

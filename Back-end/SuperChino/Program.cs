@@ -20,27 +20,39 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-     Version = "v1",
-     Title = "super mercado",
-     Description = " gestion de comercio",
-     TermsOfService = new Uri("http://superchino")
-    });
-    options.AddSecurityDefinition("Token", new OpenApiSecurityScheme
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
-        BearerFormat = "JWT",
-        Description = "Json Web Token, Authorization header using the Bearer scheme.",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Name = "Authorization",
-        Scheme = "bearer"
+        Version = "v1",
+        Title = "SuperChino API",
+        Description = "Gestión de Comercio"
     });
-    options.OperationFilter<AuthOperationFilter>();
 
-}
+    // Configuración para usar JWT desde Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Inserte: Bearer {token}"
+    });
 
-);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 
 

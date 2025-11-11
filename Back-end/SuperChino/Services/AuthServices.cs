@@ -86,7 +86,7 @@ namespace SuperChino.Services
             await SetCookie(user, context);
             var token = GenerateJWT(user);
 
-            return new LoginResposeDTO { Token = token }; 
+            return new LoginResposeDTO { Token = token, User = _mapper.Map<UserWithRolesDTO>(user) }; 
 
         }
 
