@@ -66,6 +66,8 @@ builder.Services.AddScoped<CustomerServices>();
 builder.Services.AddScoped<OrderItemServices>();
 builder.Services.AddScoped<OrderServices>();
 
+builder.Services.AddScoped<WhatsAppServices>();
+
 /// repositories 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRolRepository,RolRepository>();

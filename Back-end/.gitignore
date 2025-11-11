@@ -1,33 +1,21 @@
 .vs/
 
-# Archivos y directorios generados por Visual Studio (y Visual Studio Code)
+# Archivos y directorios generados por Visual Studio
 .vs/
 *.user
 *.suo
 
-# Archivos de build y output
+# Build
 [Bb]in/
 [Oo]bj/
-*.pdb
-*.pidb
-*.log
-*.rpt
-*.bak
-*.ncb
-*.sbr
-*.erc
-*.res
 
-# Archivos de paquetes y dependencias
+# Paquetes
 packages/
 *.nupkg
-*.orig
-project.lock.json
 
-# Archivos específicos de .NET/ASP.NET Core
-**/*.Designer.cs.log
-appsettings*.Development.json
-appsettings*.Local.json
+# Config sensibles
+appsettings.json
+SuperChino/appsettings.json
 
-*/Migrations/
-*/appsettings.json
+# Migrations
+**/Migrations/
