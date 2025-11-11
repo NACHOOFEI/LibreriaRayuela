@@ -1,33 +1,14 @@
-import React, { useState, useEffect } from "react";
-import api from "../api/api";
+import React, { useState } from "react";
+import { useProduct } from "../services/queries";
 import { useCartStore } from "../store/cartStore";
 import { useLocation } from "wouter";
 import { ShoppingCart, ChevronLeft, Plus, Minus } from "lucide-react";
 
 export default function ElementoDetail({ id }) {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: product, isLoading: loading, error } = useProduct(id);
   const [qty, setQty] = useState(1);
   const { addToCart } = useCartStore();
   const [, navigate] = useLocation();
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await api.get(`/api/products/${id}`);
-        setProduct(res.data);
-      } catch (e) {
-        console.error(e);
-        setError("Error al cargar el producto. Por favor, intente nuevamente.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [id]);
 
   const handleAddToCart = () => {
     if (product && product.stock > 0) {
@@ -49,7 +30,7 @@ export default function ElementoDetail({ id }) {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-2xl w-full p-6">
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {error}
+            Error al cargar el producto. Por favor, intente nuevamente.
           </div>
         </div>
       </div>
@@ -107,8 +88,12 @@ export default function ElementoDetail({ id }) {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Descripción</h3>
-                  <p className="mt-2 text-gray-600 text-sm">{product.description}</p>
+                  <h3 className="text-sm font-medium text-gray-900">
+                    Descripción
+                  </h3>
+                  <p className="mt-2 text-gray-600 text-sm">
+                    {product.description}
+                  </p>
                 </div>
 
                 <div>
@@ -124,7 +109,7 @@ export default function ElementoDetail({ id }) {
                   </h3>
                   <div className="flex items-center space-x-4">
                     <button
-                      onClick={() => setQty(q => Math.max(1, q - 1))}
+                      onClick={() => setQty((q) => Math.max(1, q - 1))}
                       className="p-2 rounded-full hover:bg-gray-100"
                       aria-label="Disminuir cantidad"
                       disabled={qty <= 1}
@@ -135,7 +120,9 @@ export default function ElementoDetail({ id }) {
                       {qty}
                     </span>
                     <button
-                      onClick={() => setQty(q => Math.min(product.stock, q + 1))}
+                      onClick={() =>
+                        setQty((q) => Math.min(product.stock, q + 1))
+                      }
                       className="p-2 rounded-full hover:bg-gray-100"
                       aria-label="Aumentar cantidad"
                       disabled={qty >= product.stock}

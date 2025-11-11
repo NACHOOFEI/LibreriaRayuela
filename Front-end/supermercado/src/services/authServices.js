@@ -97,3 +97,20 @@ export default {
   isAuthenticated,
   getToken,
 };
+
+/**
+ * Actualiza los roles de un usuario (requiere permisos de admin)
+ * @param {number|string} userId
+ * @param {object} payload - Ej: { roles: ["Admin", "User"] } o { role: "Admin" }
+ */
+export async function updateRoles(userId, payload) {
+  try {
+    const { data } = await api.put(`/api/auth/${userId}/roles`, payload);
+    return data;
+  } catch (error) {
+    throw new Error(
+      "Error al actualizar roles: " +
+        (error.response?.data?.message || error.message)
+    );
+  }
+}

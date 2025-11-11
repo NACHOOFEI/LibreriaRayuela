@@ -1,8 +1,16 @@
 import axios from "axios";
 import { installMockAdapter } from "./mockAdapter";
 
+// Base URL configurable por entorno, con fallback razonable para dev
+const DEFAULT_BASE_URL =
+  typeof window !== "undefined" && window.location?.origin
+    ? window.location.origin
+    : "https://localhost:7158";
+const ENV_BASE =
+  typeof import.meta !== "undefined" ? import.meta.env?.VITE_API_BASE_URL : "";
+
 const api = axios.create({
-  baseURL: "https://localhost:7158", // URL del backend
+  baseURL: ENV_BASE || DEFAULT_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -16,6 +24,7 @@ api.interceptors.request.use((config) => {
 
 // Interceptor para manejar errores de respuesta
 let mockInstalled = false;
+const ENABLE_AUTO_FALLBACK = false; // Desactiva el fallback automático al mock
 
 api.interceptors.response.use(
   (response) => response,
@@ -26,6 +35,14 @@ api.interceptors.response.use(
     if (status === 401) {
       // Token expirado o inválido
       localStorage.removeItem("token");
+      try {
+        // Actualiza estado global si existe el store
+        const { useAuthStore } = await import("../store/authStore");
+        useAuthStore.getState()?.logout?.();
+      } catch (e) {
+        // no-op si el store no está disponible en este contexto
+        void e;
+      }
       window.location.href = "/login";
       return Promise.reject(error);
     }
@@ -37,13 +54,13 @@ api.interceptors.response.use(
       typeof config.url === "string" && config.url.startsWith("/api/");
 
     if (
+      ENABLE_AUTO_FALLBACK &&
       (isNetworkError || isServerError) &&
       isApiPath &&
       !mockInstalled &&
       !config._retriedWithMock
     ) {
       try {
-        localStorage.setItem("useMock", "true");
         installMockAdapter(api);
         mockInstalled = true;
         const retryConfig = { ...config, _retriedWithMock: true };
@@ -59,23 +76,14 @@ api.interceptors.response.use(
 
 export default api;
 
-// Habilitar Mock API (útil cuando el backend aún no está disponible)
-// Toggle por variable de entorno VITE_USE_MOCK o localStorage 'useMock'.
-// Por defecto DESACTIVADO para evitar problemas; actívalo solo cuando lo necesites.
-const DEFAULT_USE_MOCK = true;
+// Habilitar Mock API opcional con VITE_USE_MOCK=true (por defecto: false)
+const DEFAULT_USE_MOCK = false;
 const envFlag =
   typeof import.meta !== "undefined"
     ? import.meta.env?.VITE_USE_MOCK
     : undefined;
-const storageFlag =
-  typeof localStorage !== "undefined" ? localStorage.getItem("useMock") : null;
 
-let USE_MOCK = DEFAULT_USE_MOCK;
-if (typeof envFlag !== "undefined") {
-  USE_MOCK = String(envFlag).toLowerCase() === "true";
-} else if (storageFlag !== null) {
-  USE_MOCK = storageFlag === "true";
-}
+const USE_MOCK = String(envFlag ?? DEFAULT_USE_MOCK).toLowerCase() === "true";
 
 if (USE_MOCK) {
   installMockAdapter(api);

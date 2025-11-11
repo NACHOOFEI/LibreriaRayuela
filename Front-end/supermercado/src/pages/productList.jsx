@@ -1,37 +1,30 @@
 // src/pages/ProductList.jsx
-import React, { useState, useEffect } from "react";
-import api from "../api/api";
+import React, { useState } from "react";
+import { useProducts } from "../services/queries";
 import ProductCard from "../components/productCard";
 import ProductModal from "../components/productModal";
 import useCartStore from "../store/cartStore";
 
 export default function ProductList() {
-  const [productos, setProductos] = useState([]);
+  const { data: productos = [], isLoading, error } = useProducts();
   const [modalProducto, setModalProducto] = useState(null);
   const addToCart = useCartStore((s) => s.addToCart);
-
-  useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const res = await api.get("/products?limit=6");
-        setProductos(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchProductos();
-  }, []);
+  const topProductos = productos.slice(0, 6);
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid gap-6 md:grid-cols-3">
-      {productos.map((p) => (
-        <ProductCard
-          key={p.id}
-          product={p}
-          onAdd={addToCart}
-          onOpen={(prod) => setModalProducto(prod)}
-        />
-      ))}
+      {isLoading && <div>Cargando...</div>}
+      {error && <div>Error al cargar productos</div>}
+      {!isLoading &&
+        !error &&
+        topProductos.map((p) => (
+          <ProductCard
+            key={p.id}
+            product={p}
+            onAdd={addToCart}
+            onOpen={(prod) => setModalProducto(prod)}
+          />
+        ))}
       {modalProducto && (
         <ProductModal
           product={modalProducto}

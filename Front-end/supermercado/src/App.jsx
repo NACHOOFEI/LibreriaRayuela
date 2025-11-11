@@ -65,9 +65,6 @@ export default function App() {
               </ProtectedRoute>
             )}
           </Route>
-          <Route path="/elementos/:id">
-            {(params) => <ElementoDetail id={params.id} />}
-          </Route>
         </Switch>
       </Suspense>
     </div>

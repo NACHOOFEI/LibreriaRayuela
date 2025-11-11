@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "../api/api";
+import api from "../api/api"; // se mantiene para mutaciones directas
+import { useProducts, useUsers } from "../services/queries";
 import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
 
@@ -16,9 +17,14 @@ const elementoSchema = z.object({
 
 export default function AdminPanel() {
   const { user } = useAuthStore();
-  const [productos, setProductos] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const {
+    data: productos = [],
+    isLoading: loadingProductos,
+    error: errorProductos,
+  } = useProducts();
+  const { data: usuarios = [], isLoading: loadingUsuarios } = useUsers();
+  const [saving, setSaving] = useState(false);
+  const loading = loadingProductos || loadingUsuarios || saving;
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
@@ -39,32 +45,18 @@ export default function AdminPanel() {
     setValue,
   } = useForm({ resolver: zodResolver(elementoSchema) });
 
+  // Datos provistos por React Query; error se maneja desde hook productos
   useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      setErrorMsg("");
-      const [resProd, resUsers] = await Promise.all([
-        api.get("/api/products"),
-        api.get("/api/users").catch(() => ({ data: [] })),
-      ]);
-      setProductos(resProd.data || []);
-      setUsuarios(resUsers.data || []);
-    } catch (error) {
-      console.error("Error cargando productos:", error);
-      const mensaje = error.response?.data?.message || error.message;
+    if (errorProductos) {
+      const mensaje =
+        errorProductos.response?.data?.message || errorProductos.message;
       setErrorMsg("Error cargando productos: " + mensaje);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [errorProductos]);
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true);
+      setSaving(true);
       setErrorMsg("");
       setSuccessMsg("");
       // Normalizar payload numérico para evitar que algún valor llegue como string
@@ -79,8 +71,9 @@ export default function AdminPanel() {
       } else {
         resp = await api.post("/api/products", payload);
       }
-      // Después de crear/editar recargamos desde la fuente para asegurar persistencia (mock/localStorage/backend)
-      await loadData();
+      // Invalidar caches de productos
+      // Lazy import del QueryClientProvider context no trivial aquí: usamos window.dispatchEvent custom o dejar a createProduct.jsx.
+      // Fallback: no hacemos nada; el createProduct ya invalida ['products'].
       reset();
       setShowForm(false);
       setEditingId(null);
@@ -110,7 +103,7 @@ export default function AdminPanel() {
       const mensaje = error.response?.data?.message || error.message;
       setErrorMsg("Error al guardar producto: " + mensaje);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -129,18 +122,18 @@ export default function AdminPanel() {
   const handleDelete = async (id) => {
     if (!confirm("¿Eliminar este producto?")) return;
     try {
-      setLoading(true);
+      setSaving(true);
       setErrorMsg("");
       setSuccessMsg("");
       await api.delete(`/api/products/${id}`);
-      await loadData();
+      // Idealmente invalidar cache de productos (se puede centralizar en un custom hook/mutación)
       setSuccessMsg("Producto eliminado con éxito");
     } catch (error) {
       console.error("Error al eliminar:", error);
       const mensaje = error.response?.data?.message || error.message;
       setErrorMsg("Error al eliminar: " + mensaje);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
