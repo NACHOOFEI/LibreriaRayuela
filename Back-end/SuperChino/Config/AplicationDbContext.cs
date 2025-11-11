@@ -56,28 +56,28 @@ namespace SuperChino.Config
                     Username = "admin",
                     Email = "admin@gmail.com",
                     // hashea la contraseña "admin123"
-                    Password = BCrypt.Net.BCrypt.HashPassword("admin123")
+                    Password = "$2b$13$W1O.Zf5bmG91EqOi1CKXi.hTCLbaAMaUyAW/qzMTMV7/0QDgnh4QS"
                 },
                 new User
                 {
                     Id = 2,
                     Username = "azul",
                     Email = "azul@gmail.com",
-                    Password = BCrypt.Net.BCrypt.HashPassword("azul123")
+                    Password = "$2b$13$8oRm86j0GyQpTcSzsSCd4OfNwisqqqi3lJBocBALR4QnFBjQGRneq"
                 },
                 new User
                 {
                     Id = 3,
                     Username = "nacho",
                     Email = "nacho@gmail.com",
-                    Password = BCrypt.Net.BCrypt.HashPassword("nacho123")
+                    Password = "$2b$13$rWB6p/FCtu/IQ2tZmhAWaOk0aH33Exn8LUuMLq2ASbgZORO.EwAZi"
                 },
                 new User
                 {
                     Id = 4,
                     Username = "lolo",
                     Email = "lolo@gmail.com",
-                    Password = BCrypt.Net.BCrypt.HashPassword("lolo123")
+                    Password = "$2b$13$OH9dbbOwvOdRHOj0C.vO0e2n6rHYNWsDqmp59QzwC124/vrJff1rq"
                 }
             );
 
