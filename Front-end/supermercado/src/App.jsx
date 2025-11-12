@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect } from "react";
 import { Route, Switch, useLocation } from "wouter";
 import Navbar from "./components/navBar";
 import Loader from "./components/loader";
+import TransferenciaInfo from "./components/transferenciaInfo";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/carrito" component={Cart} />
+          <Route path="/transferencia" component={TransferenciaInfo} />
           <Route path="/elementos" component={Elementos} />
           <Route path="/elementos/:id">
             {(params) => <ElementoDetail id={params.id} />}
