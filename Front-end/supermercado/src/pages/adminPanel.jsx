@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
 import api from "../api/api"; // se mantiene para mutaciones directas
 import { useProducts, useCategories } from "../services/queries";
 import StatsChart from "../components/statsChart";
@@ -56,6 +57,7 @@ const elementoSchema = z.object({
 
 export default function AdminPanel() {
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
 
   const {
     data: productos = [],
@@ -105,44 +107,6 @@ export default function AdminPanel() {
       setErrorMsg("");
       setSuccessMsg("");
 
-      // DEBUGGING: Verificar estado de autenticación antes del envío
-      const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("authUser");
-      
-      // DEBUGGING DETALLADO DEL TOKEN
-      if (token) {
-        try {
-          const payload = JSON.parse(atob(token.split(".")[1]));
-          console.log("🔍 [DEBUG] Token payload COMPLETO:", JSON.stringify(payload, null, 2));
-          console.log("🔍 [DEBUG] Claims específicos:", JSON.stringify({
-            Id: payload.Id,
-            role: payload.role,
-            exp: payload.exp,
-            currentTime: Math.floor(Date.now() / 1000),
-            isExpired: payload.exp < Math.floor(Date.now() / 1000),
-            allKeys: Object.keys(payload)
-          }, null, 2));
-          
-          // Buscar claims de rol en todos los formatos posibles
-          console.log("🔍 [DEBUG] Búsqueda exhaustiva de claims de rol:");
-          Object.keys(payload).forEach(key => {
-            if (key.toLowerCase().includes('role') || payload[key] === 'Admin') {
-              console.log(`🔍 [DEBUG] Claim encontrado: "${key}" = "${payload[key]}"`);
-            }
-          });
-        } catch (e) {
-          console.error("🔍 [DEBUG] Error decodificando token:", e);
-        }
-      }
-      
-      console.log("🔍 [DEBUG] Pre-submit check:", {
-        hasToken: !!token,
-        tokenLength: token?.length,
-        hasUserData: !!userData,
-        userRole: user?.role,
-        authStoreState: { user, isAuth: !!user },
-      });
-
       // Normalizar payload numérico para evitar que algún valor llegue como string
       const payload = {
         ...data,
@@ -170,9 +134,10 @@ export default function AdminPanel() {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
-      // Invalidar caches de productos
-      // Lazy import del QueryClientProvider context no trivial aquí: usamos window.dispatchEvent custom o dejar a createProduct.jsx.
-      // Fallback: no hacemos nada; el createProduct ya invalida ['products'].
+
+      // Invalidar cache de productos para refrescar la lista
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
+
       reset();
       setShowForm(false);
       setEditingId(null);
