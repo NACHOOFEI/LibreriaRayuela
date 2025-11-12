@@ -9,9 +9,11 @@ function loadInitialAuth() {
   if (typeof window === "undefined") {
     return { user: null, role: null, isAuthenticated: false };
   }
+
   try {
     const token = localStorage.getItem(TOKEN_KEY);
     const raw = localStorage.getItem(USER_KEY);
+
     let parsed = null;
     if (raw) {
       try {
@@ -20,11 +22,14 @@ function loadInitialAuth() {
         parsed = null;
       }
     }
-    return {
+
+    const result = {
       user: parsed,
       role: parsed?.role || null,
       isAuthenticated: !!token && !!parsed, // requiere ambos para considerar sesión completa
     };
+
+    return result;
   } catch {
     return { user: null, role: null, isAuthenticated: false };
   }
@@ -40,11 +45,14 @@ export const useAuthStore = create((set) => ({
     } catch {
       // ignoramos errores de almacenamiento (modo privado, etc.)
     }
-    set({
+
+    const newState = {
       user: userData,
       role: userData.role || null,
       isAuthenticated: true,
-    });
+    };
+
+    set(newState);
   },
   // logout: elimina datos persistidos
   logout: () => {

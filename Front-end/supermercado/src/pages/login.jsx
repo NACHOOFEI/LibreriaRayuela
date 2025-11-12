@@ -33,13 +33,29 @@ export default function Login() {
         password: data.password,
       });
 
-      // Asumimos que el backend devuelve "role" en userData; si no, se asigna "User"
-      login({
-        email: data.email,
-        name: userData.name || data.email.split("@")[0],
-        role: userData.role || "User",
-        ...userData,
-      });
+      // Verificar que recibimos datos correctos
+      if (!userData || !userData.user) {
+        throw new Error("Datos de usuario inválidos");
+      }
+
+      const userProfile = {
+        ...userData.user,
+        email: userData.user.email || data.email,
+        role: userData.user.roles?.[0] || "User",
+      };
+
+      // Guardar en authStore
+      login(userProfile);
+
+      // Verificar que se guardó correctamente
+      const savedToken = localStorage.getItem("token");
+      const savedUser = localStorage.getItem("authUser");
+
+      if (!savedToken || !savedUser) {
+        throw new Error("Error guardando datos de sesión");
+      }
+
+      // Navegar al inicio
       navigate("/");
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);

@@ -3,9 +3,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "../api/api"; // se mantiene para mutaciones directas
-import { useProducts, useUsers } from "../services/queries";
+import { useProducts } from "../services/queries"; // useUsers comentado temporalmente
 import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/jpg",
+  "image/webp",
+];
 
 const elementoSchema = z.object({
   title: z.string().min(3),
@@ -13,6 +21,31 @@ const elementoSchema = z.object({
   description: z.string().min(10),
   category: z.string().min(1),
   stock: z.number().int().min(0),
+  image: z
+    .any()
+    .refine((fileList) => fileList && fileList.length === 1, {
+      message: "Debe subir una imagen",
+    })
+    .refine(
+      (fileList) => {
+        const file = fileList[0];
+        return file && file.size <= MAX_FILE_SIZE;
+      },
+      {
+        message: `El tamaño máximo es ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+      }
+    )
+    .refine(
+      (fileList) => {
+        const file = fileList[0];
+        return file && ACCEPTED_IMAGE_TYPES.includes(file.type);
+      },
+      {
+        message: `Solo se aceptan los formatos: ${ACCEPTED_IMAGE_TYPES.map(
+          (t) => t.split("/")[1]
+        ).join(", ")}`,
+      }
+    ),
 });
 
 export default function AdminPanel() {
@@ -22,14 +55,16 @@ export default function AdminPanel() {
     isLoading: loadingProductos,
     error: errorProductos,
   } = useProducts();
-  const { data: usuarios = [], isLoading: loadingUsuarios } = useUsers();
+  // TEMPORAL: Comentado para evitar error 401 mientras se arregla el backend
+  // const { data: usuarios = [], isLoading: loadingUsuarios } = useUsers();
+  const usuarios = []; // Temporal
+  const loadingUsuarios = false; // Temporal
   const [saving, setSaving] = useState(false);
   const loading = loadingProductos || loadingUsuarios || saving;
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  // UI/table enhancement state
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("todos");
   const [sortConfig, setSortConfig] = useState({ key: "id", dir: "asc" });
@@ -59,6 +94,7 @@ export default function AdminPanel() {
       setSaving(true);
       setErrorMsg("");
       setSuccessMsg("");
+
       // Normalizar payload numérico para evitar que algún valor llegue como string
       const payload = {
         ...data,
@@ -66,10 +102,24 @@ export default function AdminPanel() {
         stock: Number.isFinite(data.stock) ? data.stock : 0,
       };
       let resp;
+
       if (editingId) {
         resp = await api.put(`/api/products/${editingId}`, payload);
       } else {
-        resp = await api.post("/api/products", payload);
+        // Crear FormData para enviar como multipart/form-data (requerido por backend)
+        const formData = new FormData();
+        formData.append("name", payload.title); // Backend espera "name", no "title"
+        formData.append("description", payload.description);
+        formData.append("price", String(payload.price));
+        formData.append("stock", String(payload.stock));
+
+        // Agregar la imagen real del formulario
+        const imageFile = data.image[0]; // Viene del react-hook-form
+        formData.append("image", imageFile);
+
+        resp = await api.post("/api/products", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       }
       // Invalidar caches de productos
       // Lazy import del QueryClientProvider context no trivial aquí: usamos window.dispatchEvent custom o dejar a createProduct.jsx.
@@ -99,9 +149,14 @@ export default function AdminPanel() {
         setTimeout(() => setHighlightId(null), 1800);
       }
     } catch (error) {
-      console.error("Error al guardar producto:", error);
-      const mensaje = error.response?.data?.message || error.message;
-      setErrorMsg("Error al guardar producto: " + mensaje);
+      if (error.response?.status === 401) {
+        setErrorMsg(
+          "Error de autorización: El backend no acepta el token JWT. Contacte al administrador del sistema."
+        );
+      } else {
+        const mensaje = error.response?.data?.message || error.message;
+        setErrorMsg("Error al guardar producto: " + mensaje);
+      }
     } finally {
       setSaving(false);
     }
@@ -129,9 +184,14 @@ export default function AdminPanel() {
       // Idealmente invalidar cache de productos (se puede centralizar en un custom hook/mutación)
       setSuccessMsg("Producto eliminado con éxito");
     } catch (error) {
-      console.error("Error al eliminar:", error);
-      const mensaje = error.response?.data?.message || error.message;
-      setErrorMsg("Error al eliminar: " + mensaje);
+      if (error.response?.status === 401) {
+        setErrorMsg(
+          "Error de autorización: El backend no acepta el token JWT. Contacte al administrador del sistema."
+        );
+      } else {
+        const mensaje = error.response?.data?.message || error.message;
+        setErrorMsg("Error al eliminar: " + mensaje);
+      }
     } finally {
       setSaving(false);
     }
@@ -153,7 +213,6 @@ export default function AdminPanel() {
     () => productos.reduce((acc, p) => acc + (p.stock ?? 0), 0),
     [productos]
   );
-  // Removido cálculo de precio promedio (ya no se muestra en UI)
 
   // Derivar categorías únicas para filtros
   const categoriasUnicas = useMemo(() => {
@@ -430,6 +489,21 @@ export default function AdminPanel() {
               </div>
             );
           })}
+
+          {/* Campo de imagen */}
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Imagen</label>
+            <input
+              type="file"
+              accept="image/*"
+              {...register("image")}
+              className="w-full border px-3 py-2 rounded"
+            />
+            {errors.image && (
+              <p className="text-red-600 text-sm">{errors.image?.message}</p>
+            )}
+          </div>
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded"

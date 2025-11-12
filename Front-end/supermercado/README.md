@@ -1,129 +1,102 @@
-# React + Vite
+# 🛒 Supermercado - Frontend
 
-## Backend Integration Setup
+Aplicación web de supermercado con React + Vite. Panel admin para gestión de productos y carrito para clientes.
 
-Este proyecto está preparado para consumir una API REST con los siguientes endpoints:
+## 🚀 Inicio Rápido
 
-Auth
+```bash
+npm install
+npm run dev
+```
 
-- POST /api/auth/register
-- POST /api/auth/login
-- POST /api/auth/logout
-- PUT /api/auth/{id}/roles
+**Requisito:** Backend ASP.NET Core en `https://localhost:7158`
 
-Categories
+## 🛠️ Stack
 
-- GET /api/categories
-- POST /api/categories
-- GET /api/categories/{id}
-- PUT /api/categories/{id}
-- DELETE /api/categories/{id}
+- **React 19** + **Vite** + **Tailwind CSS**
+- **Zustand** (estado) + **React Query** (servidor)
+- **React Hook Form** + **Zod** (validación)
+- **Axios** (API) + **Wouter** (routing)
 
-Customers
-
-- GET /api/customers
-- POST /api/customers
-- GET /api/customers/{id}
-- PUT /api/customers/{id}
-- DELETE /api/customers/{id}
-
-Orders
-
-- GET /api/orders
-- POST /api/orders
-- GET /api/orders/{id}
-- DELETE /api/orders/{id}
-
-Products
-
-- GET /api/products
-- POST /api/products
-- GET /api/products/{id}
-- PUT /api/products/{id}
-- DELETE /api/products/{id}
-- PATCH /api/products/{id}/restar-stock
-- PATCH /api/products/{id}/sumar-stock
-
-Users
-
-- GET /api/users
-
-### Variables de Entorno
-
-Crear un archivo `.env` (o usar `.env.local`) con:
+## 📂 Estructura
 
 ```
+src/
+├── components/    # Componentes UI
+├── pages/        # Rutas principales
+├── store/        # Estado global
+├── services/     # API calls
+└── api/         # Config Axios
+```
+
+## ✨ Características
+
+**Cliente:**
+
+- Catálogo con búsqueda/filtros
+- Carrito de compras
+- Autenticación JWT
+
+**Admin:**
+
+- Panel de administración
+- CRUD productos + imágenes
+- Dashboard estadísticas
+
+## 🔐 Roles
+
+- **Cliente**: Acceso catálogo y carrito
+- **Admin**: Panel completo + gestión
+
+## ⚙️ Configuración
+
+```env
 VITE_API_BASE_URL=https://localhost:7158
 VITE_USE_MOCK=false
 ```
 
-Si `VITE_USE_MOCK=true`, se activará el mock interno para cualquier endpoint `/api/` cuando el backend no esté disponible.
+## 📦 Scripts
 
-### Servicios
-
-Los módulos en `src/services/*Services.js` encapsulan las llamadas HTTP:
-
-- `authServices`: login, register, logout
-- `productServices`: CRUD productos + operaciones de stock
-- `categoryServices`: CRUD categorías
-- `customerServices`: CRUD clientes
-- `orderServices`: CRUD pedidos
-- `userServices`: listado de usuarios
-
-### React Query (Caching)
-
-Los hooks de datos viven en `src/services/queries.js` y usan claves (`queryKey`) predecibles para facilitar invalidaciones:
-
-| Hook              | queryKey          | Invalidaciones típicas                           |
-| ----------------- | ----------------- | ------------------------------------------------ |
-| `useProducts()`   | `['products']`    | Crear/editar/eliminar producto, cambios de stock |
-| `useProduct(id)`  | `['product', id]` | Editar producto, operaciones de stock            |
-| `useCategories()` | `['categories']`  | Crear/editar/eliminar categoría                  |
-| `useUsers()`      | `['users']`       | Cambios administrativos de usuarios              |
-
-Ejemplo de invalidación tras crear un producto:
-
-```js
-queryClient.invalidateQueries({ queryKey: ["products"] });
+```bash
+npm run dev      # Desarrollo
+npm run build    # Producción
+npm run preview  # Preview
+npm run lint     # Linting
 ```
 
-Para actualizar el detalle específico:
+## 🌐 API Endpoints
 
-```js
-queryClient.invalidateQueries({ queryKey: ["product", id] });
+```
+# Productos
+GET    /api/products
+POST   /api/products     (Admin)
+PUT    /api/products/:id (Admin)
+DELETE /api/products/:id (Admin)
+
+# Auth
+POST   /api/auth/login
+POST   /api/auth/register
 ```
 
-### Autenticación
+## 🔄 Flujo Auth
 
-El token JWT se guarda en `localStorage` bajo la clave `token`. El interceptor de Axios lo añade automáticamente a cada request.
-En caso de 401 se fuerza logout y se redirige a `/login`.
+1. Login → JWT token
+2. Token → localStorage
+3. Axios interceptors → Headers automáticos
+4. Rutas protegidas por rol
 
-### Mock API
+## 📱 Rutas
 
-Implementado en `src/api/mockAdapter.js`. Activar con `VITE_USE_MOCK=true`. Útil para desarrollo cuando el backend no está listo.
+- `/` → Home
+- `/login` → Login
+- `/elementos` → Catálogo
+- `/elementos/:id` → Detalle
+- `/admin` → Panel Admin (Admin only)
+- `/cart` → Carrito
 
-### Flujo para agregar nuevos endpoints
+## 💾 Estado
 
-1. Añadir método en el service correspondiente.
-2. Consumir el método desde el componente/página.
-3. Manejar errores mostrando mensajes amigables.
+**Auth Store:** usuario, token, login/logout  
+**Cart Store:** items, total, add/remove/update
 
-### Scripts
-
-`pnpm dev` / `npm run dev` para iniciar el frontend.
-`pnpm build` para compilar.
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
