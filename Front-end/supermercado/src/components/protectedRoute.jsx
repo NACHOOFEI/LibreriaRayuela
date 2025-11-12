@@ -1,39 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { useAuthStore } from "../store/authStore";
 import { useLocation } from "wouter";
 
-export default function ProtectedRoute({ children, requiredRole }) {
-  const { isAuthenticated, role } = useAuthStore();
-  const [, navigate] = useLocation();
-  const [denied, setDenied] = useState("");
+export default function ProtectedRoute({ children, requiredRole = "Admin" }) {
+  const [location, navigate] = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
+    if (location === "/login") {
+      setLoading(false);
       return;
     }
-    if (requiredRole && role !== requiredRole) {
-      setDenied(
-        "No tienes permisos para acceder a esta sección (se requiere rol: " +
-          requiredRole +
-          ")"
-      );
-    } else {
-      setDenied("");
-    }
-  }, [isAuthenticated, role, requiredRole, navigate]);
 
-  if (!isAuthenticated) return null;
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const userData = localStorage.getItem("authUser");
 
-  if (denied) {
-    return (
-      <div className="max-w-3xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          {denied}
-        </div>
-      </div>
-    );
+      if (!token || !userData) {
+        setLoading(false);
+        setAuthorized(false);
+        setTimeout(() => navigate("/login"), 100);
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userData);
+        const userRole = (user.role || "").toLowerCase();
+        const reqRole = (requiredRole || "").toLowerCase();
+
+        if (userRole === reqRole) {
+          setAuthorized(true);
+          setLoading(false);
+        } else {
+          setAuthorized(false);
+          setLoading(false);
+          setTimeout(() => navigate("/login"), 100);
+        }
+      } catch {
+        setAuthorized(false);
+        setLoading(false);
+        setTimeout(() => navigate("/login"), 100);
+      }
+    };
+
+    checkAuth();
+  }, [location, navigate, requiredRole]);
+
+  if (loading) {
+    return <div className="p-4 text-center">Verificando acceso...</div>;
   }
 
-  return <>{children}</>;
+  if (!authorized) {
+    return <div className="p-4 text-center">Redirigiendo...</div>;
+  }
+
+  return children;
 }

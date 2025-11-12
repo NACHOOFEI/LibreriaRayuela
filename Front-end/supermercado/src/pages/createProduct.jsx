@@ -77,12 +77,19 @@ export default function CreateProduct() {
       navigate("/admin");
     },
     onError: (error) => {
-      console.error(error);
+      console.error("CreateProduct - error:", error);
       setFormSuccess("");
-      setFormError(
-        "Error al crear producto: " +
-          (error.response?.data?.message || error.message)
-      );
+      const status = error?.response?.status;
+      if (status === 401) {
+        setFormError(
+          "No autorizado: tu sesión puede haber expirado. Por favor vuelve a iniciar sesión."
+        );
+      } else {
+        setFormError(
+          "Error al crear producto: " +
+            (error.response?.data?.message || error.message)
+        );
+      }
     },
   });
 

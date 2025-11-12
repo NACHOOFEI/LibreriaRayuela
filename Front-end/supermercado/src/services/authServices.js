@@ -23,6 +23,18 @@ const login = async (credentials) => {
     if (error.response?.status === 401) {
       throw new Error("Credenciales inválidas");
     }
+    if (error.response?.status === 404) {
+      throw new Error(
+        "Endpoint no encontrado. Verifica que el backend esté corriendo en " +
+          api.defaults.baseURL
+      );
+    }
+    if (error.code === "ECONNREFUSED") {
+      throw new Error(
+        "No se puede conectar al backend. Verifica que esté corriendo en " +
+          api.defaults.baseURL
+      );
+    }
     throw new Error(
       "Error al iniciar sesión: " +
         (error.response?.data?.message || error.message)
