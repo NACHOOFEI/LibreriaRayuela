@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +9,7 @@ using SuperChino.Models.Product;
 using SuperChino.Repositories;
 using SuperChino.Services;
 using SuperChino.Utils;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,10 +25,10 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "SuperChino API",
-        Description = "Gesti�n de Comercio"
+        Description = "Gestión de Comercio"
     });
 
-    // Configuraci�n para usar JWT desde Swagger
+    // Configuración para usar JWT desde Swagger
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -100,32 +101,52 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 
 ///JWT
 var secret = builder.Configuration.GetSection("Secrets")?.GetSection("JWT")?.Value?.ToString() ?? null!;
-builder.Services.AddAuthentication(opts =>
+
+builder.Services.AddAuthentication(options =>
 {
-    opts.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddJwtBearer(options =>
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    var key = Encoding.UTF8.GetBytes(secret);
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        var key = Encoding.UTF8.GetBytes(secret);
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+
+        // ✅ Usa el claim de rol estándar que genera ClaimTypes.Role
+        RoleClaimType = ClaimTypes.Role,
+        NameClaimType = "Id"
+    };
+
+    // 🔍 Logs de depuración
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-        };
-    })
-    .AddCookie(opts =>
-    {
-        opts.Cookie.HttpOnly = true;
-        opts.Cookie.SameSite = SameSiteMode.None;
-        opts.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        opts.ExpireTimeSpan = TimeSpan.FromDays(1);
-    });
+            Console.WriteLine("❌ JWT Authentication failed: " + context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var claims = context.Principal?.Claims.Select(c => $"{c.Type}={c.Value}");
+            Console.WriteLine("✅ JWT validado correctamente. Claims: " + string.Join(", ", claims ?? new string[] { }));
+            return Task.CompletedTask;
+        }
+    };
+}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opts =>
+{
+    opts.Cookie.HttpOnly = true;
+    opts.Cookie.SameSite = SameSiteMode.None;
+    opts.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    opts.ExpireTimeSpan = TimeSpan.FromDays(1);
+});
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {

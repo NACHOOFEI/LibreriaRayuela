@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SuperChino.Enums;
 using SuperChino.Models.Product.Dto;
 using SuperChino.Services;
 using SuperChino.Utils;
+using System.Security.Claims;
 
 namespace SuperChino.Controllers
 {
@@ -19,141 +21,118 @@ namespace SuperChino.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ProductDTO>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ProductDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status500InternalServerError)]
-
-        async public Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
             try
             {
-            var products = await _services.GetAll();
-            return Ok(products);
+                var products = await _services.GetAll();
+                return Ok(products);
             }
-            catch (Exception ex) 
-            { 
-             return StatusCode(StatusCodes.Status500InternalServerError,new HttpMessage(ex.Message));
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new HttpMessage(ex.Message));
             }
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(IEnumerable<ProductDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status500InternalServerError)]
-        async public Task<ActionResult<ProductDTO>> GetById(int id)
+        public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
             try
             {
                 var productDto = await _services.GetById(id);
                 return Ok(productDto);
             }
-            catch(HttpResponseError ex)
+            catch (HttpResponseError ex)
             {
-                return StatusCode(
-                  (int)ex.StatusCode,
-                    new HttpMessage(ex.Message)
-);
+                return StatusCode((int)ex.StatusCode, new HttpMessage(ex.Message));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(
-                     StatusCodes.Status500InternalServerError,
-                     new HttpMessage(ex.Message)
-);
+                return StatusCode(StatusCodes.Status500InternalServerError, new HttpMessage(ex.Message));
             }
-
         }
 
         [HttpPost]
-        [Authorize(Roles = ROL.ADMIN)]
-        [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
-        async public Task<ActionResult<ProductDTO>> CreateOne([FromForm  ] ProductInsertDTO productInsertDTO)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ROL.ADMIN)]
+        public async Task<ActionResult<ProductDTO>> CreateOne([FromForm] ProductInsertDTO productInsertDTO)
         {
             try
             {
-            var productDto = await _services.CreateOne(productInsertDTO);
-            return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, productDto);
+                // DEBUG: Verificar claims del usuario autenticado
+                var user = HttpContext.User;
+                Console.WriteLine("🔍 [BACKEND DEBUG] Usuario autenticado: " + user.Identity.IsAuthenticated);
+                Console.WriteLine("🔍 [BACKEND DEBUG] Claims del usuario:");
+                foreach (var claim in user.Claims)
+                {
+                    Console.WriteLine($"🔍 Claim: {claim.Type} = {claim.Value}");
+                }
+                Console.WriteLine("🔍 [BACKEND DEBUG] ROL.ADMIN esperado: " + ROL.ADMIN);
+                Console.WriteLine("🔍 [BACKEND DEBUG] IsInRole: " + user.IsInRole(ROL.ADMIN));
 
+                var productDto = await _services.CreateOne(productInsertDTO);
+                return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, productDto);
             }
             catch (HttpResponseError ex)
             {
-                return StatusCode(
-                  (int)ex.StatusCode,
-                   new HttpMessage(ex.Message)
-                 );
-            } catch (Exception ex)
+                return StatusCode((int)ex.StatusCode, new HttpMessage(ex.Message));
+            }
+            catch (Exception ex)
             {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   new HttpMessage(ex.Message)
-               );
+                return StatusCode(StatusCodes.Status500InternalServerError, new HttpMessage(ex.Message));
             }
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = ROL.ADMIN)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ROL.ADMIN)]
         [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
-        async public Task<ActionResult<ProductDTO>> UpdateOne(int id, [FromBody] ProductUpdateDTO productUpdateDTO)
+        public async Task<ActionResult<ProductDTO>> UpdateOne(int id, [FromBody] ProductUpdateDTO productUpdateDTO)
         {
             try
             {
                 var productDto = await _services.UpdateOne(id, productUpdateDTO);
-                return Ok(productDto); 
-           
-
+                return Ok(productDto);
             }
             catch (HttpResponseError ex)
             {
-                return StatusCode(
-                  (int)ex.StatusCode,
-                   new HttpMessage(ex.Message)
-                 );
+                return StatusCode((int)ex.StatusCode, new HttpMessage(ex.Message));
             }
             catch (Exception ex)
             {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   new HttpMessage(ex.Message)
-               );
+                return StatusCode(StatusCodes.Status500InternalServerError, new HttpMessage(ex.Message));
             }
         }
 
-        
-
         [HttpDelete("{id}")]
-        [Authorize(Roles = ROL.ADMIN)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ROL.ADMIN)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
-        async public Task<ActionResult<ProductDTO>> DeleteOne(int id)
+        public async Task<ActionResult<ProductDTO>> DeleteOne(int id)
         {
             try
             {
-            
                 var productDto = await _services.DeleteOne(id);
-                return Ok(productDto); 
+                return Ok(productDto);
             }
             catch (HttpResponseError ex)
             {
-                return StatusCode(
-                    (int)ex.StatusCode,
-                    new HttpMessage(ex.Message)
-                );
+                return StatusCode((int)ex.StatusCode, new HttpMessage(ex.Message));
             }
             catch (Exception ex)
             {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new HttpMessage(ex.Message)
-                );
+                return StatusCode(StatusCodes.Status500InternalServerError, new HttpMessage(ex.Message));
             }
         }
 
         [HttpPatch("{id}/restar-stock")]
-        [Authorize(Roles = ROL.ADMIN)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ROL.ADMIN)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RestarStock(int id, [FromBody] ProductUpdateStockDTO dto)
@@ -170,7 +149,7 @@ namespace SuperChino.Controllers
         }
 
         [HttpPatch("{id}/sumar-stock")]
-        [Authorize(Roles = ROL.ADMIN)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = ROL.ADMIN)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> SumarStock(int id, [FromBody] ProductUpdateStockDTO dto)
@@ -185,6 +164,5 @@ namespace SuperChino.Controllers
                 return BadRequest(new HttpMessage(ex.Message));
             }
         }
-
     }
 }
