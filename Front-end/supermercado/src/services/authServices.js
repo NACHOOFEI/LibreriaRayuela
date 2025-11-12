@@ -132,9 +132,9 @@ export default {
  * @param {number|string} userId
  * @param {object} payload - Ej: { roles: ["Admin", "User"] } o { role: "Admin" }
  */
-export async function updateRoles(userId, payload) {
+export async function updateRoles(userId, rolesIds) {
   try {
-    const { data } = await api.put(`/api/auth/${userId}/roles`, payload);
+    const { data } = await api.put(`/api/auth/${userId}/roles`, rolesIds);
     return data;
   } catch (error) {
     throw new Error(
