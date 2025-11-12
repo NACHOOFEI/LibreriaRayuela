@@ -38,8 +38,8 @@ export default function Elementos() {
   const productosFiltrados = productos
     .filter((p) => {
       const cumpleBusqueda =
-        p.title.toLowerCase().includes(busqueda.toLowerCase()) ||
-        p.description.toLowerCase().includes(busqueda.toLowerCase());
+        p.name?.toLowerCase().includes(busqueda.toLowerCase()) ||
+        p.description?.toLowerCase().includes(busqueda.toLowerCase());
       const cumpleCategoria = categoria === "all" || p.category === categoria;
       return cumpleBusqueda && cumpleCategoria;
     })

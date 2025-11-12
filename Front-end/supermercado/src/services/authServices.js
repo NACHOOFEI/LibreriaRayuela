@@ -1,4 +1,5 @@
 import api from "../api/api";
+import { getUserFromToken } from "../utils/jwtUtils";
 
 const TOKEN_KEY = "token";
 
@@ -13,12 +14,28 @@ const TOKEN_KEY = "token";
 const login = async (credentials) => {
   try {
     const response = await api.post("/api/auth/login", credentials);
-    const { token, ...userData } = response.data;
+    const { token, user } = response.data;
 
     // Guardar el token
     localStorage.setItem(TOKEN_KEY, token);
 
-    return userData;
+    // Extraer información del usuario directamente del token JWT
+    // Esto asegura que leemos correctamente los claims con namespace
+    const tokenInfo = getUserFromToken(token);
+
+    if (tokenInfo?.isExpired) {
+      throw new Error("El token recibido ya ha expirado");
+    }
+
+    // Combinar datos del backend con información extraída del token
+    const enrichedUser = {
+      ...user,
+      id: tokenInfo?.id || user.id,
+      role: tokenInfo?.role || user.roles?.[0] || "User",
+      email: user.email || credentials.email,
+    };
+
+    return { user: enrichedUser };
   } catch (error) {
     if (error.response?.status === 401) {
       throw new Error("Credenciales inválidas");
