@@ -28,7 +28,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt={product.name}
           loading="lazy"
           className="w-full h-60 object-cover transform group-hover:scale-110 transition-transform duration-300"
