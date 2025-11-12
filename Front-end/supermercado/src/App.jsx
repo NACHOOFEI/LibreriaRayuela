@@ -9,6 +9,7 @@ import Cart from "./pages/cart";
 import Elementos from "./pages/elementos";
 import ProtectedRoute from "./components/protectedRoute";
 import { useAuthStore } from "./store/authStore";
+import UserpageAdmin from "./pages/userpageAdmin";
 
 // Componentes cargados de manera perezosa
 const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
@@ -48,6 +49,14 @@ export default function App() {
             {() => (
               <ProtectedRoute requiredRole="Admin">
                 <AdminPanel />
+              </ProtectedRoute>
+            )}
+
+          </Route>
+          <Route path="/admin/users">
+            {() => (
+              <ProtectedRoute requiredRole="Admin">
+                <UserpageAdmin />
               </ProtectedRoute>
             )}
           </Route>
