@@ -7,6 +7,7 @@ import api from "../api/api"; // se mantiene para mutaciones directas
 import { useProducts, useCategories } from "../services/queries";
 import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
+import { useLocation } from "wouter";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -58,7 +59,7 @@ const elementoSchema = z.object({
 export default function AdminPanel() {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
-
+const [ ,setLocation] = useLocation();
   const {
     data: productos = [],
     isLoading: loadingProductos,
@@ -315,7 +316,7 @@ export default function AdminPanel() {
           Stock acumulado: {stockTotal}
         </p>
       </div>
-      <div className="bg-white rounded-2xl shadow p-6 border border-green-50">
+      <div className="bg-white rounded-2xl shadow p-6 border border-green-50" onClick={() => setLocation("/admin/users")}>
         <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
           Usuarios
         </h2>
