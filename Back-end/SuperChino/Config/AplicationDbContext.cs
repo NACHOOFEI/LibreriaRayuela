@@ -92,7 +92,23 @@ namespace SuperChino.Config
                 new RolUser { UserId = 4, RolId = 1 }
             );
 
-
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Policial", Description = "Historias de crímenes, detectives y misterios por resolver." },
+                new Category { Id = 2, Name = "Romance", Description = "Relatos centrados en relaciones amorosas y emociones intensas." },
+                new Category { Id = 3, Name = "Ciencia Ficción", Description = "Narraciones basadas en avances científicos o mundos futuristas." },
+                new Category { Id = 4, Name = "Fantasía", Description = "Historias ambientadas en mundos imaginarios con elementos mágicos." },
+                new Category { Id = 5, Name = "Terror", Description = "Relatos diseñados para provocar miedo, suspenso o inquietud." },
+                new Category { Id = 6, Name = "Aventura", Description = "Cuentos de exploración, acción y viajes llenos de desafíos." },
+                new Category { Id = 7, Name = "Drama", Description = "Narraciones realistas que exploran conflictos humanos y emocionales." },
+                new Category { Id = 8, Name = "Histórico", Description = "Obras ambientadas en épocas pasadas con contexto histórico real." },
+                new Category { Id = 9, Name = "Biografía", Description = "Historias basadas en la vida real de personajes destacados." },
+                new Category { Id = 10, Name = "Comedia", Description = "Relatos ligeros y humorísticos que buscan entretener al lector." },
+                new Category { Id = 11, Name = "Suspenso", Description = "Tramas llenas de tensión, incertidumbre y giros inesperados." },
+                new Category { Id = 12, Name = "Infantil", Description = "Cuentos y relatos pensados para niños, con moralejas y fantasía." },
+                new Category { Id = 13, Name = "Poesía", Description = "Obras escritas en verso que expresan emociones, ideas y belleza." },
+                new Category { Id = 14, Name = "Autoayuda", Description = "Libros orientados al crecimiento personal y la superación individual." },
+                new Category { Id = 15, Name = "Ensayo", Description = "Textos que analizan o reflexionan sobre temas filosóficos o sociales." }
+            );
         }
 
     }
