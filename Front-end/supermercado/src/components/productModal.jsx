@@ -26,11 +26,11 @@ export default function ProductModal({ product, onClose, onAdd }) {
         </button>
         <img
           src={product.image}
-          alt={product.title}
+          alt={product.name}
           loading="lazy"
           className="w-full h-64 object-contain mb-4"
         />
-        <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
+        <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
         <p className="text-gray-600 mb-4">{product.description}</p>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-2">

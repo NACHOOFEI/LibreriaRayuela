@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "wouter";
+import { getUserFromToken } from "../utils/jwtUtils";
 
 export default function ProtectedRoute({ children, requiredRole = "Admin" }) {
   const [location, navigate] = useLocation();
@@ -14,29 +15,35 @@ export default function ProtectedRoute({ children, requiredRole = "Admin" }) {
 
     const checkAuth = () => {
       const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("authUser");
 
-      if (!token || !userData) {
+      if (!token) {
         setLoading(false);
         setAuthorized(false);
         setTimeout(() => navigate("/login"), 100);
         return;
       }
 
-      try {
-        const user = JSON.parse(userData);
-        const userRole = (user.role || "").toLowerCase();
-        const reqRole = (requiredRole || "").toLowerCase();
+      // Verificar token y extraer rol directamente
+      const tokenInfo = getUserFromToken(token);
 
-        if (userRole === reqRole) {
-          setAuthorized(true);
-          setLoading(false);
-        } else {
-          setAuthorized(false);
-          setLoading(false);
-          setTimeout(() => navigate("/login"), 100);
-        }
-      } catch {
+      if (!tokenInfo || tokenInfo.isExpired) {
+        // Token inválido o expirado, limpiar y redirigir
+        localStorage.removeItem("token");
+        localStorage.removeItem("authUser");
+        setLoading(false);
+        setAuthorized(false);
+        setTimeout(() => navigate("/login"), 100);
+        return;
+      }
+
+      // Verificar rol requerido
+      const userRole = (tokenInfo.role || "").toLowerCase();
+      const reqRole = (requiredRole || "").toLowerCase();
+
+      if (userRole === reqRole) {
+        setAuthorized(true);
+        setLoading(false);
+      } else {
         setAuthorized(false);
         setLoading(false);
         setTimeout(() => navigate("/login"), 100);

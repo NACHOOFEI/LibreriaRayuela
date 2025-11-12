@@ -65,14 +65,14 @@ export default function ElementoDetail({ id }) {
             <div className="aspect-square relative overflow-hidden bg-gray-100 p-8">
               <img
                 src={product.image}
-                alt={product.title}
+                alt={product.name}
                 className="absolute inset-0 w-full h-full object-contain"
               />
             </div>
 
             <div className="p-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {product.title}
+                {product.name}
               </h1>
 
               <div className="space-y-6">

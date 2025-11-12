@@ -29,7 +29,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         <img
           src={product.image}
-          alt={product.title}
+          alt={product.name}
           loading="lazy"
           className="w-full h-60 object-cover transform group-hover:scale-110 transition-transform duration-300"
         />
@@ -56,7 +56,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
           <h3 className="font-semibold text-gray-800 text-lg line-clamp-2 flex-1 mr-4">
-            {product.title}
+            {product.name}
           </h3>
           <div className="flex items-center justify-center bg-green-100 text-green-800 text-lg font-bold px-4 py-2 rounded-full">
             ${product.price}

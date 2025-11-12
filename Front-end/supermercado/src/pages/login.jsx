@@ -38,10 +38,10 @@ export default function Login() {
         throw new Error("Datos de usuario inválidos");
       }
 
+      // El rol ya viene extraído correctamente del token JWT por authServices
       const userProfile = {
         ...userData.user,
         email: userData.user.email || data.email,
-        role: userData.user.roles?.[0] || "User",
       };
 
       // Guardar en authStore

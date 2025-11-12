@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "../api/api"; // se mantiene para mutaciones directas
-import { useProducts } from "../services/queries"; // useUsers comentado temporalmente
+import { useProducts, useCategories } from "../services/queries";
 import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
 
@@ -16,11 +16,17 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const elementoSchema = z.object({
-  title: z.string().min(3),
-  price: z.number().min(0.01),
-  description: z.string().min(10),
-  category: z.string().min(1),
-  stock: z.number().int().min(0),
+  name: z
+    .string()
+    .min(3, "Mínimo 3 caracteres")
+    .max(30, "Máximo 30 caracteres"),
+  description: z
+    .string()
+    .min(10, "Mínimo 10 caracteres")
+    .max(100, "Máximo 100 caracteres"),
+  price: z.number().min(0.01, "El precio debe ser mayor a 0"),
+  stock: z.number().int().min(0, "El stock no puede ser negativo"),
+  categoryId: z.number().min(1, "Debe seleccionar una categoría"),
   image: z
     .any()
     .refine((fileList) => fileList && fileList.length === 1, {
@@ -50,17 +56,21 @@ const elementoSchema = z.object({
 
 export default function AdminPanel() {
   const { user } = useAuthStore();
+
   const {
     data: productos = [],
     isLoading: loadingProductos,
     error: errorProductos,
   } = useProducts();
+  const { data: categorias = [], isLoading: loadingCategorias } =
+    useCategories();
   // TEMPORAL: Comentado para evitar error 401 mientras se arregla el backend
   // const { data: usuarios = [], isLoading: loadingUsuarios } = useUsers();
   const usuarios = []; // Temporal
   const loadingUsuarios = false; // Temporal
   const [saving, setSaving] = useState(false);
-  const loading = loadingProductos || loadingUsuarios || saving;
+  const loading =
+    loadingProductos || loadingUsuarios || loadingCategorias || saving;
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
@@ -95,6 +105,44 @@ export default function AdminPanel() {
       setErrorMsg("");
       setSuccessMsg("");
 
+      // DEBUGGING: Verificar estado de autenticación antes del envío
+      const token = localStorage.getItem("token");
+      const userData = localStorage.getItem("authUser");
+      
+      // DEBUGGING DETALLADO DEL TOKEN
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          console.log("🔍 [DEBUG] Token payload COMPLETO:", JSON.stringify(payload, null, 2));
+          console.log("🔍 [DEBUG] Claims específicos:", JSON.stringify({
+            Id: payload.Id,
+            role: payload.role,
+            exp: payload.exp,
+            currentTime: Math.floor(Date.now() / 1000),
+            isExpired: payload.exp < Math.floor(Date.now() / 1000),
+            allKeys: Object.keys(payload)
+          }, null, 2));
+          
+          // Buscar claims de rol en todos los formatos posibles
+          console.log("🔍 [DEBUG] Búsqueda exhaustiva de claims de rol:");
+          Object.keys(payload).forEach(key => {
+            if (key.toLowerCase().includes('role') || payload[key] === 'Admin') {
+              console.log(`🔍 [DEBUG] Claim encontrado: "${key}" = "${payload[key]}"`);
+            }
+          });
+        } catch (e) {
+          console.error("🔍 [DEBUG] Error decodificando token:", e);
+        }
+      }
+      
+      console.log("🔍 [DEBUG] Pre-submit check:", {
+        hasToken: !!token,
+        tokenLength: token?.length,
+        hasUserData: !!userData,
+        userRole: user?.role,
+        authStoreState: { user, isAuth: !!user },
+      });
+
       // Normalizar payload numérico para evitar que algún valor llegue como string
       const payload = {
         ...data,
@@ -108,10 +156,11 @@ export default function AdminPanel() {
       } else {
         // Crear FormData para enviar como multipart/form-data (requerido por backend)
         const formData = new FormData();
-        formData.append("name", payload.title); // Backend espera "name", no "title"
+        formData.append("name", payload.name); // Backend espera "name"
         formData.append("description", payload.description);
         formData.append("price", String(payload.price));
         formData.append("stock", String(payload.stock));
+        formData.append("categoryId", String(payload.categoryId)); // Agregar categoryId
 
         // Agregar la imagen real del formulario
         const imageFile = data.image[0]; // Viene del react-hook-form
@@ -164,7 +213,7 @@ export default function AdminPanel() {
 
   const handleEdit = (p) => {
     setEditingId(p.id);
-    setValue("title", p.title);
+    setValue("name", p.name);
     setValue("price", p.price);
     setValue("description", p.description);
     setValue("category", p.category);
@@ -227,7 +276,7 @@ export default function AdminPanel() {
       const q = search.toLowerCase();
       data = data.filter(
         (p) =>
-          p.title.toLowerCase().includes(q) ||
+          p.name?.toLowerCase().includes(q) ||
           String(p.id).includes(q) ||
           p.category.toLowerCase().includes(q)
       );
@@ -240,7 +289,7 @@ export default function AdminPanel() {
         const { key, dir } = sortConfig;
         let va = a[key];
         let vb = b[key];
-        if (key === "title" || key === "category" || key === "description") {
+        if (key === "name" || key === "category" || key === "description") {
           va = String(va).toLowerCase();
           vb = String(vb).toLowerCase();
         }
@@ -391,11 +440,11 @@ export default function AdminPanel() {
           <button
             onClick={() => {
               // Exportar CSV rápido
-              const header = ["id", "title", "price", "category", "stock"].join(
+              const header = ["id", "name", "price", "category", "stock"].join(
                 ","
               );
               const rows = productosFiltrados.map((p) =>
-                [p.id, p.title, p.price, p.category, p.stock ?? 0].join(",")
+                [p.id, p.name, p.price, p.category, p.stock ?? 0].join(",")
               );
               const csv = [header, ...rows].join("\n");
               const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -461,22 +510,34 @@ export default function AdminPanel() {
           className="bg-white p-6 rounded shadow mb-6 scroll-mt-24"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {["title", "price", "description", "category", "stock"].map((f) => {
+          {["name", "price", "description", "stock"].map((f) => {
             return (
               <div className="mb-4" key={f}>
                 <label className="block font-semibold mb-1">
-                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                  {f === "name"
+                    ? "Nombre"
+                    : f.charAt(0).toUpperCase() + f.slice(1)}
                 </label>
                 {f === "description" ? (
                   <textarea
                     {...register(f)}
                     rows="3"
                     className="w-full border px-3 py-2 rounded"
+                    placeholder="Descripción del producto (máximo 100 caracteres)"
                   />
                 ) : (
                   <input
                     type={f === "price" || f === "stock" ? "number" : "text"}
                     step={f === "price" ? "0.01" : undefined}
+                    placeholder={
+                      f === "name"
+                        ? "Nombre del producto (máximo 30 caracteres)"
+                        : f === "price"
+                        ? "Precio (mayor a 0)"
+                        : f === "stock"
+                        ? "Stock disponible"
+                        : ""
+                    }
                     {...register(f, {
                       valueAsNumber: f === "price" || f === "stock",
                     })}
@@ -489,6 +550,27 @@ export default function AdminPanel() {
               </div>
             );
           })}
+
+          {/* Campo de categoría */}
+          <div className="mb-4">
+            <label className="block font-semibold mb-1">Categoría</label>
+            <select
+              {...register("categoryId", { valueAsNumber: true })}
+              className="w-full border px-3 py-2 rounded"
+            >
+              <option value="">Seleccionar categoría</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.name}
+                </option>
+              ))}
+            </select>
+            {errors.categoryId && (
+              <p className="text-red-600 text-sm">
+                {errors.categoryId?.message}
+              </p>
+            )}
+          </div>
 
           {/* Campo de imagen */}
           <div className="mb-4">
@@ -506,9 +588,10 @@ export default function AdminPanel() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded"
+            disabled={saving}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-2 rounded transition-colors"
           >
-            {editingId ? "Actualizar" : "Crear"}
+            {saving ? "Guardando..." : editingId ? "Actualizar" : "Crear"}
           </button>
         </form>
       )}
@@ -522,7 +605,7 @@ export default function AdminPanel() {
             <tr>
               {[
                 { key: "id", label: "ID" },
-                { key: "title", label: "Título" },
+                { key: "name", label: "Nombre" },
                 { key: "price", label: "Precio" },
                 { key: "category", label: "Categoría" },
                 { key: "stock", label: "Stock" },
@@ -575,9 +658,9 @@ export default function AdminPanel() {
                   </td>
                   <td className="px-4 py-3 max-w-xs">
                     <span className="font-medium text-gray-800">
-                      {p.title.length > 40
-                        ? p.title.substring(0, 40) + "…"
-                        : p.title}
+                      {p.name && p.name.length > 40
+                        ? p.name.substring(0, 40) + "…"
+                        : p.name || "Sin nombre"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-700">${p.price}</td>
@@ -656,9 +739,9 @@ export default function AdminPanel() {
                   >
                     <td className="px-3 py-2 tabular-nums">{p.id}</td>
                     <td className="px-3 py-2 max-w-xs">
-                      {p.title.length > 50
-                        ? p.title.substring(0, 50) + "…"
-                        : p.title}
+                      {p.name && p.name.length > 50
+                        ? p.name.substring(0, 50) + "…"
+                        : p.name || "Sin nombre"}
                     </td>
                     <td className="px-3 py-2">${p.price}</td>
                     <td className="px-3 py-2">

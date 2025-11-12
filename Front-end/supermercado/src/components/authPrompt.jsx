@@ -21,15 +21,17 @@ export default function AuthPrompt({ isOpen, onClose }) {
           cuenta.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
-          <Link href="/login">
-            <a className="flex-1 text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-              Iniciar sesión
-            </a>
+          <Link
+            href="/login"
+            className="flex-1 text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Iniciar sesión
           </Link>
-          <Link href="/register">
-            <a className="flex-1 text-center px-4 py-2 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50">
-              Registrarse
-            </a>
+          <Link
+            href="/register"
+            className="flex-1 text-center px-4 py-2 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50"
+          >
+            Registrarse
           </Link>
           <button
             onClick={onClose}

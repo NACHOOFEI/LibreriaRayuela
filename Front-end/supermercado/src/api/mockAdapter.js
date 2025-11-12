@@ -33,7 +33,7 @@ export function installMockAdapter(api) {
     const categorias = ["alimentos", "hogar", "electrónica", "bebidas"];
     return Array.from({ length: count }, (_, i) => ({
       id: i + 1,
-      title: `Producto ${i + 1}`,
+      name: `Producto ${i + 1}`,
       description: `Descripción detallada del producto ${
         i + 1
       } para pruebas de layout y visualización en el catálogo.`,
@@ -187,7 +187,7 @@ export function installMockAdapter(api) {
       const id = db.products.length + 1;
       const newProd = {
         id,
-        title: body.title ?? `Nuevo Producto ${id}`,
+        name: body.name ?? `Nuevo Producto ${id}`,
         description: body.description ?? "Sin descripción",
         category: body.category ?? "general",
         price: body.price ?? 0,
