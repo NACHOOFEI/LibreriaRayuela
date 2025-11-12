@@ -19,17 +19,6 @@ api.interceptors.request.use((config) => {
   if (token) {
     // Asegurarse de que el token se añade como 'Bearer <token>'
     config.headers.Authorization = `Bearer ${token}`;
-
-    // DEBUGGING TEMPORAL: Log para requests a /api/products
-    if (config.url?.includes("/api/products") && config.method === "post") {
-      console.log("🔍 [DEBUG] POST Request headers:", config.headers);
-      console.log(
-        "🔍 [DEBUG] Token being sent:",
-        token.substring(0, 20) + "..."
-      );
-    }
-  } else {
-    console.log("🔍 [DEBUG] No token found in localStorage");
   }
   return config;
 });
