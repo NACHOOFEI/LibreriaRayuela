@@ -8,12 +8,12 @@ export default function CartItem({ item }) {
     <div className="flex items-center gap-4 border-b py-4">
       <img
         src={item.image}
-        alt={item.title}
+        alt={item.name}
         loading="lazy"
         className="w-20 h-20 object-contain"
       />
       <div className="flex-1">
-        <h4 className="font-bold">{item.title}</h4>
+        <h4 className="font-bold">{item.name}</h4>
         <p className="text-sm text-gray-600">${item.price}</p>
       </div>
 

@@ -81,7 +81,7 @@ export default function CheckoutModal({
               {items.map((it) => (
                 <li key={it.id} className="flex justify-between text-sm">
                   <span className="truncate mr-2">
-                    {it.title} × {it.quantity}
+                    {it.name} × {it.quantity}
                   </span>
                   <span>${(it.price * it.quantity).toFixed(2)}</span>
                 </li>
