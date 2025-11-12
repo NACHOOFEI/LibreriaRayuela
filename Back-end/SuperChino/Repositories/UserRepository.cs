@@ -8,6 +8,7 @@ namespace SuperChino.Repositories
     public interface IUserRepository : IRepository<User>
     {
         Task<User> GetOneWithRoles(Expression<Func<User, bool>> filter);
+        Task<IEnumerable<User>> GetWithRoles(Expression<Func<User, bool>>? filter = null);
     }
     public class UserRepository : Repository<User> , IUserRepository
     {
@@ -22,6 +23,16 @@ namespace SuperChino.Repositories
             return await _db.Users
                             .Include(u => u.Roles) 
                             .FirstOrDefaultAsync(filter);
+        }
+
+        public async Task<IEnumerable<User>> GetWithRoles(Expression<Func<User, bool>>? filter = null)
+        {
+            IQueryable<User> query = _db.Users.Include(u => u.Roles);
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            return await query.ToListAsync();
         }
     }
 }
