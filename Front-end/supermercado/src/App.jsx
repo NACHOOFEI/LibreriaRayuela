@@ -16,7 +16,7 @@ import UserpageAdmin from "./pages/userpageAdmin";
 const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
 const AdminPanel = lazy(() => import("./pages/adminPanel"));
 const CreateProduct = lazy(() => import("./pages/createProduct"));
-
+const AsingRole = lazy(() => import("./pages/asingRole.jsx"));
 export default function App() {
   const [location] = useLocation();
   const hideNavbar = location === "/login" || location === "/register";
@@ -59,6 +59,13 @@ export default function App() {
             {() => (
               <ProtectedRoute requiredRole="Admin">
                 <UserpageAdmin />
+              </ProtectedRoute>
+            )}
+          </Route>
+          <Route path="/admin/users/:id/roles">
+            {(params) => (
+              <ProtectedRoute requiredRole="Admin">
+                <AsingRole id={params.id} />
               </ProtectedRoute>
             )}
           </Route>

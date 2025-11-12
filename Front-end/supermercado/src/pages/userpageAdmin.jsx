@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../api/api";
 import Loader from "../components/loader";
 import axiosServices from "../services/axiosServices";
+import { Link } from "wouter";
 
 
 export const getUsers = async () => {
@@ -128,7 +129,7 @@ export default function UserpageAdmin() {
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-gray-900">
-                            {user.userName}
+<Link href={`/admin/users/${user.id}/roles`} className="hover:underline">  {user.userName}</Link>
                           </p>
                           <p className="text-xs text-gray-500">ID: {user.id}</p>
                         </div>
