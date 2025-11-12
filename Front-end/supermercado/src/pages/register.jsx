@@ -28,24 +28,24 @@ export default function Register() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(registerSchema) });
 
-  const onSubmit = async (data) => {
-    setFormError("");
-    setLoading(true);
-    try {
-      await auth.register({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-      // Tras registro exitoso, dirigir a login
-      navigate("/login");
-    } catch (error) {
-      console.error("Error durante el registro:", error);
-      setFormError(error.message || "Error al registrarse");
-    } finally {
-      setLoading(false);
-    }
-  };
+const onSubmit = async (data) => {
+  setFormError("");
+  setLoading(true);
+  try {
+    await auth.register({
+      Username: data.name,          // ✔ coincide con backend
+      Email: data.email,
+      Password: data.password,
+      ConfirmPassword: data.confirmPassword, // ✔ necesario para binding
+    });
+    navigate("/login");
+  } catch (error) {
+    console.error("Error durante el registro:", error);
+    setFormError(error.response?.data?.message || error.message || "Error al registrarse");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
