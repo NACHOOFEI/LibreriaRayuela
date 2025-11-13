@@ -48,7 +48,8 @@ namespace LibreriaOnline.Config
                         return srcMember != null;
                     }));
 
-            CreateMap<CustomerInsertDTO, Customer>();
+            CreateMap<CustomerInsertDTO, Customer>()
+                .ForMember(dest => dest.User, opt => opt.Ignore());
             CreateMap<Customer, CustomerDTO>();
             CreateMap<CustomerUpdateDTO, Customer>();
 
