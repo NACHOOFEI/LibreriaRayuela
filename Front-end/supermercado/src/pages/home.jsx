@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import api from "../api/api";
 import ProductCard from "../components/productCard";
 import AuthPrompt from "../components/authPrompt";
+import AboutUs from "../components/aboutUs";
 import { useAuthStore } from "../store/authStore";
 import ProductModal from "../components/productModal";
 import useCartStore from "../store/cartStore";
@@ -108,6 +109,7 @@ export default function Home() {
           onClose={() => setShowAuthPrompt(false)}
         />
       </div>
+      <AboutUs />
     </div>
   );
 }
