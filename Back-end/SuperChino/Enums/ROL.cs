@@ -1,4 +1,4 @@
-﻿namespace SuperChino.Enums
+﻿namespace LibreriaOnline.Enums
 {
     static public class ROL
     {

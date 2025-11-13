@@ -1,4 +1,4 @@
-﻿namespace SuperChino.Models.User.Dto
+﻿namespace LibreriaOnline.Models.User.Dto
 {
     public class LoginResposeDTO
     {

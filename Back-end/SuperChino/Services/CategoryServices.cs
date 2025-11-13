@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using SuperChino.Models.Category;
-using SuperChino.Models.Category.Dto;
-using SuperChino.Repositories;
+using LibreriaOnline.Models.Category;
+using LibreriaOnline.Models.Category.Dto;
+using LibreriaOnline.Repositories;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class CategoryServices
     {

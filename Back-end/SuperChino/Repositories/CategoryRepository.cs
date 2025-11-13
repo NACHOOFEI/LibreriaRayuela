@@ -1,7 +1,7 @@
-﻿using SuperChino.Config;
-using SuperChino.Models.Category;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.Category;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface ICategoryRepository : IRepository<Category> { }
     public class CategoryRepository : Repository<Category>, ICategoryRepository

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace SuperChino.Models.OrderItem
+namespace LibreriaOnline.Models.OrderItem
 {
     public class OrderItem
     {

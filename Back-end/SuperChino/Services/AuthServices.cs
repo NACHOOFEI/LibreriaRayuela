@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SuperChino.Config;
-using SuperChino.Models.Rol;
-using SuperChino.Models.User;
-using SuperChino.Models.User.Dto;
-using SuperChino.Utils;
+using LibreriaOnline.Config;
+using LibreriaOnline.Models.Rol;
+using LibreriaOnline.Models.User;
+using LibreriaOnline.Models.User.Dto;
+using LibreriaOnline.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class AuthServices
     {

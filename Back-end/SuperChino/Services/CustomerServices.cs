@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using SuperChino.Models.Customer;
-using SuperChino.Models.Customer.Dto;
-using SuperChino.Models.User;
-using SuperChino.Repositories;
+using LibreriaOnline.Models.Customer;
+using LibreriaOnline.Models.Customer.Dto;
+using LibreriaOnline.Models.User;
+using LibreriaOnline.Repositories;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class CustomerServices
     {

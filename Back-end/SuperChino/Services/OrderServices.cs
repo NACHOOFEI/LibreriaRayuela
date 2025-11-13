@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using SuperChino.Models.Order;
-using SuperChino.Models.Order.Dto;
-using SuperChino.Models.OrderItem;
-using SuperChino.Repositories;
+using LibreriaOnline.Models.Order;
+using LibreriaOnline.Models.Order.Dto;
+using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Repositories;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class OrderServices
     {

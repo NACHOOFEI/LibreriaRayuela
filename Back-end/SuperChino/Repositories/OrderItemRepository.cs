@@ -1,8 +1,8 @@
-﻿using SuperChino.Config;
-using SuperChino.Models.OrderItem;
-using SuperChino.Models.OrderItem.Dto;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Models.OrderItem.Dto;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IOrderItemRepository : IRepository<OrderItem>
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SuperChino.Models.Category
+namespace LibreriaOnline.Models.Category
 {
     public class Category
     {

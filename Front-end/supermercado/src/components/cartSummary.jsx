@@ -26,7 +26,7 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
               checked={shipping === "pickup"}
               onChange={() => setShipping("pickup")}
             />
-            Retiro en supermercado (Gratis)
+            Retiro en Librería (Gratis)
           </label>
           <label className="flex items-center gap-2">
             <input

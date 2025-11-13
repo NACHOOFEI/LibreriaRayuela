@@ -28,7 +28,7 @@ export default function TransferenciaInfo() {
         <p><strong>Banco:</strong> Banco Nación</p>
         <p><strong>Alias:</strong> libreria.rayuela.mp</p>
         <p><strong>CBU:</strong> 0110599500059923478822</p>
-        <p><strong>Titular:</strong> SuperChino S.A.</p>
+        <p><strong>Titular:</strong> Librería Rayuela S.A.</p>
       </div>
 
       <h3 className="text-lg font-semibold mb-2">Resumen de tu compra</h3>

@@ -1,7 +1,7 @@
-﻿using SuperChino.Config;
-using SuperChino.Models.Order;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.Order;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IOrderRepository : IRepository<Order> { }
     public class OrderRepository : Repository<Order>, IOrderRepository

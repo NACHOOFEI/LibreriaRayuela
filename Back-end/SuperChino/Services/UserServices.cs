@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using SuperChino.Enums;
-using SuperChino.Models.Rol;
-using SuperChino.Models.User;
-using SuperChino.Models.User.Dto;
-using SuperChino.Repositories;
-using SuperChino.Utils;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.Rol;
+using LibreriaOnline.Models.User;
+using LibreriaOnline.Models.User.Dto;
+using LibreriaOnline.Repositories;
+using LibreriaOnline.Utils;
 using System.Net;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class UserServices
     {

@@ -30,17 +30,20 @@ export default function Elementos() {
 
   // Obtener categorías únicas
   const categorias = useMemo(
-    () => ["all", ...new Set(productos.map((p) => p.category))],
-    [productos]
-  );
+  () => ["all", ...new Set(productos.map((p) => p.category?.name))],
+  [productos]
+);
 
-  // Filtrar y ordenar productos
+// Filtrar y ordenar productos
   const productosFiltrados = productos
     .filter((p) => {
       const cumpleBusqueda =
         p.name?.toLowerCase().includes(busqueda.toLowerCase()) ||
         p.description?.toLowerCase().includes(busqueda.toLowerCase());
-      const cumpleCategoria = categoria === "all" || p.category === categoria;
+
+      const cumpleCategoria =
+        categoria === "all" || p.category?.name === categoria;
+
       return cumpleBusqueda && cumpleCategoria;
     })
     .sort((a, b) => {
@@ -48,6 +51,7 @@ export default function Elementos() {
       if (ordenPrecio === "desc") return b.price - a.price;
       return 0;
     });
+
 
   // Calcular paginación
   const totalPaginas = Math.ceil(productosFiltrados.length / ITEMS_POR_PAGINA);

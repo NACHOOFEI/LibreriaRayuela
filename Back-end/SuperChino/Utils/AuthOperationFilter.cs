@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace SuperChino.Utils
+namespace LibreriaOnline.Utils
 {
     public class AuthOperationFilter : IOperationFilter
     {

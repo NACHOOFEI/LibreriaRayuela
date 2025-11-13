@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SuperChino.Config;
-using SuperChino.Models.Customer;
-using SuperChino.Models.Customer.Dto;
+using LibreriaOnline.Config;
+using LibreriaOnline.Models.Customer;
+using LibreriaOnline.Models.Customer.Dto;
 using System.Linq.Expressions;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface ICustomerRepository : IRepository<Customer>
     {

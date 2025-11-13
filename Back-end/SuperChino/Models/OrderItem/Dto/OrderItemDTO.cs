@@ -1,4 +1,4 @@
-﻿namespace SuperChino.Models.OrderItem.Dto
+﻿namespace LibreriaOnline.Models.OrderItem.Dto
 {
     public class OrderItemDTO
     {

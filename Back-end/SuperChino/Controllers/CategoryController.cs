@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SuperChino.Enums;
-using SuperChino.Models.Category.Dto;
-using SuperChino.Models.Product.Dto;
-using SuperChino.Services;
-using SuperChino.Utils;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.Category.Dto;
+using LibreriaOnline.Models.Product.Dto;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
 
-namespace SuperChino.Controllers
+namespace LibreriaOnline.Controllers
 {
     [Route("api/categories")]
     [ApiController]

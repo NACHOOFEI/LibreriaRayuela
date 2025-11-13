@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Identity.Client;
-using SuperChino.Config;
+using LibreriaOnline.Config;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IRepository<T> where T : class
     {

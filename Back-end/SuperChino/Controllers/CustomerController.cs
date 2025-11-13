@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SuperChino.Models.Customer.Dto;
-using SuperChino.Services;
+using LibreriaOnline.Models.Customer.Dto;
+using LibreriaOnline.Services;
 
-namespace SuperChino.Controllers
+namespace LibreriaOnline.Controllers
 {
     [Route("api/customers")]
     [ApiController]

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SuperChino.Config;
-using SuperChino.Models.Product;
-using SuperChino.Repositories;
-using SuperChino.Services;
-using SuperChino.Utils;
+using LibreriaOnline.Config;
+using LibreriaOnline.Models.Product;
+using LibreriaOnline.Repositories;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
 using System.Security.Claims;
 using System.Text;
 
@@ -24,8 +24,8 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "SuperChino API",
-        Description = "Gestión de Comercio"
+        Title = "Libreria Online API",
+        Description = "Aplicación WEB para Librería."
     });
 
     // Configuración para usar JWT desde Swagger

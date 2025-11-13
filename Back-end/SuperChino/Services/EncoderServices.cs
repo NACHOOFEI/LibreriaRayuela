@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public interface IEncoderServices
     {

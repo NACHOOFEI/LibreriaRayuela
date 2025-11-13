@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SuperChino.Config;
-using SuperChino.Models.User;
+using LibreriaOnline.Config;
+using LibreriaOnline.Models.User;
 using System.Linq.Expressions;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {

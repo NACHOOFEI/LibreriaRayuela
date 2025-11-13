@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SuperChino.Enums;
-using SuperChino.Models.Order.Dto;
-using SuperChino.Services;
-using SuperChino.Utils;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.Order.Dto;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
 
-namespace SuperChino.Controllers
+namespace LibreriaOnline.Controllers
 {
     [Route("api/orders")]
     [ApiController]
