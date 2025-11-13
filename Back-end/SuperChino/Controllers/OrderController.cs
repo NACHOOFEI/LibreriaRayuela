@@ -64,7 +64,6 @@ namespace LibreriaOnline.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = ROL.ADMIN)]
         [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
