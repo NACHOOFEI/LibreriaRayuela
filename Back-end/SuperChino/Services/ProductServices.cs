@@ -63,17 +63,24 @@ namespace SuperChino.Services
             if (productUpdateDTO.Image != null && productUpdateDTO.Image.Length > 0)
             {
                 string imageUrl = await _s3.UploadFileAsync(productUpdateDTO.Image);
-                product.ImageUrl = imageUrl; // reemplazamos la URL de la imagen
+                product.ImageUrl = imageUrl;
             }
 
-            // Mapear los demás campos (no mapeamos la imagen aquí)
+            // Mapear los demás campos
             _mapper.Map(productUpdateDTO, product);
+
+            // Asegurar que el precio solo se actualice si viene con valor
+            if (productUpdateDTO.Price.HasValue)
+            {
+                product.Price = productUpdateDTO.Price.Value;
+            }
 
             await _repo.UpdateOne(product);
             await _repo.Save();
 
             return _mapper.Map<ProductDTO>(product);
         }
+
 
         public async Task<ProductDTO> DeleteOne(int id)
         {

@@ -37,8 +37,16 @@ namespace SuperChino.Config
             CreateMap<ProductInsertDTO, Product>();
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductUpdateDTO, Product>()
-            .ForAllMembers(opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember, destMember, context) =>
+                    {
+                        // Solo mapea si el valor fuente no es null
+                        // y además si no es un decimal 0.00 (cuando se trata del precio)
+                        if (srcMember is decimal d && d == 0)
+                            return false;
+
+                        return srcMember != null;
+                    }));
 
             CreateMap<CustomerInsertDTO, Customer>();
             CreateMap<Customer, CustomerDTO>();
