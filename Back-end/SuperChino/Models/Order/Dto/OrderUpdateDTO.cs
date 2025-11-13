@@ -1,7 +1,7 @@
-﻿using SuperChino.Models.OrderItem.Dto;
+﻿using LibreriaOnline.Models.OrderItem.Dto;
 using System.ComponentModel.DataAnnotations;
 
-namespace SuperChino.Models.Order.Dto
+namespace LibreriaOnline.Models.Order.Dto
 {
     public class OrderUpdateDTO
     {

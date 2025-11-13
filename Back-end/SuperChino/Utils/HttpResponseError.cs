@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace SuperChino.Utils
+namespace LibreriaOnline.Utils
 {
     public class HttpResponseError : Exception
     {

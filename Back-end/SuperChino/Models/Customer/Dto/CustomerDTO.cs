@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SuperChino.Models.Customer.Dto
+namespace LibreriaOnline.Models.Customer.Dto
 {
     public class CustomerDTO
     {

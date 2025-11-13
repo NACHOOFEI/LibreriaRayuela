@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace SuperChino.Models.User.Dto
+namespace LibreriaOnline.Models.User.Dto
 {
     public class LoginDTO
     {

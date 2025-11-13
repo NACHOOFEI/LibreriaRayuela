@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SuperChino.Models.Product.Dto
+namespace LibreriaOnline.Models.Product.Dto
 {
     public class ProductInsertDTO
     {

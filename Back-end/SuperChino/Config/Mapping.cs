@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
-using SuperChino.Models.Category;
-using SuperChino.Models.Category.Dto;
-using SuperChino.Models.Customer;
-using SuperChino.Models.Customer.Dto;
-using SuperChino.Models.Order;
-using SuperChino.Models.Order.Dto;
-using SuperChino.Models.OrderItem;
-using SuperChino.Models.OrderItem.Dto;
-using SuperChino.Models.Product;
-using SuperChino.Models.Product.Dto;
-using SuperChino.Models.User;
-using SuperChino.Models.User.Dto;
+using LibreriaOnline.Models.Category;
+using LibreriaOnline.Models.Category.Dto;
+using LibreriaOnline.Models.Customer;
+using LibreriaOnline.Models.Customer.Dto;
+using LibreriaOnline.Models.Order;
+using LibreriaOnline.Models.Order.Dto;
+using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Models.OrderItem.Dto;
+using LibreriaOnline.Models.Product;
+using LibreriaOnline.Models.Product.Dto;
+using LibreriaOnline.Models.User;
+using LibreriaOnline.Models.User.Dto;
 
-namespace SuperChino.Config
+namespace LibreriaOnline.Config
 {
     public class Mapping : Profile
     {

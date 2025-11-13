@@ -1,15 +1,15 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SuperChino.Enums;
-using SuperChino.Models.User;
-using SuperChino.Models.User.Dto;
-using SuperChino.Services;
-using SuperChino.Utils;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.User;
+using LibreriaOnline.Models.User.Dto;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using HttpMessage = SuperChino.Utils.HttpMessage;
+using HttpMessage = LibreriaOnline.Utils.HttpMessage;
 
-namespace SuperChino.Controllers
+namespace LibreriaOnline.Controllers
 {
     [Route("api/auth")]
     [ApiController]

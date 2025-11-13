@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SuperChino.Models.User.Dto
+namespace LibreriaOnline.Models.User.Dto
 {
     public class RegisterDTO
     {

@@ -1,9 +1,9 @@
-﻿using SuperChino.Models.Rol;
-using SuperChino.Repositories;
-using SuperChino.Utils;
+﻿using LibreriaOnline.Models.Rol;
+using LibreriaOnline.Repositories;
+using LibreriaOnline.Utils;
 using System.Net;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class RolServices
     {

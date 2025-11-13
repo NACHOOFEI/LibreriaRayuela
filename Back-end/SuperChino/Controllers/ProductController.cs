@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using SuperChino.Enums;
-using SuperChino.Models.Product.Dto;
-using SuperChino.Services;
-using SuperChino.Utils;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.Product.Dto;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
 using System.Security.Claims;
 
-namespace SuperChino.Controllers
+namespace LibreriaOnline.Controllers
 {
     [Route("api/products")]
     [ApiController]

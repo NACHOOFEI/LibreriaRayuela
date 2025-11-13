@@ -2,7 +2,7 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class S3Services
     {

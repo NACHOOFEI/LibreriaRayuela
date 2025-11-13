@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace SuperChino.Services
+namespace LibreriaOnline.Services
 {
     public class WhatsAppServices
     {

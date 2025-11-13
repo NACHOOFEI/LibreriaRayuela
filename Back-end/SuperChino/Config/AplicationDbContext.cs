@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SuperChino.Enums;
-using SuperChino.Models.Category;
-using SuperChino.Models.Customer;
-using SuperChino.Models.Order;
-using SuperChino.Models.OrderItem;
-using SuperChino.Models.Product;
-using SuperChino.Models.Rol;
-using SuperChino.Models.User;
+using LibreriaOnline.Enums;
+using LibreriaOnline.Models.Category;
+using LibreriaOnline.Models.Customer;
+using LibreriaOnline.Models.Order;
+using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Models.Product;
+using LibreriaOnline.Models.Rol;
+using LibreriaOnline.Models.User;
 
-namespace SuperChino.Config
+namespace LibreriaOnline.Config
 {
     public class ApplicationDbContext : DbContext
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SuperChino.Models.Category.Dto
+namespace LibreriaOnline.Models.Category.Dto
 {
     public class CategoryUpdateDTO
     {

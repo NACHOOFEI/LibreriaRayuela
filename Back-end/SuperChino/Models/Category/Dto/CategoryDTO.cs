@@ -1,4 +1,4 @@
-﻿namespace SuperChino.Models.Category.Dto
+﻿namespace LibreriaOnline.Models.Category.Dto
 {
     public class CategoryDTO
     {

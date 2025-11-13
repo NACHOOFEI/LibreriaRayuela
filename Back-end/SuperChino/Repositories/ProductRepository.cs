@@ -1,7 +1,7 @@
-﻿using SuperChino.Config;
-using SuperChino.Models.Product;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.Product;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IProductRepository : IRepository<Product> { }
     public class ProductRepository : Repository<Product>, IProductRepository

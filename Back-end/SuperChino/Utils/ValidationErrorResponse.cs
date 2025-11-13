@@ -1,4 +1,4 @@
-﻿namespace SuperChino.Utils
+﻿namespace LibreriaOnline.Utils
 {
     public class ValidationErrorResponse
     {

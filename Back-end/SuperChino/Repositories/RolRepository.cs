@@ -1,7 +1,7 @@
-﻿using SuperChino.Config;
-using SuperChino.Models.Rol;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.Rol;
 
-namespace SuperChino.Repositories
+namespace LibreriaOnline.Repositories
 {
     public interface IRolRepository : IRepository<Rol> { }
     public class RolRepository : Repository<Rol> , IRolRepository
