@@ -17,10 +17,10 @@ namespace SuperChino.Models.Customer.Dto
         public string Email { get; set; }
 
         [Phone(ErrorMessage = "El número de teléfono no es válido")]
-        public string? Phone { get; set; }
+        public string Phone { get; set; }
 
         [MaxLength(100, ErrorMessage = "No más de 100 caracteres")]
-        public string? Adress { get; set; }
+        public string Adress { get; set; }
 
         public int UserId { get; set; }
 
