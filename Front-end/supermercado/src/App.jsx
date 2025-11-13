@@ -11,6 +11,7 @@ import Elementos from "./pages/elementos";
 import ProtectedRoute from "./components/protectedRoute";
 import { useAuthStore } from "./store/authStore";
 import UserpageAdmin from "./pages/userpageAdmin";
+import Footer from "./components/footer";
 
 // Componentes cargados de manera perezosa
 const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
@@ -30,61 +31,64 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {!hideNavbar && <Navbar />}
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center min-h-[60vh]">
-            <Loader />
-          </div>
-        }
-      >
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/carrito" component={Cart} />
-          <Route path="/transferencia" component={TransferenciaInfo} />
-          <Route path="/elementos" component={Elementos} />
-          <Route path="/elementos/:id">
-            {(params) => <ElementoDetail id={params.id} />}
-          </Route>
-          <Route path="/admin">
-            {() => (
-              <ProtectedRoute requiredRole="Admin">
-                <AdminPanel />
-              </ProtectedRoute>
-            )}
+      <main className="flex-grow">
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <Loader />
+            </div>
+          }
+        >
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/carrito" component={Cart} />
+            <Route path="/transferencia" component={TransferenciaInfo} />
+            <Route path="/elementos" component={Elementos} />
+            <Route path="/elementos/:id">
+              {(params) => <ElementoDetail id={params.id} />}
+            </Route>
+            <Route path="/admin">
+              {() => (
+                <ProtectedRoute requiredRole="Admin">
+                  <AdminPanel />
+                </ProtectedRoute>
+              )}
 
-          </Route>
-          <Route path="/admin/users">
-            {() => (
-              <ProtectedRoute requiredRole="Admin">
-                <UserpageAdmin />
-              </ProtectedRoute>
-            )}
-          </Route>
-          <Route path="/admin/users/:id/roles">
-            {(params) => (
-              <ProtectedRoute requiredRole="Admin">
-                <AsingRole id={params.id} />
-              </ProtectedRoute>
-            )}
-          </Route>
-          <Route path="/admin/productos/nuevo">
-            {() => (
-              <ProtectedRoute requiredRole="Admin">
-                <CreateProduct />
-              </ProtectedRoute>
-            )}
-          </Route>
-          <Route path="/admin/productos/editar/:id">
-            {(params) => (
-              <ProtectedRoute requiredRole="Admin">
-                <CreateProduct id={params.id} />
-              </ProtectedRoute>
-            )}
-          </Route>
-        </Switch>
-      </Suspense>
+            </Route>
+            <Route path="/admin/users">
+              {() => (
+                <ProtectedRoute requiredRole="Admin">
+                  <UserpageAdmin />
+                </ProtectedRoute>
+              )}
+            </Route>
+            <Route path="/admin/users/:id/roles">
+              {(params) => (
+                <ProtectedRoute requiredRole="Admin">
+                  <AsingRole id={params.id} />
+                </ProtectedRoute>
+              )}
+            </Route>
+            <Route path="/admin/productos/nuevo">
+              {() => (
+                <ProtectedRoute requiredRole="Admin">
+                  <CreateProduct />
+                </ProtectedRoute>
+              )}
+            </Route>
+            <Route path="/admin/productos/editar/:id">
+              {(params) => (
+                <ProtectedRoute requiredRole="Admin">
+                  <CreateProduct id={params.id} />
+                </ProtectedRoute>
+              )}
+            </Route>
+          </Switch>
+        </Suspense>
+      </main>
+      {!hideNavbar && <Footer />}
     </div>
   );
 }
