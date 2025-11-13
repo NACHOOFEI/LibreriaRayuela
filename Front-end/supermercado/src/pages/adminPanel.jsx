@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "../api/api"; // se mantiene para mutaciones directas
-import { useProducts, useCategories } from "../services/queries";
+import { useProducts, useCategories, useUsers } from "../services/queries";
 import StatsChart from "../components/statsChart";
 import { useAuthStore } from "../store/authStore";
 import { useLocation } from "wouter";
@@ -113,9 +113,11 @@ export default function AdminPanel() {
   } = useProducts();
   const { data: categorias = [], isLoading: loadingCategorias } =
     useCategories();
-
-  const usuarios = []; // Temporal
-  const loadingUsuarios = false; // Temporal
+  const {
+    data: usuarios = [],
+    isLoading: loadingUsuarios,
+    error: errorUsuarios,
+  } = useUsers();
   const [saving, setSaving] = useState(false);
   const loading =
     loadingProductos || loadingUsuarios || loadingCategorias || saving;
@@ -413,8 +415,16 @@ export default function AdminPanel() {
         <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide ">
           Usuarios
         </h2>
-        <p className="text-4xl font-bold text-green-600">{totalUsuarios}</p>
-        <p className="text-xs text-gray-500 mt-1">Ver detalles</p>
+        {loadingUsuarios ? (
+          <p className="text-4xl font-bold text-gray-400">...</p>
+        ) : errorUsuarios ? (
+          <p className="text-2xl font-bold text-red-500">Error</p>
+        ) : (
+          <p className="text-4xl font-bold text-green-600">{totalUsuarios}</p>
+        )}
+        <p className="text-xs text-gray-500 mt-1">
+          {errorUsuarios ? "Error al cargar" : "Ver detalles"}
+        </p>
       </div>
     </div>
   );
@@ -503,7 +513,9 @@ export default function AdminPanel() {
                 ","
               );
               const rows = productosFiltrados.map((p) =>
-                [p.id, p.name, p.price, p.category?.name, p.stock ?? 0].join(",")
+                [p.id, p.name, p.price, p.category?.name, p.stock ?? 0].join(
+                  ","
+                )
               );
               const csv = [header, ...rows].join("\n");
               const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
