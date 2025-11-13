@@ -92,7 +92,7 @@ namespace SuperChino.Controllers
         [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<ProductDTO>> UpdateOne(int id, [FromBody] ProductUpdateDTO productUpdateDTO)
+        public async Task<ActionResult<ProductDTO>> UpdateOne(int id, [FromForm] ProductUpdateDTO productUpdateDTO)
         {
             try
             {
