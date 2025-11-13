@@ -37,7 +37,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   const [customerForm, setCustomerForm] = useState({
     name: "",
     dni: "",
-    email: "",
     phone: "",
     address: "",
   });
@@ -52,12 +51,7 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   // ============================
   const getSafeUsername = (user) => {
     if (!user) return "Usuario";
-    return user.name || user.username || (user.email ? user.email.split("@")[0] : "Usuario");
-  };
-
-  const getSafeEmail = (user) => {
-    if (!user) return "";
-    return user.email || "";
+    return user.name || user.username || "Usuario";
   };
 
   const getSafeUserId = (user) => {
@@ -122,7 +116,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
         setCustomerForm({
           name: getSafeUsername(currentUser),
           dni: "",
-          email: getSafeEmail(currentUser),
           phone: "",
           address: "",
         });
@@ -169,7 +162,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
       const newCustomerData = {
         name: customerForm.name,
         dni: customerForm.dni,
-        email: customerForm.email || getSafeEmail(currentUser),
         phone: customerForm.phone,
         address: customerForm.address, // ✅ corregido: "address"
         userId: userId, // ✅ usamos el id seguro
@@ -339,19 +331,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
                   placeholder="00000000"
                   required
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={customerForm.email}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded bg-gray-100"
-                  readOnly
-                />
-                <p className="text-xs text-gray-500 mt-1">Email no editable</p>
               </div>
 
               <div>
