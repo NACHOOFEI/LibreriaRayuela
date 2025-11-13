@@ -63,16 +63,7 @@ namespace SuperChino.Controllers
         {
             try
             {
-                // DEBUG: Verificar claims del usuario autenticado
                 var user = HttpContext.User;
-                Console.WriteLine("🔍 [BACKEND DEBUG] Usuario autenticado: " + user.Identity.IsAuthenticated);
-                Console.WriteLine("🔍 [BACKEND DEBUG] Claims del usuario:");
-                foreach (var claim in user.Claims)
-                {
-                    Console.WriteLine($"🔍 Claim: {claim.Type} = {claim.Value}");
-                }
-                Console.WriteLine("🔍 [BACKEND DEBUG] ROL.ADMIN esperado: " + ROL.ADMIN);
-                Console.WriteLine("🔍 [BACKEND DEBUG] IsInRole: " + user.IsInRole(ROL.ADMIN));
 
                 var productDto = await _services.CreateOne(productInsertDTO);
                 return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, productDto);
