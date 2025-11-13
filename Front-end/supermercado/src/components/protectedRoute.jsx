@@ -13,53 +13,40 @@ export default function ProtectedRoute({ children, requiredRole = "Admin" }) {
       return;
     }
 
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setAuthorized(false);
+      setLoading(false);
+      setTimeout(() => navigate("/login"), 100);
+      return;
+    }
 
-      if (!token) {
-        setLoading(false);
-        setAuthorized(false);
-        setTimeout(() => navigate("/login"), 100);
-        return;
-      }
+    const userInfo = getUserFromToken(token);
 
-      // Verificar token y extraer rol directamente
-      const tokenInfo = getUserFromToken(token);
+    if (!userInfo || userInfo.isExpired) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("authUser");
+      setAuthorized(false);
+      setLoading(false);
+      setTimeout(() => navigate("/login"), 100);
+      return;
+    }
 
-      if (!tokenInfo || tokenInfo.isExpired) {
-        // Token inválido o expirado, limpiar y redirigir
-        localStorage.removeItem("token");
-        localStorage.removeItem("authUser");
-        setLoading(false);
-        setAuthorized(false);
-        setTimeout(() => navigate("/login"), 100);
-        return;
-      }
+    // Verificamos si alguno de los roles del usuario coincide con el requerido
+    const hasRole = userInfo.roles.some(
+      (role) => role.toLowerCase() === requiredRole.toLowerCase()
+    );
 
-      // Verificar rol requerido
-      const userRole = (tokenInfo.role || "").toLowerCase();
-      const reqRole = (requiredRole || "").toLowerCase();
+    setAuthorized(hasRole);
+    setLoading(false);
 
-      if (userRole === reqRole) {
-        setAuthorized(true);
-        setLoading(false);
-      } else {
-        setAuthorized(false);
-        setLoading(false);
-        setTimeout(() => navigate("/login"), 100);
-      }
-    };
-
-    checkAuth();
+    if (!hasRole) {
+      setTimeout(() => navigate("/login"), 100);
+    }
   }, [location, navigate, requiredRole]);
 
-  if (loading) {
-    return <div className="p-4 text-center">Verificando acceso...</div>;
-  }
-
-  if (!authorized) {
-    return <div className="p-4 text-center">Redirigiendo...</div>;
-  }
+  if (loading) return <div className="p-4 text-center">Verificando acceso...</div>;
+  if (!authorized) return <div className="p-4 text-center">Redirigiendo...</div>;
 
   return children;
 }
