@@ -56,26 +56,23 @@ namespace SuperChino.Services
         public async Task<ProductDTO> UpdateOne(int id, ProductUpdateDTO productUpdateDTO)
         {
             var product = await _repo.GetOne(c => c.Id == id);
-            if (product != null)
+            if (product == null)
+                return null;
+
+            // Solo subimos imagen si se envía
+            if (productUpdateDTO.Image != null && productUpdateDTO.Image.Length > 0)
             {
-                if (productUpdateDTO.Image == null || productUpdateDTO.Image.Length == 0)
-                {
-                    throw new HttpResponseError(HttpStatusCode.BadRequest, "Tienes que tener una imagen");
-                }
                 string imageUrl = await _s3.UploadFileAsync(productUpdateDTO.Image);
-
-                product = _mapper.Map<Product>(productUpdateDTO);
-
-                product.ImageUrl = imageUrl;
-                product = _mapper.Map<ProductUpdateDTO, Product>(productUpdateDTO, product);
-
-                _repo.UpdateOne(product);
-                await _repo.Save();
-
-                var productDto = _mapper.Map<ProductDTO>(product);
-                return productDto;
+                product.ImageUrl = imageUrl; // reemplazamos la URL de la imagen
             }
-            return null;
+
+            // Mapear los demás campos (no mapeamos la imagen aquí)
+            _mapper.Map(productUpdateDTO, product);
+
+            await _repo.UpdateOne(product);
+            await _repo.Save();
+
+            return _mapper.Map<ProductDTO>(product);
         }
 
         public async Task<ProductDTO> DeleteOne(int id)

@@ -36,7 +36,9 @@ namespace SuperChino.Config
 
             CreateMap<ProductInsertDTO, Product>();
             CreateMap<Product, ProductDTO>();
-            CreateMap<ProductUpdateDTO, Product>();
+            CreateMap<ProductUpdateDTO, Product>()
+            .ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<CustomerInsertDTO, Customer>();
             CreateMap<Customer, CustomerDTO>();
