@@ -15,7 +15,6 @@ export const orderService = {
 
 export const customerService = {
   getByUserId: async (userId) => {
-    // 🔧 corregido: usá backticks para interpolar
     const response = await axiosServices.get(`/api/customers/user/${userId}`);
     return response.data;
   },
@@ -47,7 +46,24 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   const total = subtotal + envio;
 
   // ============================
-  // 🔐 Funciones auxiliares
+  // 🔐 Cargar usuario desde el token
+  // ============================
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const user = getUserFromToken(token);
+        if (user && !user.isExpired) {
+          setCurrentUser(user);
+        }
+      }
+    } catch (error) {
+      console.error("Error cargando usuario:", error);
+    }
+  }, []);
+
+  // ============================
+  // 🧩 Helpers
   // ============================
   const getSafeUsername = (user) => {
     if (!user) return "Usuario";
@@ -59,29 +75,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
     return user.id || user.sub || user.userId || user.nameidentifier;
   };
 
-  // ============================
-  // 🧩 Cargar usuario desde el token
-  // ============================
-  useEffect(() => {
-    const loadUser = () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token) {
-          const user = getUserFromToken(token);
-          if (user && !user.isExpired) {
-            setCurrentUser(user);
-          }
-        }
-      } catch (error) {
-        console.error("Error cargando usuario:", error);
-      }
-    };
-    loadUser();
-  }, []);
-
-  // ============================
-  // ✏️ Manejar cambios en formulario
-  // ============================
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCustomerForm((prev) => ({ ...prev, [name]: value }));
@@ -100,35 +93,23 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
         return;
       }
 
-      console.log("Usuario actual:", currentUser);
+      const userId = getSafeUserId(currentUser);
+      if (!userId) throw new Error("No se pudo obtener el ID del usuario");
 
-      let customer;
-      try {
-        const userId = getSafeUserId(currentUser);
-        if (!userId) throw new Error("No se pudo obtener el ID del usuario");
+      console.log("Buscando customer para userId:", userId);
+      const customer = await customerService.getByUserId(userId);
 
-        console.log("Buscando customer para userId:", userId);
-        customer = await customerService.getByUserId(userId);
-        console.log("Customer encontrado:", customer);
-      } catch (error) {
-        console.log("Customer no encontrado, mostrando formulario...", error);
-
-        setCustomerForm({
-          name: getSafeUsername(currentUser),
-          dni: "",
-          phone: "",
-          address: "",
-        });
-
-        setShowCustomerForm(true);
-        setLoading(false);
-        return;
-      }
-
+      console.log("Customer encontrado:", customer);
       await createOrder(customer);
-    } catch (err) {
-      console.error("Error en checkout:", err);
-      alert("Error al procesar la compra: " + (err.message || "Error desconocido"));
+    } catch (error) {
+      console.log("Customer no encontrado, mostrando formulario...");
+      setCustomerForm({
+        name: getSafeUsername(currentUser),
+        dni: "",
+        phone: "",
+        address: "",
+      });
+      setShowCustomerForm(true);
       setLoading(false);
     }
   };
@@ -146,7 +127,9 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
         return;
       }
 
-      if (!customerForm.name || !customerForm.dni || !customerForm.phone || !customerForm.address) {
+      const { name, dni, phone, address } = customerForm;
+
+      if (!name || !dni || !phone || !address) {
         alert("Por favor complete todos los campos obligatorios");
         setLoading(false);
         return;
@@ -160,26 +143,26 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
       }
 
       const newCustomerData = {
-        name: customerForm.name,
-        dni: customerForm.dni,
-        phone: customerForm.phone,
-        address: customerForm.address, // ✅ corregido: "address"
-        userId: userId, // ✅ usamos el id seguro
+        name,
+        dni,
+        phone,
+        address,
+        userId,
       };
 
-      console.log("Creando customer con datos:", newCustomerData);
+      console.log("📤 Enviando customer al backend:", newCustomerData);
 
-      const response = await axiosServices.post("/api/customers", newCustomerData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const createdCustomer = await customerService.createCustomer(newCustomerData);
+      console.log("✅ Customer creado:", createdCustomer);
 
-      const createdCustomer = response.data;
       setShowCustomerForm(false);
-
       await createOrder(createdCustomer);
     } catch (err) {
-      console.error("Error creando customer:", err);
-      alert("Error al crear el perfil: " + (err.message || "Error desconocido"));
+      console.error("Error creando customer:", err.response || err);
+      alert(
+        "Error al crear el perfil: " +
+          (err.response?.data?.message || err.message || "Error desconocido")
+      );
       setLoading(false);
     }
   };
@@ -196,8 +179,10 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
           quantity: it.quantity,
           subtotal: it.price * it.quantity,
         })),
-        total: total,
+        total,
       };
+
+      console.log("📦 Enviando orden:", orderData);
 
       const order = await orderService.createOrder(orderData);
       alert("✅ Pedido creado correctamente. Total: $" + order.total.toFixed(2));
@@ -207,15 +192,11 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
     } catch (err) {
       console.error("Error creando orden:", err);
       alert("Error al crear el pedido: " + (err.message || "Error desconocido"));
-      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  // ============================
-  // 🚫 Cancelar formulario
-  // ============================
   const handleCancelCustomerForm = () => {
     setShowCustomerForm(false);
     setLoading(false);
@@ -227,20 +208,17 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   const debugAuth = () => {
     console.log("=== DEBUG AUTH ===");
     console.log("Token:", localStorage.getItem("token"));
-    console.log("CurrentUser state:", currentUser);
+    console.log("CurrentUser:", currentUser);
 
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const userFromToken = getUserFromToken(token);
         console.log("User from token:", userFromToken);
-        console.log("Token válido:", !userFromToken?.isExpired);
       } catch (error) {
         console.error("Error decoding token:", error);
       }
     }
-
-    console.log("=== FIN DEBUG ===");
   };
 
   // ============================
@@ -250,7 +228,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
     <div className="bg-white p-6 rounded shadow">
       <h2 className="text-xl font-bold mb-4">Resumen de la compra</h2>
 
-      {/* Botón de debug */}
       <button
         onClick={debugAuth}
         className="w-full mb-4 bg-yellow-500 text-white py-2 rounded text-sm"
@@ -296,7 +273,6 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
         Total <span className="float-right">${total.toFixed(2)}</span>
       </div>
 
-      {/* Formulario de Customer */}
       {showCustomerForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
@@ -334,7 +310,9 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Teléfono *</label>
+                <label className="block text-sm font-medium mb-1">
+                  Teléfono *
+                </label>
                 <input
                   type="tel"
                   name="phone"
@@ -347,7 +325,9 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Dirección *</label>
+                <label className="block text-sm font-medium mb-1">
+                  Dirección *
+                </label>
                 <input
                   type="text"
                   name="address"
