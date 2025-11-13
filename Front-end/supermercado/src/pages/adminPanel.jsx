@@ -17,7 +17,8 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
-const elementoSchema = z.object({
+// Base de validaciones compartidas
+const baseSchema = {
   name: z
     .string()
     .min(3, "Mínimo 3 caracteres")
@@ -28,14 +29,58 @@ const elementoSchema = z.object({
     .max(100, "Máximo 100 caracteres"),
   price: z.number().min(0.01, "El precio debe ser mayor a 0"),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
+};
+
+// 1. Schema para CREAR (Obligatorio: Categoría y Nueva Imagen)
+const createElementoSchema = z.object({
+  ...baseSchema,
   categoryId: z.number().min(1, "Debe seleccionar una categoría"),
   image: z
     .any()
     .refine((fileList) => fileList && fileList.length === 1, {
       message: "Debe subir una imagen",
     })
+    .refine((fileList) => fileList[0].size <= MAX_FILE_SIZE, {
+      message: `El tamaño máximo es ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+    })
+    .refine((fileList) => ACCEPTED_IMAGE_TYPES.includes(fileList[0].type), {
+      message: `Solo se aceptan los formatos: ${ACCEPTED_IMAGE_TYPES.map(
+        (t) => t.split("/")[1]
+      ).join(", ")}`,
+    }),
+});
+
+// 2. Schema para ACTUALIZAR (Opcional: Categoría e Imagen)
+const updateElementoSchema = z.object({
+  ...baseSchema,
+  // Permite z.number, "" (opción vacía del select), o null.
+  categoryId: z
+    .union([
+      z.number().min(1, "Debe seleccionar una categoría válida"),
+      z.literal(""),
+      z.null(),
+    ])
+    .optional()
+    .transform((e) => {
+      // Transforma la cadena vacía ("") a null.
+      if (e === "") return null;
+      if (typeof e === "number") return e;
+      return e;
+    }),
+
+  image: z
+    .any()
+    .optional()
+    .refine(
+      (fileList) => !fileList || fileList.length === 0 || fileList.length === 1,
+      {
+        message:
+          "Debe subir una imagen o no subir nada, pero no múltiples archivos.",
+      }
+    )
     .refine(
       (fileList) => {
+        if (!fileList || fileList.length === 0) return true;
         const file = fileList[0];
         return file && file.size <= MAX_FILE_SIZE;
       },
@@ -45,6 +90,7 @@ const elementoSchema = z.object({
     )
     .refine(
       (fileList) => {
+        if (!fileList || fileList.length === 0) return true;
         const file = fileList[0];
         return file && ACCEPTED_IMAGE_TYPES.includes(file.type);
       },
@@ -67,8 +113,7 @@ export default function AdminPanel() {
   } = useProducts();
   const { data: categorias = [], isLoading: loadingCategorias } =
     useCategories();
-  // TEMPORAL: Comentado para evitar error 401 mientras se arregla el backend
-  // const { data: usuarios = [], isLoading: loadingUsuarios } = useUsers();
+
   const usuarios = []; // Temporal
   const loadingUsuarios = false; // Temporal
   const [saving, setSaving] = useState(false);
@@ -85,13 +130,28 @@ export default function AdminPanel() {
   const tableRef = useRef(null);
   const [highlightId, setHighlightId] = useState(null);
 
+  // Seleccionar el esquema según el modo
+  const currentSchema = useMemo(() => {
+    return editingId ? updateElementoSchema : createElementoSchema;
+  }, [editingId]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     setValue,
-  } = useForm({ resolver: zodResolver(elementoSchema) });
+  } = useForm({
+    resolver: zodResolver(currentSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0.01,
+      stock: 0,
+      categoryId: "", // Inicializar con "" para la opción vacía del select
+      image: null,
+    },
+  });
 
   // Datos provistos por React Query; error se maneja desde hook productos
   useEffect(() => {
@@ -108,28 +168,64 @@ export default function AdminPanel() {
       setErrorMsg("");
       setSuccessMsg("");
 
-      // Normalizar payload numérico para evitar que algún valor llegue como string
-      const payload = {
-        ...data,
-        price: Number(data.price),
-        stock: Number.isFinite(data.stock) ? data.stock : 0,
-      };
+      const formData = new FormData();
+
+      // Usamos PascalCase para coincidir con tu DTO de C#
+      formData.append("Name", data.name);
+      formData.append("Description", data.description);
+      formData.append("Price", String(data.price));
+      formData.append("Stock", String(data.stock ?? 0));
+
       let resp;
+      let isUpdating = !!editingId;
 
-      if (editingId) {
-        resp = await api.put(`/api/products/${editingId}`, payload);
+      if (isUpdating) {
+        // --- Lógica de Edición ---
+
+        let categoryIdValue = data.categoryId;
+
+        // Si el valor no es nulo/vacío, lo convertimos a número (ya que el select no usa valueAsNumber)
+        if (
+          categoryIdValue !== null &&
+          categoryIdValue !== undefined &&
+          categoryIdValue !== ""
+        ) {
+          categoryIdValue = Number(categoryIdValue);
+        } else {
+          categoryIdValue = null;
+        }
+
+        // Solo agregar categoryId si es un número válido (> 0)
+        // Esto previene enviar null o 0 al backend, dejando que preserve el valor.
+        if (categoryIdValue > 0) {
+          formData.append("CategoryId", String(categoryIdValue));
+        }
+
+        // Imagen: Solo si hay un nuevo archivo seleccionado
+        if (data.image && data.image.length > 0) {
+          formData.append("Image", data.image[0]);
+        }
+
+        // Hacemos el PUT con el ID
+        resp = await api.put(`/api/products/${editingId}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       } else {
-        // Crear FormData para enviar como multipart/form-data (requerido por backend)
-        const formData = new FormData();
-        formData.append("name", payload.name); // Backend espera "name"
-        formData.append("description", payload.description);
-        formData.append("price", String(payload.price));
-        formData.append("stock", String(payload.stock));
-        formData.append("categoryId", String(payload.categoryId)); // Agregar categoryId
+        // --- Lógica de Creación ---
 
-        // Agregar la imagen real del formulario
-        const imageFile = data.image[0]; // Viene del react-hook-form
-        formData.append("image", imageFile);
+        // Categoría y Imagen son obligatorias y ya validadas por createElementoSchema
+        if (!data.categoryId) {
+          // Este chequeo es redundante si Zod funciona, pero es buena práctica de seguridad
+          throw new Error(
+            "Debe seleccionar una categoría para crear el producto."
+          );
+        }
+
+        // Aquí data.categoryId es un número (gracias a valueAsNumber: !editingId)
+        formData.append("CategoryId", String(data.categoryId));
+
+        // La imagen es obligatoria para crear
+        formData.append("Image", data.image[0]);
 
         resp = await api.post("/api/products", formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -143,35 +239,25 @@ export default function AdminPanel() {
       setShowForm(false);
       setEditingId(null);
       setSuccessMsg(
-        editingId
+        isUpdating
           ? "Producto actualizado con éxito"
           : "Producto creado con éxito"
       );
-      // Al guardar, limpiar filtros para que el producto aparezca en la lista principal
-      setSearch("");
-      setCategoryFilter("todos");
-      // Desplazar a la tabla principal
+      // Lógica de scroll y highlight
       setTimeout(() => {
         tableRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
       }, 50);
-      // Resaltar la fila creada/actualizada durante ~1.8s
       const updatedId = editingId || resp?.data?.id;
       if (updatedId) {
         setHighlightId(updatedId);
         setTimeout(() => setHighlightId(null), 1800);
       }
     } catch (error) {
-      if (error.response?.status === 401) {
-        setErrorMsg(
-          "Error de autorización: El backend no acepta el token JWT. Contacte al administrador del sistema."
-        );
-      } else {
-        const mensaje = error.response?.data?.message || error.message;
-        setErrorMsg("Error al guardar producto: " + mensaje);
-      }
+      const mensaje = error.response?.data?.message || error.message;
+      setErrorMsg("Error al guardar producto: " + mensaje);
     } finally {
       setSaving(false);
     }
@@ -182,13 +268,17 @@ export default function AdminPanel() {
     setValue("name", p.name);
     setValue("price", p.price);
     setValue("description", p.description);
-    setValue("category", p.category);
+    // Inicializar categoryId con el ID o "" si es nulo, para que la opción vacía funcione.
+    setValue("categoryId", p.categoryId > 0 ? p.categoryId : "");
     setValue("stock", p.stock ?? 0);
+    // Asegurarse de que el campo de archivo esté limpio
+    setValue("image", null);
     setShowForm(true);
     requestAnimationFrame(() => {
       formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   };
+
   const handleDelete = async (id) => {
     if (!confirm("¿Eliminar este producto?")) return;
     try {
@@ -196,7 +286,7 @@ export default function AdminPanel() {
       setErrorMsg("");
       setSuccessMsg("");
       await api.delete(`/api/products/${id}`);
-      // Idealmente invalidar cache de productos (se puede centralizar en un custom hook/mutación)
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
       setSuccessMsg("Producto eliminado con éxito");
     } catch (error) {
       if (error.response?.status === 401) {
@@ -316,7 +406,10 @@ export default function AdminPanel() {
           Stock acumulado: {stockTotal}
         </p>
       </div>
-      <div className="bg-white rounded-2xl shadow p-6 border border-green-50" onClick={() => setLocation("/admin/users")}>
+      <div
+        className="bg-white rounded-2xl shadow p-6 border border-green-50"
+        onClick={() => setLocation("/admin/users")}
+      >
         <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
           Usuarios
         </h2>
@@ -519,12 +612,18 @@ export default function AdminPanel() {
 
           {/* Campo de categoría */}
           <div className="mb-4">
-            <label className="block font-semibold mb-1">Categoría</label>
+            <label className="block font-semibold mb-1">
+              Categoría{" "}
+              {editingId ? "(opcional - dejar vacío para no cambiar)" : ""}
+            </label>
             <select
-              {...register("categoryId", { valueAsNumber: true })}
+              // 💡 CORRECCIÓN: valueAsNumber solo activo cuando NO estamos editando (crear)
+              {...register("categoryId", { valueAsNumber: !editingId })}
               className="w-full border px-3 py-2 rounded"
             >
-              <option value="">Seleccionar categoría</option>
+              <option value="">
+                {editingId ? "No cambiar categoría" : "Seleccionar categoría"}
+              </option>
               {categorias.map((categoria) => (
                 <option key={categoria.id} value={categoria.id}>
                   {categoria.name}
@@ -540,7 +639,10 @@ export default function AdminPanel() {
 
           {/* Campo de imagen */}
           <div className="mb-4">
-            <label className="block font-semibold mb-1">Imagen</label>
+            <label className="block font-semibold mb-1">
+              Imagen{" "}
+              {editingId ? "(opcional - dejar vacío para no cambiar)" : ""}
+            </label>
             <input
               type="file"
               accept="image/*"
