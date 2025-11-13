@@ -20,15 +20,8 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           {/* Logo y Menú Principal */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" />
-              </svg>
+            <Link href="/" className="flex items-center gap-5">
+              <img src="/logo-libreria-blanco.png" alt="Logo Librería Rayuela" className="w-10 h-auto" />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">
                 Librería Rayuela
               </span>
@@ -105,8 +98,8 @@ export default function Navbar() {
                 )}
 
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium px-3 py-2 bg-white/10 rounded-md">
-                    {user?.name} {role ? `(${role})` : ""}
+                  <span className="text-sm font-medium px-3 py-2 bg-white/10 rounded-md text-white/70">
+                    {user?.name} {role ? `${role}` : ""}
                   </span>
                   <button
                     onClick={logout}

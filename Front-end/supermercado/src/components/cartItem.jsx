@@ -7,7 +7,7 @@ export default function CartItem({ item }) {
   return (
     <div className="flex items-center gap-4 border-b py-4">
       <img
-        src={item.image}
+        src={item.imageUrl}
         alt={item.name}
         loading="lazy"
         className="w-20 h-20 object-contain"

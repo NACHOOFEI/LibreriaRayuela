@@ -26,7 +26,7 @@ const baseSchema = {
   description: z
     .string()
     .min(10, "Mínimo 10 caracteres")
-    .max(100, "Máximo 100 caracteres"),
+    .max(2000, "Máximo 2000 caracteres"),
   price: z.number().min(0.01, "El precio debe ser mayor a 0"),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
 };
@@ -308,7 +308,7 @@ export default function AdminPanel() {
   const productosPorCategoria = useMemo(() => {
     const map = new Map();
     for (const p of productos) {
-      map.set(p.category, (map.get(p.category) || 0) + 1);
+      map.set(p.category?.name, (map.get(p.category?.name) || 0) + 1);
     }
     return Array.from(map, ([label, value]) => ({ label, value })).sort(
       (a, b) => b.value - a.value
@@ -321,7 +321,7 @@ export default function AdminPanel() {
 
   // Derivar categorías únicas para filtros
   const categoriasUnicas = useMemo(() => {
-    const setCat = new Set(productos.map((p) => p.category));
+    const setCat = new Set(productos.map((p) => p.category?.name));
     return Array.from(setCat).sort();
   }, [productos]);
 
@@ -334,11 +334,11 @@ export default function AdminPanel() {
         (p) =>
           p.name?.toLowerCase().includes(q) ||
           String(p.id).includes(q) ||
-          p.category.toLowerCase().includes(q)
+          p.category?.name.toLowerCase().includes(q)
       );
     }
     if (categoryFilter !== "todos") {
-      data = data.filter((p) => p.category === categoryFilter);
+      data = data.filter((p) => p.category?.name === categoryFilter);
     }
     if (sortConfig.key) {
       data.sort((a, b) => {
@@ -503,7 +503,7 @@ export default function AdminPanel() {
                 ","
               );
               const rows = productosFiltrados.map((p) =>
-                [p.id, p.name, p.price, p.category, p.stock ?? 0].join(",")
+                [p.id, p.name, p.price, p.category?.name, p.stock ?? 0].join(",")
               );
               const csv = [header, ...rows].join("\n");
               const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -734,7 +734,7 @@ export default function AdminPanel() {
                   <td className="px-4 py-3 text-gray-700">${p.price}</td>
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[11px] font-semibold">
-                      {p.category}
+                      {p.category?.name || "Sin categoría"}
                     </span>
                   </td>
                   <td className="px-4 py-3">
@@ -814,7 +814,7 @@ export default function AdminPanel() {
                     <td className="px-3 py-2">${p.price}</td>
                     <td className="px-3 py-2">
                       <span className="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-semibold">
-                        {p.category}
+                        {p.category?.name || "Sin categoría"}
                       </span>
                     </td>
                     <td className="px-3 py-2">

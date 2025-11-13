@@ -25,7 +25,7 @@ export default function ProductModal({ product, onClose, onAdd }) {
           <X size={24} />
         </button>
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt={product.name}
           loading="lazy"
           className="w-full h-64 object-contain mb-4"
