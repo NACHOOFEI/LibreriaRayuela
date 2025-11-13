@@ -10,10 +10,6 @@ namespace LibreriaOnline.Models.Customer.Dto
 
         public string? DNI { get; set; }
 
-        [EmailAddress(ErrorMessage = "El correo electrónico no es válido")]
-        [MaxLength(100, ErrorMessage = "No más de 100 caracteres")]
-        public string? Email { get; set; }
-
         [Phone(ErrorMessage = "El número de teléfono no es válido")]
         public string? Phone { get; set; }
 
