@@ -15,7 +15,7 @@ namespace LibreriaOnline.Models.Customer.Dto
         public string Phone { get; set; }
 
         [MaxLength(100, ErrorMessage = "No más de 100 caracteres")]
-        public string Adress { get; set; }
+        public string Address { get; set; }
 
         public int UserId { get; set; }
 

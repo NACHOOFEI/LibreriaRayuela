@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using LibreriaOnline.Models.Customer;
 using LibreriaOnline.Models.Customer.Dto;
 using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibreriaOnline.Controllers
 {
@@ -32,8 +34,21 @@ namespace LibreriaOnline.Controllers
         [HttpPost]
         async public Task<ActionResult<CustomerDTO>> CreateOne([FromBody] CustomerInsertDTO customerInsertDTO)
         {
-            var customerDto = await _services.CreateOne(customerInsertDTO);
-            return CreatedAtAction(nameof(GetById), new { id = customerDto.Id }, customerDto);
+            try
+            {
+                var customerDto = await _services.CreateOne(customerInsertDTO);
+                return CreatedAtAction(nameof(GetById), new { id = customerDto.Id }, customerDto);
+            }
+            catch (HttpResponseError ex)
+            {
+                return StatusCode((int)ex.StatusCode, new HttpMessage(ex.Message));
+            }
+            catch (Exception ex) {
+
+
+                Console.WriteLine($"❌ Error creando Customer: {ex.Message}");
+                return BadRequest(new { message = "Error al crear el cliente", error = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
