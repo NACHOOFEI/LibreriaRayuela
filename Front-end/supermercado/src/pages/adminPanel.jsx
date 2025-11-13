@@ -407,14 +407,14 @@ export default function AdminPanel() {
         </p>
       </div>
       <div
-        className="bg-white rounded-2xl shadow p-6 border border-green-50"
+        className="bg-white rounded-2xl shadow p-6 border border-green-50 hover:cursor-pointer"
         onClick={() => setLocation("/admin/users")}
       >
-        <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+        <h2 className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide ">
           Usuarios
         </h2>
         <p className="text-4xl font-bold text-green-600">{totalUsuarios}</p>
-        <p className="text-xs text-gray-500 mt-1">(mock)</p>
+        <p className="text-xs text-gray-500 mt-1">Ver detalles</p>
       </div>
     </div>
   );
