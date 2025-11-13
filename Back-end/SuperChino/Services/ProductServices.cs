@@ -11,17 +11,34 @@ namespace SuperChino.Services
     {
         private readonly IProductRepository _repo;
         private IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepo;
         private readonly S3Services _s3;
-        public ProductServices(IProductRepository repo, IMapper mapper, S3Services s3)
+        public ProductServices(IProductRepository repo, IMapper mapper, S3Services s3, ICategoryRepository categoryRepo)
         {
             _repo = repo;
             _mapper = mapper;
-            _s3=s3;
+            _s3 = s3;
+            _categoryRepo = categoryRepo;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
             var products = await _repo.GetAll();
+
+            foreach (var product in products)
+            {
+                if (product.CategoryId != null)
+                {
+                    var category = await _categoryRepo.GetOne(c => c.Id == product.CategoryId);
+                    if (category == null)
+                    {
+                        throw new HttpResponseError(HttpStatusCode.NotFound, "Categoría no encontrada");
+                    }
+
+                    product.Category = category;
+                }
+            }
+
             return products.Select(c => _mapper.Map<ProductDTO>(c));
         }
         public async Task<ProductDTO> GetById(int id)
@@ -29,6 +46,17 @@ namespace SuperChino.Services
             var product = await _repo.GetOne(c => c.Id == id);
             if (product != null)
             {
+                if (product.CategoryId != null)
+                {
+                    var category = await _categoryRepo.GetOne(c => c.Id == product.CategoryId);
+                    if (category == null)
+                    {
+                        throw new HttpResponseError(HttpStatusCode.NotFound, "Categoría no encontrada");
+                    }
+
+                    product.Category = category;
+                }
+
                 var productDto = _mapper.Map<ProductDTO>(product);
                 return productDto;
             }
@@ -45,6 +73,15 @@ namespace SuperChino.Services
             var product = _mapper.Map<Product>(productInsertDTO);
             
             product.ImageUrl = imageUrl;
+
+            var category = await _categoryRepo.GetOne(c => c.Id == productInsertDTO.CategoryId);
+            if (category == null)
+            {
+                throw new HttpResponseError(HttpStatusCode.NotFound, "Categoría no encontrada");
+            }
+
+            // Asignar la categoría de navegación
+            product.Category = category;
 
             await _repo.CreateOne(product);
             await _repo.Save();
@@ -73,6 +110,17 @@ namespace SuperChino.Services
             if (productUpdateDTO.Price.HasValue)
             {
                 product.Price = productUpdateDTO.Price.Value;
+            }
+
+            if (product.CategoryId != null)
+            {
+                var category = await _categoryRepo.GetOne(c => c.Id == product.CategoryId);
+                if (category == null)
+                {
+                    throw new HttpResponseError(HttpStatusCode.NotFound, "Categoría no encontrada");
+                }
+
+                product.Category = category;
             }
 
             await _repo.UpdateOne(product);
