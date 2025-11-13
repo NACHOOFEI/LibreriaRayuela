@@ -1,10 +1,10 @@
-# 🛒 Supermercado Online - Control de Stock y Gestión de Usuarios
+# 📚 Librería Online 
 
 ## 📌 Descripción General
-Este proyecto es una **aplicación web** para la gestión integral de un supermercado.  
+Este proyecto es una **aplicación web** para la gestión integral de una librería.  
 Permite **controlar el stock de productos**, **administrar usuarios con diferentes roles** (Administrador y Cliente) y ofrecer a los clientes la posibilidad de **ver los productos disponibles** desde una interfaz moderna y simple.
 
-El objetivo es digitalizar el manejo del supermercado, optimizando el control de inventario, las operaciones de venta y la experiencia del usuario final.
+El objetivo es digitalizar el flujo y manejo de una librería, optimizando el control de inventario, las operaciones de venta y la experiencia del usuario final.
 
 ---
 
@@ -19,7 +19,7 @@ El objetivo es digitalizar el manejo del supermercado, optimizando el control de
 
 - **Cliente**
   - Visualiza los productos disponibles.
-  - Consulta precios, categorías y detalles.
+  - Consulta precios, categorías (géneros) y detalles.
   - (Opcional) Puede registrarse, iniciar sesión y realizar pedidos.
 
 ---
