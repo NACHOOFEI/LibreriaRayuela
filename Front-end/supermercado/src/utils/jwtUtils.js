@@ -104,8 +104,8 @@ export function getUserFromToken(token) {
   if (!payload) return null;
 
   return {
-    id: getUserIdFromToken(token),
-    role: getRoleFromToken(token),
+    id: payload.Id ?? payload.id,
+    roles: Array.isArray(payload.role) ? payload.role : [payload.role], // siempre array
     isExpired: isTokenExpired(token),
     exp: payload.exp,
     rawPayload: payload,

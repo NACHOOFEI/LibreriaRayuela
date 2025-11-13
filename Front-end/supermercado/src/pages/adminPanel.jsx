@@ -59,7 +59,7 @@ const elementoSchema = z.object({
 export default function AdminPanel() {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
-const [ ,setLocation] = useLocation();
+  const [, setLocation] = useLocation();
   const {
     data: productos = [],
     isLoading: loadingProductos,
