@@ -29,7 +29,7 @@ export default function App() {
     hydrate();
   }, [hydrate]);
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {!hideNavbar && <Navbar />}
       <main className="flex-grow">
         <Suspense
