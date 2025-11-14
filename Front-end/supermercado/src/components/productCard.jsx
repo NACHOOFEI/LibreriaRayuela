@@ -68,11 +68,11 @@ export default function ProductCard({ product, onAdd, onOpen }) {
           disabled={isAdding || atMax}
           className={`
             flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl
-            font-medium text-sm transition-all duration-300 cursor-pointer
+            font-medium text-sm transition-all duration-300 cursor-pointer active:scale-95 transition-transform 
             ${
               isAdding || atMax
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-lg hover:shadow-purple-500/30"
+                : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-lg hover:shadow-purple-500/30 active:bg-gradient-to-r active:from-blue-800 active:to-green-500"
             }
           `}
         >
