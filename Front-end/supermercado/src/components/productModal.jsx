@@ -16,7 +16,7 @@ export default function ProductModal({ product, onClose, onAdd }) {
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-lg relative">
         <button
           onClick={onClose}
