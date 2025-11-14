@@ -16,8 +16,17 @@ export const orderService = {
 
 export const customerService = {
   getByUserId: async (userId) => {
-    const response = await axiosServices.get(`/api/customers/${userId}`);
-    return response.data;
+    try {
+      const response = await axiosServices.get(`/api/customers/${userId}`);
+      return response.data;
+    } catch (error) {
+      // Si es 404, retornar null en lugar de lanzar error
+      if (error.response?.status === 404) {
+        return null;
+      }
+      // Para otros errores, sí lanzar
+      throw error;
+    }
   },
 
   createCustomer: async (customerData) => {
@@ -99,19 +108,26 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
       if (!userId) throw new Error("No se pudo obtener el ID del usuario");
 
       console.log("Buscando customer para userId:", userId);
+      
       const customer = await customerService.getByUserId(userId);
-
-      console.log("Customer encontrado:", customer);
-      await createOrder(customer);
+      
+      if (customer) {
+        console.log("Customer encontrado:", customer);
+        await createOrder(customer);
+      } else {
+        console.log("Customer no encontrado, mostrando formulario de registro...");
+        setCustomerForm({
+          name: getSafeUsername(currentUser),
+          dni: "",
+          phone: "",
+          address: "",
+        });
+        setShowCustomerForm(true);
+        setLoading(false);
+      }
     } catch (error) {
-      console.log("Customer no encontrado, mostrando formulario...");
-      setCustomerForm({
-        name: getSafeUsername(currentUser),
-        dni: "",
-        phone: "",
-        address: "",
-      });
-      setShowCustomerForm(true);
+      console.error("Error en el proceso de checkout:", error);
+      alert("Error: " + (error.message || "Error desconocido"));
       setLoading(false);
     }
   };
@@ -156,6 +172,36 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
 
       const createdCustomer = await customerService.createCustomer(newCustomerData);
       console.log("✅ Customer creado:", createdCustomer);
+
+      // ACTUALIZAR EL USUARIO EN EL STORE Y LOCALSTORAGE CON EL CUSTOMERID, SIN PERDER EL TOKEN
+      try {
+        // Mantener el token actual
+        const token = localStorage.getItem("token");
+        const authStore = require("../store/authStore");
+        const user = { ...currentUser, customerId: createdCustomer.id };
+        if (authStore?.useAuthStore?.getState) {
+          authStore.useAuthStore.getState().login(user);
+        }
+        // Reescribir el usuario en localStorage, pero NO tocar el token
+        localStorage.setItem("authUser", JSON.stringify(user));
+        if (token) {
+          localStorage.setItem("token", token);
+        }
+      } catch (e) {
+        // fallback: actualizar localStorage manualmente si fuera necesario
+        try {
+          const token = localStorage.getItem("token");
+          const raw = localStorage.getItem("authUser");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            parsed.customerId = createdCustomer.id;
+            localStorage.setItem("authUser", JSON.stringify(parsed));
+          }
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+        } catch {}
+      }
 
       setShowCustomerForm(false);
       await createOrder(createdCustomer);
