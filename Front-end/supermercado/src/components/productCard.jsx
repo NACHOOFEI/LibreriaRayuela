@@ -68,7 +68,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
           disabled={isAdding || atMax}
           className={`
             flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl
-            font-medium text-sm transition-all duration-300
+            font-medium text-sm transition-all duration-300 cursor-pointer
             ${
               isAdding || atMax
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
