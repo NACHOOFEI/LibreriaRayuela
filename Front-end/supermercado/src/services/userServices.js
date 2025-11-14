@@ -8,4 +8,13 @@ export const userServices = {
   },
 };
 
+export const getUsers = async () => {
+  try {
+    const response = await api.get("/api/users");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 export default userServices;
