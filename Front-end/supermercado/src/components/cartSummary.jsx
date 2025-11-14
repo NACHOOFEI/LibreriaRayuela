@@ -78,7 +78,7 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   // ============================
   const getSafeUsername = (user) => {
     if (!user) return "Usuario";
-    return user.name || user.username || "Usuario";
+    return user.name || user.username;
   };
 
   const getSafeUserId = (user) => {
@@ -239,8 +239,6 @@ const createOrder = async (customer) => {
 
     setOrder({ items, total, shipping });
 
-    alert("✅ Pedido creado correctamente. Total: $" + order.data.total.toFixed(2));
-    // clearCart();
     if (onCheckout) onCheckout();
   } catch (err) {
     console.error("Error creando orden:", err);
@@ -297,7 +295,7 @@ const createOrder = async (customer) => {
       </div>
 
       {showCustomerForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
             <h3 className="text-lg font-bold mb-4">Completa tus datos</h3>
             <p className="text-sm text-gray-600 mb-4">

@@ -24,7 +24,7 @@ export default function AboutUs() {
           <img
             src="/local-libreria-rayuela.png"
             alt="Foto de la librería"
-            className="w-full h-auto rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+            className="w-full h-auto rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
           />
         </div>
       </div>

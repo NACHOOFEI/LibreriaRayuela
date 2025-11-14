@@ -23,7 +23,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
       onClick={(e) => {
         if (!e.target.closest("button")) onOpen(product);
       }}
-      className="group relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+      className="group relative w-70 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
     >
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
@@ -68,7 +68,7 @@ export default function ProductCard({ product, onAdd, onOpen }) {
           disabled={isAdding || atMax}
           className={`
             flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl
-            font-medium text-sm transition-all duration-300
+            font-medium text-sm transition-all duration-300 cursor-pointer
             ${
               isAdding || atMax
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"

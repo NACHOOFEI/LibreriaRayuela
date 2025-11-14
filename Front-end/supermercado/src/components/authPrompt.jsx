@@ -23,19 +23,19 @@ export default function AuthPrompt({ isOpen, onClose }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/login"
-            className="flex-1 text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+            className="flex-1 items-center justify-center text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
           >
             Iniciar sesión
           </Link>
           <Link
             href="/register"
-            className="flex-1 text-center px-4 py-2 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50"
+            className="flex items-center justify-center text-center px-4 py-2 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50"
           >
             Registrarse
           </Link>
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 border"
+            className="flex-1 items-center justify-center text-center px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 border"
           >
             Seguir viendo
           </button>

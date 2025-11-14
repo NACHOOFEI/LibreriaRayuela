@@ -5,12 +5,6 @@ import { useCheckoutStore } from "../store/useCheckoutStore";
 export default function TransferenciaInfo() {
   const [, setLocation] = useLocation();
   const order = useCheckoutStore((s) => s.order);
-//   const { clearCart } = useCartStore();
-  
-
-//   useEffect(() => {
-//     clearCart();
-//   }, []);
   
   if (!order) {
     // Si el usuario entra directamente sin pasar por el modal
@@ -30,7 +24,7 @@ export default function TransferenciaInfo() {
         Para finalizar tu compra, realiza la transferencia con los siguientes datos:
       </p>
 
-      <div className="border rounded-lg p-4 bg-gray-50 mb-6">
+      <div className="border rounded-lg p-4 bg-gray-50 border-gray-300 mb-6">
         <p><strong>Banco:</strong> Banco Nación</p>
         <p><strong>Alias:</strong> libreria.rayuela.mp</p>
         <p><strong>CBU:</strong> 0110599500059923478822</p>
@@ -38,7 +32,7 @@ export default function TransferenciaInfo() {
       </div>
 
       <h3 className="text-lg font-semibold mb-2">Resumen de tu compra</h3>
-      <div className="border rounded-lg p-4 bg-gray-50 mb-6">
+      <div className="border rounded-lg p-4 bg-gray-50 border-gray-300 mb-6">
         <ul className="space-y-1">
           {items.map((it) => (
             <li key={it.id} className="flex justify-between text-sm">
@@ -47,7 +41,7 @@ export default function TransferenciaInfo() {
             </li>
           ))}
         </ul>
-        <div className="mt-3 border-t pt-2 text-right font-semibold">
+        <div className="mt-3 border-t pt-2 text-right font-semibold border-t-gray-300">
           Total: ${total.toFixed(2)}
         </div>
         <p className="text-sm text-gray-600 mt-2">

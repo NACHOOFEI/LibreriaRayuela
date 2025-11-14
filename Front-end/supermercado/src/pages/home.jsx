@@ -75,8 +75,8 @@ export default function Home() {
     );
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="grid md:grid-cols-3 gap-6">
+    <div className=" mx-auto p-6">
+      <div className="flex flex-wrap justify-center gap-10 w-full">
         {productos.map((p) => (
           <ProductCard
             key={p.id}
