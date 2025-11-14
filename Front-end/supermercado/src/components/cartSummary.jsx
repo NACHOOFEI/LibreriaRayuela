@@ -15,7 +15,7 @@ export const orderService = {
 
 export const customerService = {
   getByUserId: async (userId) => {
-    const response = await axiosServices.get(`/api/customers/user/${userId}`);
+    const response = await axiosServices.get(`/api/customers/${userId}`);
     return response.data;
   },
 
@@ -170,32 +170,37 @@ export default function CartSummary({ onCheckout, shipping, setShipping }) {
   // ============================
   // 📦 Crear orden
   // ============================
-  const createOrder = async (customer) => {
-    try {
-      const orderData = {
-        customerId: customer.id,
-        items: items.map((it) => ({
-          productId: it.id,
-          quantity: it.quantity,
-          subtotal: it.price * it.quantity,
-        })),
-        total,
-      };
+const createOrder = async (customer) => {
+  try {
+    const orderData = {
+      customerId: customer.id,
+      total: total, // ✅ AGREGAR ESTA LÍNEA
+      items: items.map(it => ({
+        productId: it.id,
+        quantity: it.quantity
+        // ❌ QUITAR: orderId: 0
+      }))
+    };
 
-      console.log("📦 Enviando orden:", orderData);
+    console.log("📦 Enviando orden:", orderData);
 
-      const order = await orderService.createOrder(orderData);
-      alert("✅ Pedido creado correctamente. Total: $" + order.total.toFixed(2));
-      clearCart();
+    const order = await axiosServices.post("/api/orders", orderData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (onCheckout) onCheckout();
-    } catch (err) {
-      console.error("Error creando orden:", err);
-      alert("Error al crear el pedido: " + (err.message || "Error desconocido"));
-    } finally {
-      setLoading(false);
-    }
-  };
+    alert("✅ Pedido creado correctamente. Total: $" + order.data.total.toFixed(2));
+    clearCart();
+    if (onCheckout) onCheckout();
+  } catch (err) {
+    console.error("Error creando orden:", err);
+    console.error("Detalles del error:", err.response?.data);
+    alert("Error al crear el pedido: " + (err.response?.data?.message || err.message || "Error desconocido"));
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleCancelCustomerForm = () => {
     setShowCustomerForm(false);

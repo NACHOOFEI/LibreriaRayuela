@@ -67,7 +67,7 @@ namespace LibreriaOnline.Controllers
         [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status403Forbidden)]
-        async public Task<ActionResult<OrderDTO>> CreateOne([FromForm] OrderInsertDTO orderInsertDTO)
+        async public Task<ActionResult<OrderDTO>> CreateOne([FromBody] OrderInsertDTO orderInsertDTO)
         {
             try
             {
