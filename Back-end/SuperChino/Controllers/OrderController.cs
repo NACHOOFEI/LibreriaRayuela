@@ -63,14 +63,14 @@ namespace LibreriaOnline.Controllers
 
         }
 
-        [HttpGet("customer/{customerId}")]
+        [HttpGet("user/{id}")]
         [ProducesResponseType(typeof(IEnumerable<OrderDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status500InternalServerError)]
-        async public Task<ActionResult<IEnumerable<OrderDTO>>> GetByCustomerId(int customerId)
+        async public Task<ActionResult<IEnumerable<OrderDTO>>> GetByUserId(int id)
         {
             try
             {
-                var orders = await _services.GetByCustomerId(customerId);
+                var orders = await _services.GetByUserId(id);
                 return Ok(orders);
             }
             catch (Exception ex)
