@@ -11,6 +11,7 @@ namespace LibreriaOnline.Services
     {
         private readonly IOrderRepository _repo;
         private readonly ICustomerRepository _customerRepository;
+        private readonly UserServices userServices;
         private readonly OrderItemServices _orderItemService;
         private readonly WhatsAppServices _appServices;
         private readonly ProductServices _productServices;
@@ -120,13 +121,13 @@ namespace LibreriaOnline.Services
             return null;
         }
 
-        public async Task<IEnumerable<OrderWithoutCustomerDTO>> GetByCustomerId(int userId)
+        public async Task<IEnumerable<OrderWithoutCustomerDTO>> GetByUserId(int userId)
         {
-            var customer = await _customerRepository.GetOne(c => c.Id == userId);
+            var customer = await _customerRepository.GetOne(c => c.UserId == userId);
             if (customer == null)
                 throw new Exception("El cliente especificado no existe.");
 
-            var orders = await _repo.GetAll(c => c.CustomerId == userId);
+            var orders = await _repo.GetAll(c => c.CustomerId == customer.Id);
             if (orders != null)
             { 
                 var ordersDtos = orders.Select(o => _mapper.Map<OrderWithoutCustomerDTO>(o));
