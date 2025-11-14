@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useCheckoutStore } from "../store/useCheckoutStore";
 
 export default function TransferenciaInfo() {
   const [, setLocation] = useLocation();
   const order = useCheckoutStore((s) => s.order);
+//   const { clearCart } = useCartStore();
+  
 
+//   useEffect(() => {
+//     clearCart();
+//   }, []);
+  
   if (!order) {
     // Si el usuario entra directamente sin pasar por el modal
     setLocation("/");

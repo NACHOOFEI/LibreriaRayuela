@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCartStore } from "../store/cartStore";
+import { useCheckoutStore } from "../store/useCheckoutStore";
 import axiosServices from "../services/axiosServices";
 import { getUserFromToken } from "../utils/jwtUtils";
 
@@ -30,6 +31,7 @@ export const customerService = {
 // ============================
 export default function CartSummary({ onCheckout, shipping, setShipping }) {
   const { items, clearCart } = useCartStore();
+  const setOrder = useCheckoutStore((s) => s.setOrder);
 
   const [loading, setLoading] = useState(false);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
@@ -174,11 +176,10 @@ const createOrder = async (customer) => {
   try {
     const orderData = {
       customerId: customer.id,
-      total: total, // ✅ AGREGAR ESTA LÍNEA
+      total: total, 
       items: items.map(it => ({
         productId: it.id,
         quantity: it.quantity
-        // ❌ QUITAR: orderId: 0
       }))
     };
 
@@ -190,8 +191,10 @@ const createOrder = async (customer) => {
       },
     });
 
+    setOrder({ items, total, shipping });
+
     alert("✅ Pedido creado correctamente. Total: $" + order.data.total.toFixed(2));
-    clearCart();
+    // clearCart();
     if (onCheckout) onCheckout();
   } catch (err) {
     console.error("Error creando orden:", err);
@@ -208,35 +211,11 @@ const createOrder = async (customer) => {
   };
 
   // ============================
-  // 🧠 Debug autenticación
-  // ============================
-  const debugAuth = () => {
-    console.log("=== DEBUG AUTH ===");
-    console.log("Token:", localStorage.getItem("token"));
-    console.log("CurrentUser:", currentUser);
-
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const userFromToken = getUserFromToken(token);
-        console.log("User from token:", userFromToken);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  };
-
-  // ============================
   // 🖼 Render
   // ============================
   return (
     <div className="bg-white p-6 rounded shadow">
       <h2 className="text-xl font-bold mb-4">Resumen de la compra</h2>
-
-      {/* <div className="mb-2">
-        Subtotal:
-        <span className="float-right font-bold">${subtotal.toFixed(2)}</span>
-      </div> */}
 
       <hr className="my-4" />
 

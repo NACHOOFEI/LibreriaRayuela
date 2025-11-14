@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "wouter";
 import { useCheckoutStore } from "../store/useCheckoutStore";
+import { useCartStore } from "../store/cartStore";
 
 export default function CheckoutModal({
   isOpen,
@@ -10,19 +11,18 @@ export default function CheckoutModal({
   shipping = "pickup",
 }) {
   const [, setLocation] = useLocation();
-  const setOrder = useCheckoutStore((s) => s.setOrder);
+  const {clearCart} = useCartStore();
+  
 
   if (!isOpen) return null;
 
   const totalItems = items.reduce((acc, it) => acc + it.quantity, 0);
 
   const handleFinalizarCompra = () => {
-    // Guardamos la orden en el store global
-    setOrder({ items, total, shipping });
-
     // Cerramos modal y redirigimos
     onClose?.();
     setLocation("/transferencia");
+    clearCart();
   };
 
   return (
