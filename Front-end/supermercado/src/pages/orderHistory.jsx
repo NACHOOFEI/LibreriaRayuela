@@ -8,12 +8,12 @@ export default function OrderHistory() {
 
   // Obtener las órdenes del cliente
   const { data: orders = [], isLoading, isError, error } = useQuery({
-    queryKey: ["customerOrders", user?.customerId],
-    queryFn: () => orderServices.getCustomerOrders(user?.customerId),
-    enabled: !!user?.customerId, // Solo hacer la petición si hay customerId
+    queryKey: ["customerOrders", user?.id],
+    queryFn: () => orderServices.getCustomerOrders(user?.id),
+    enabled: !!user?.id, // Solo hacer la petición si hay user id
   });
 
-  if (!user?.customerId) {
+  if (!user?.id) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
         <div className="max-w-4xl mx-auto">
@@ -144,8 +144,8 @@ export default function OrderHistory() {
                         {/* Imagen del producto */}
                         <div className="flex-shrink-0">
                           <img
-                            src={item.product.imageUrl || "/placeholder-product.png"}
-                            alt={item.product.name}
+                            // src={item.product.imageUrl || "/placeholder-product.png"}
+                            // alt={item.product.name}
                             className="w-20 h-20 object-cover rounded-md"
                             onError={(e) => {
                               e.target.src = "/placeholder-product.png";
@@ -156,10 +156,10 @@ export default function OrderHistory() {
                         {/* Información del producto */}
                         <div className="flex-grow">
                           <h5 className="font-semibold text-gray-900">
-                            {item.product.name}
+                            {/* {item.product.name} */}
                           </h5>
                           <p className="text-sm text-gray-500 line-clamp-1">
-                            {item.product.description}
+                            {/* {item.product.description} */}
                           </p>
                           <div className="flex items-center gap-4 mt-2 text-sm">
                             <span className="text-gray-600">

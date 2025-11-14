@@ -35,7 +35,7 @@ namespace LibreriaOnline.Config
             CreateMap<CategoryUpdateDTO, Category>();
 
             CreateMap<ProductInsertDTO, Product>();
-            CreateMap<Product, ProductDTO>();
+            CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<ProductUpdateDTO, Product>()
                 .ForAllMembers(opts =>
                     opts.Condition((src, dest, srcMember, destMember, context) =>

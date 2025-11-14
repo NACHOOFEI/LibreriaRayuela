@@ -18,8 +18,8 @@ export const orderServices = {
     const { data } = await api.delete(`/api/orders/${id}`);
     return data;
   },
-  getCustomerOrders: async (customerId) => {
-    const { data } = await api.get(`/api/orders/customer/${customerId}`);
+  getCustomerOrders: async (userId) => {
+    const { data } = await api.get(`/api/orders/user/${userId}`);
     return data;
   },
 };
