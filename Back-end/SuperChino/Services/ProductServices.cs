@@ -12,13 +12,15 @@ namespace LibreriaOnline.Services
         private readonly IProductRepository _repo;
         private IMapper _mapper;
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IOrderItemRepository _orderItemRepo;
         private readonly S3Services _s3;
-        public ProductServices(IProductRepository repo, IMapper mapper, S3Services s3, ICategoryRepository categoryRepo)
+        public ProductServices(IProductRepository repo, IMapper mapper, S3Services s3, ICategoryRepository categoryRepo, IOrderItemRepository orderItemRepository)
         {
             _repo = repo;
             _mapper = mapper;
             _s3 = s3;
             _categoryRepo = categoryRepo;
+            _orderItemRepo = orderItemRepository;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
@@ -169,6 +171,13 @@ namespace LibreriaOnline.Services
         public async Task<IEnumerable<Product>> GetByIds(List<int> ids)
         {
             return await _repo.GetAll(p => ids.Contains(p.Id));
+        }
+
+        public async Task<Product> GetByOrderItemId(int orderItemId)
+        {
+            var orderItem = await _orderItemRepo.GetOne(oi => oi.Id == orderItemId);
+            var product = await _repo.GetOne(p => p.Id == orderItem.ProductId);
+            return product;
         }
     }
 }
