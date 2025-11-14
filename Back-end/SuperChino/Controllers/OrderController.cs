@@ -64,6 +64,7 @@ namespace LibreriaOnline.Controllers
         }
 
         [HttpGet("customer/{customerId}")]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<OrderDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(HttpMessage), StatusCodes.Status500InternalServerError)]
         async public Task<ActionResult<IEnumerable<OrderDTO>>> GetByCustomerId(int customerId)

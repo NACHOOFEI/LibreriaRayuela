@@ -69,6 +69,27 @@ export default function Navbar() {
               )}
             </Link>
 
+            {/* Mis Órdenes - Solo para usuarios autenticados */}
+            {isAuthenticated && (
+              <Link
+                href="/mis-ordenes"
+                className={`px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10 transition-all flex items-center ${
+                  location === "/mis-ordenes" ? "bg-white/20" : ""
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-1"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                </svg>
+                Mis Órdenes
+              </Link>
+            )}
+
             {/* Auth Links */}
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
@@ -213,6 +234,17 @@ export default function Navbar() {
           >
             Carrito ({totalItems})
           </Link>
+
+          {isAuthenticated && (
+            <Link
+              href="/mis-ordenes"
+              className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10 transition-all ${
+                location === "/mis-ordenes" ? "bg-white/20" : ""
+              }`}
+            >
+              Mis Órdenes
+            </Link>
+          )}
 
           {isAuthenticated ? (
             <>
