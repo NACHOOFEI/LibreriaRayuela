@@ -53,19 +53,25 @@ const createElementoSchema = z.object({
 // 2. Schema para ACTUALIZAR (Opcional: Categoría e Imagen)
 const updateElementoSchema = z.object({
   ...baseSchema,
-  // Permite z.number, "" (opción vacía del select), o null.
+  // Permite z.number, string (que será convertido), "" (opción vacía del select), o null.
   categoryId: z
     .union([
       z.number().min(1, "Debe seleccionar una categoría válida"),
+      z.string(),
       z.literal(""),
       z.null(),
     ])
     .optional()
     .transform((e) => {
       // Transforma la cadena vacía ("") a null.
-      if (e === "") return null;
+      if (e === "" || e === null || e === undefined) return null;
+      // Si es un string numérico, convertirlo a número
+      if (typeof e === "string" && e !== "") {
+        const num = Number(e);
+        return isNaN(num) ? null : num;
+      }
       if (typeof e === "number") return e;
-      return e;
+      return null;
     }),
 
   image: z
