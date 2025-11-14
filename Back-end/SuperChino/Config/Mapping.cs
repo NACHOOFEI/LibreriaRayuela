@@ -60,6 +60,8 @@ namespace LibreriaOnline.Config
             CreateMap<OrderInsertDTO, Order>();
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderUpdateDTO, Order>();
+            CreateMap<OrderWithoutCustomerDTO, Order>().ReverseMap();
+
 
         }
     }

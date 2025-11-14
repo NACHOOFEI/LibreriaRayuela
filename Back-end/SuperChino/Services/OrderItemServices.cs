@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using LibreriaOnline.Models.Order.Dto;
 using LibreriaOnline.Models.OrderItem;
 using LibreriaOnline.Models.OrderItem.Dto;
 using LibreriaOnline.Models.Product;
 using LibreriaOnline.Models.Product.Dto;
+using LibreriaOnline.Models.User;
 using LibreriaOnline.Repositories;
 
 namespace LibreriaOnline.Services
@@ -14,12 +16,14 @@ namespace LibreriaOnline.Services
         private readonly IProductRepository _productRepository;
         private IMapper _mapper;
         private readonly ProductServices _products;
-        public OrderItemServices(IOrderItemRepository repo, IMapper mapper, IProductRepository productRepository, ProductServices products)
+        private readonly IOrderRepository _orderRepository;
+        public OrderItemServices(IOrderItemRepository repo, IMapper mapper, IProductRepository productRepository, ProductServices products, IOrderRepository orderRepository)
         {
             _repo = repo;
             _mapper = mapper;
             _productRepository = productRepository;
-            _products=products;
+            _products = products;
+            _orderRepository = orderRepository;
         }
 
         //public async Task<IEnumerable<OrderItemDTO>> GetAll()
@@ -75,6 +79,26 @@ namespace LibreriaOnline.Services
                 return orderItemDto;
             }
             return null;
+        }
+
+        public async Task<IEnumerable<OrderItemDTO>> GetByOrderId (int orderId)
+        {
+            var order = await _orderRepository.GetOne(o => o.Id == orderId);
+            if (order == null)
+                throw new Exception("La orden especificada no existe.");
+
+            var orderItems = await _repo.GetAll(o => o.OrderId == orderId);
+            if (orderItems != null)
+            {
+                var ordersItemsDtos = orderItems.Select(o => _mapper.Map<OrderItemDTO>(o));
+
+                return ordersItemsDtos;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         //public async Task<OrderItemDTO> UpdateOne(int id, OrderItemUpdateDTO orderItemUpdateDTO)
