@@ -115,48 +115,79 @@ ciertos roles acceder a determinadas vistas.
 
 ## 📂 Estructura del Proyecto
 
-### 📁 Backend (ASP.NET Core Web API)
+## 📂 Estructura del Proyecto — Backend
 
-    /Controllers
-        AuthController.cs
-        BooksController.cs
-        OrdersController.cs
-        UsersController.cs
+```
+/Config
+    AplicacionDbContext.cs
+    Mapping.cs
 
-    /Services
-        AuthService.cs
-        BookService.cs
-        OrderService.cs
-        WhatsAppService.cs
-        AwsS3Service.cs
+/Controllers
+    AuthController.cs
+    CategoryController.cs
+    CustomerController.cs
+    OrderController.cs
+    ProductController.cs
+    UserController.cs
 
-    /Repositories
-        BookRepository.cs
-        UserRepository.cs
-        OrderRepository.cs
+/Enums
 
-    /Models
-        User.cs
-        Book.cs
+/Migrations
+
+/Models
+    /Category
         Category.cs
+    /Customer
+        Customer.cs
+    /Order
         Order.cs
+        /Dto
+            OrderDto.cs
+    /OrderItem
         OrderItem.cs
+        /Dto
+            OrderItemDto.cs
+    /Product
+        Product.cs
+        /Dto
+            ProductDto.cs
+    /Rol
+        Rol.cs
+    /User
+        User.cs
+        /Dto
+            UserDto.cs
 
-    /DTOs
-        UserDTO.cs
-        LoginDTO.cs
-        RegisterDTO.cs
-        BookDTO.cs
-        OrderDTO.cs
+/Repositories
+    CategoryRepository.cs
+    CustomerRepository.cs
+    OrderItemRepository.cs
+    OrderRepository.cs
+    ProductRepository.cs
+    RolRepository.cs
+    UserRepository.cs
+    Repository.cs
 
-    /Config
-        JwtConfig.cs
-        AwsConfig.cs
+/Services
+    AuthServices.cs
+    CategoryServices.cs
+    CustomerServices.cs
+    EncoderServices.cs
+    OrderItemServices.cs
+    OrderServices.cs
+    ProductServices.cs
+    RolServices.cs
+    S3Services.cs
+    UserServices.cs
+    WhatsAppServices.cs
 
-    /Utils
-        JwtUtils.cs
-        PasswordHasher.cs
+/Utils
+    appsettings.json
+    Program.cs
+    SuperChino.http
+```
 
+---
 ------------------------------------------------------------------------
 
 ### 📁 Frontend (React + Vite)
