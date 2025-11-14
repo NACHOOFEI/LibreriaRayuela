@@ -165,5 +165,10 @@ namespace LibreriaOnline.Services
             _repo.UpdateOne(product);
             await _repo.Save();
         }
+
+        public async Task<IEnumerable<Product>> GetByIds(List<int> ids)
+        {
+            return await _repo.GetAll(p => ids.Contains(p.Id));
+        }
     }
 }

@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using LibreriaOnline.Config;
+using LibreriaOnline.Models.Product;
+using LibreriaOnline.Repositories;
+using LibreriaOnline.Services;
+using LibreriaOnline.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using LibreriaOnline.Config;
-using LibreriaOnline.Models.Product;
-using LibreriaOnline.Repositories;
-using LibreriaOnline.Services;
-using LibreriaOnline.Utils;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 
 ///autoMapper
 

@@ -28,7 +28,7 @@ namespace LibreriaOnline.Services
         }
         public async Task<CustomerDTO> GetById(int id)
         {
-            var customer = await _repo.GetOne(c => c.Id == id);
+            var customer = await _repo.GetOne(c => c.UserId == id);
             if (customer != null)
             {
                 var customerDto = _mapper.Map<CustomerDTO>(customer);

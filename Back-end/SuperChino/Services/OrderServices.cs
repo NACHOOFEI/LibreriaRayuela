@@ -2,6 +2,7 @@
 using LibreriaOnline.Models.Order;
 using LibreriaOnline.Models.Order.Dto;
 using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Models.Product.Dto;
 using LibreriaOnline.Repositories;
 
 namespace LibreriaOnline.Services
@@ -12,15 +13,16 @@ namespace LibreriaOnline.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly OrderItemServices _orderItemService;
         private readonly WhatsAppServices _appServices;
- 
+        private readonly ProductServices _productServices;
         private IMapper _mapper;
-        public OrderServices(IOrderRepository repo, IMapper mapper, ICustomerRepository customerRepository, OrderItemServices orderItemService, WhatsAppServices appServices)
+        public OrderServices(IOrderRepository repo, IMapper mapper, ICustomerRepository customerRepository, OrderItemServices orderItemService, WhatsAppServices appServices, ProductServices productServices)
         {
             _repo = repo;
             _mapper = mapper;
             _customerRepository = customerRepository;
             _orderItemService = orderItemService;
             _appServices=appServices;
+            _productServices=productServices;
         }
 
         public async Task<IEnumerable<OrderDTO>> GetAll()
@@ -38,32 +40,68 @@ namespace LibreriaOnline.Services
             }
             return null;
         }
+
+
         public async Task<OrderDTO> CreateOne(OrderInsertDTO orderInsertDTO)
         {
+            // 1️⃣ Verificar que exista el cliente
             var customer = await _customerRepository.GetOne(c => c.Id == orderInsertDTO.CustomerId);
             if (customer == null)
                 throw new Exception("El cliente especificado no existe.");
 
-            // Creamos y gaurdamos la orden en este momento para poder conseguir el Id de Order e insertarlo luego en los OrderItem creados dentro de esta.
+            // 2️⃣ Traer todos los productos de una sola vez
+            var productIds = orderInsertDTO.Items.Select(i => i.ProductId).ToList();
+            var products = await _productServices.GetByIds(productIds);
+            var productDict = products.ToDictionary(p => p.Id, p => p);
+
+            // 3️⃣ Crear la orden
             var order = new Order
             {
                 CustomerId = orderInsertDTO.CustomerId,
-                OrderDate = DateTime.UtcNow
+                OrderDate = DateTime.UtcNow,
+                Items = new List<OrderItem>()
             };
 
-            await _repo.CreateOne(order);
-            await _repo.Save(); 
-
+            // 4️⃣ Crear los items y restar stock directamente
             foreach (var itemDto in orderInsertDTO.Items)
             {
-                var orderItemDto = await _orderItemService.CreateOne(itemDto, order.Id);
-                order.Items.Add(_mapper.Map<OrderItem>(orderItemDto));
+                if (!productDict.TryGetValue(itemDto.ProductId, out var product))
+                    throw new Exception($"Producto con id {itemDto.ProductId} no encontrado");
+
+                if (product.Stock < itemDto.Quantity)
+                    throw new Exception($"No hay stock suficiente para {product.Name}");
+
+                // Restar stock
+                product.Stock -= itemDto.Quantity;
+
+                var orderItem = new OrderItem
+                {
+                    ProductId = itemDto.ProductId,
+                    Quantity = itemDto.Quantity,
+                    Subtotal = itemDto.Quantity * product.Price
+                };
+
+                order.Items.Add(orderItem);
             }
 
+            // 5️⃣ Calcular total
             order.Total = order.Items.Sum(i => i.Subtotal);
 
+            // 6️⃣ Guardar todo en el mismo contexto
+            await _repo.CreateOne(order);
+
+            // Guardar cambios de stock también
+            foreach (var product in products)
+            {
+                await _productServices.UpdateOne(product.Id, new ProductUpdateDTO { Stock = product.Stock });
+            }
+
             await _repo.Save();
+
+            // 7️⃣ Enviar mensaje de pago
             await _appServices.EnviarMensajeDePago(customer.Phone, order.Total);
+
+            // 8️⃣ Retornar DTO
             return _mapper.Map<OrderDTO>(order);
         }
 

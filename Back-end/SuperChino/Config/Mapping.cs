@@ -60,6 +60,7 @@ namespace LibreriaOnline.Config
             CreateMap<OrderInsertDTO, Order>();
             CreateMap<Order, OrderDTO>();
             CreateMap<OrderUpdateDTO, Order>();
+
         }
     }
 }
