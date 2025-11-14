@@ -233,17 +233,10 @@ const createOrder = async (customer) => {
     <div className="bg-white p-6 rounded shadow">
       <h2 className="text-xl font-bold mb-4">Resumen de la compra</h2>
 
-      <button
-        onClick={debugAuth}
-        className="w-full mb-4 bg-yellow-500 text-white py-2 rounded text-sm"
-      >
-        Debug Autenticación
-      </button>
-
-      <div className="mb-2">
+      {/* <div className="mb-2">
         Subtotal:
         <span className="float-right font-bold">${subtotal.toFixed(2)}</span>
-      </div>
+      </div> */}
 
       <hr className="my-4" />
 
