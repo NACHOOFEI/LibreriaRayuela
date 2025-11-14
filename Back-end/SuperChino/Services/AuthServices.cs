@@ -149,40 +149,49 @@ namespace LibreriaOnline.Services
 
         public async Task<UserWithRolesDTO> AssingRoles(int id, List<int> rolesIds)
         {
-
             var user = await _context.Users
-                                        .Include(u => u.Roles) // Esto es clave
-                                        .FirstOrDefaultAsync(u => u.Id == id);
+                                     .Include(u => u.Roles)
+                                     .FirstOrDefaultAsync(u => u.Id == id);
             if (user == null) throw new Exception("Usuario no encontrado");
 
-            // 2️⃣ Obtener los roles que se quieren asignar
+            // Obtener los roles que se quieren asignar
             var roles = await _context.Roles
                                       .Where(r => rolesIds.Contains(r.Id))
                                       .ToListAsync();
 
-            // 3️⃣ Si se asigna Admin, eliminar rol User
+            // Verificar si se asigna Admin o User
             bool isAdminAssigned = roles.Any(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
+            bool isUserAssigned = roles.Any(r => r.Name.Equals("User", StringComparison.OrdinalIgnoreCase));
+
+            // Lógica para Admin/User conflict
             if (isAdminAssigned)
             {
+                // Si asignamos Admin, eliminamos User
                 var userRole = user.Roles.FirstOrDefault(r => r.Name.Equals("User", StringComparison.OrdinalIgnoreCase));
                 if (userRole != null)
-                    user.Roles.Remove(userRole); // Esto elimina de la tabla intermedia
+                    user.Roles.Remove(userRole);
+            }
+            else if (isUserAssigned)
+            {
+                // Si asignamos User, eliminamos Admin
+                var adminRole = user.Roles.FirstOrDefault(r => r.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase));
+                if (adminRole != null)
+                    user.Roles.Remove(adminRole);
             }
 
-            // 4️⃣ Agregar los nuevos roles sin duplicados
+            // Agregar los nuevos roles sin duplicados
             foreach (var role in roles)
             {
                 if (!user.Roles.Any(r => r.Id == role.Id))
                     user.Roles.Add(role);
             }
 
-            // 5️⃣ Guardar cambios en la base
+            // Guardar cambios
             await _context.SaveChangesAsync();
 
-            // 6️⃣ Mapear y devolver DTO
             return _mapper.Map<UserWithRolesDTO>(user);
-
         }
-    
+
+
     }
 }
