@@ -139,10 +139,10 @@ namespace LibreriaOnline.Services
                     {
                         foreach (var item in orderItemsDto)
                         {
-                            var product = await _productServices.GetById(item.Product.Id);
-                            item.Product = _mapper.Map<Product>(product);
+                            var product = await _productServices.GetByOrderItemId(item.Id);
+                            item.Product = product;
                         }
-                        order.Items = orderItemsDto;    
+                        order.Items = orderItemsDto;
                     }
                 }
 

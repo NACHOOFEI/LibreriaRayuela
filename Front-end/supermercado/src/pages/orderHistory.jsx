@@ -144,8 +144,8 @@ export default function OrderHistory() {
                         {/* Imagen del producto */}
                         <div className="flex-shrink-0">
                           <img
-                            // src={item.product.imageUrl || "/placeholder-product.png"}
-                            // alt={item.product.name}
+                            src={item.product.imageUrl || "/placeholder-product.png"}
+                            alt={item.product.name}
                             className="w-20 h-20 object-cover rounded-md"
                             onError={(e) => {
                               e.target.src = "/placeholder-product.png";
@@ -156,17 +156,17 @@ export default function OrderHistory() {
                         {/* Información del producto */}
                         <div className="flex-grow">
                           <h5 className="font-semibold text-gray-900">
-                            {/* {item.product.name} */}
+                            {item.product.name}
                           </h5>
                           <p className="text-sm text-gray-500 line-clamp-1">
-                            {/* {item.product.description} */}
+                            {item.product.description}
                           </p>
                           <div className="flex items-center gap-4 mt-2 text-sm">
                             <span className="text-gray-600">
                               Cantidad: <span className="font-semibold">{item.quantity}</span>
                             </span>
                             <span className="text-gray-600">
-                              Precio unitario: <span className="font-semibold">{formatPrice(item.unitPrice)}</span>
+                              Precio unitario: <span className="font-semibold">{formatPrice(item.product.price)}</span>
                             </span>
                           </div>
                         </div>
@@ -175,7 +175,7 @@ export default function OrderHistory() {
                         <div className="flex-shrink-0 text-right">
                           <p className="text-sm text-gray-500">Subtotal</p>
                           <p className="text-lg font-bold text-gray-900">
-                            {formatPrice(item.subtotal)}
+                            {formatPrice(item.product.price * item.quantity)}
                           </p>
                         </div>
                       </div>
