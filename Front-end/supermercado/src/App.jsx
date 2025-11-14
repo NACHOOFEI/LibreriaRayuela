@@ -18,6 +18,7 @@ const ElementoDetail = lazy(() => import("./pages/elementoDetail"));
 const AdminPanel = lazy(() => import("./pages/adminPanel"));
 const CreateProduct = lazy(() => import("./pages/createProduct"));
 const AsingRole = lazy(() => import("./pages/asingRole.jsx"));
+const OrderHistory = lazy(() => import("./pages/orderHistory"));
 export default function App() {
   const [location] = useLocation();
   const hideNavbar = location === "/login" || location === "/register";
@@ -82,6 +83,13 @@ export default function App() {
               {(params) => (
                 <ProtectedRoute requiredRole="Admin">
                   <CreateProduct id={params.id} />
+                </ProtectedRoute>
+              )}
+            </Route>
+            <Route path="/mis-ordenes">
+              {() => (
+                <ProtectedRoute>
+                  <OrderHistory />
                 </ProtectedRoute>
               )}
             </Route>

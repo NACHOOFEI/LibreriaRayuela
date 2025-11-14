@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { updateRoles } from "../services/authServices";
+import { getUsers } from "../services/userServices";
 import Loader from "../components/loader";
 
 
 export default function AsingRole({ id }) {
-  const [location, navigate] = useLocation();
+  const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
   const [selectedRole, setSelectedRole] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Roles fijos
   const roles = [
@@ -16,30 +19,46 @@ export default function AsingRole({ id }) {
     { id: 2, name: "Admin" }
   ];
 
-  // Obtenemos el usuario de la lista cacheada
-  const users = queryClient.getQueryData(["users"]) || [];
+  // Usar useQuery para obtener usuarios actualizados
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+
+  // Encontrar el usuario actual
   const currentUser = users.find(u => u.id === Number(id));
 
   // Mutación para actualizar roles
-const mutation = useMutation({
-  mutationFn: ({ userId, roleId }) =>
-    updateRoles(userId, [roleId]), // <-- directamente un array
-  onSuccess: () => {
-    queryClient.invalidateQueries(["users"]);
-  },
-});
+  const mutation = useMutation({
+    mutationFn: ({ userId, roleId }) =>
+      updateRoles(userId, [roleId]),
+    onSuccess: () => {
+      // Invalidar la query para que se actualice automáticamente
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
 
   // Si no existe el usuario, mostramos loader
   if (!currentUser) return <Loader />;
 
   const handleAssign = async () => {
-    if (!selectedRole) return alert("Selecciona un rol para asignar");
+    if (!selectedRole) {
+      setErrorMsg("Selecciona un rol para asignar");
+      setTimeout(() => setErrorMsg(""), 3000);
+      return;
+    }
+    
+    setErrorMsg("");
+    setSuccessMsg("");
+    
     try {
       await mutation.mutateAsync({ userId: currentUser.id, roleId: Number(selectedRole) });
-      alert("Rol asignado correctamente");
+      setSuccessMsg("Rol asignado correctamente");
       setSelectedRole(""); // limpiar selección
+      setTimeout(() => setSuccessMsg(""), 3000);
     } catch (err) {
-      alert("Error al asignar rol: " + (err.message || err));
+      setErrorMsg("Error al asignar rol: " + (err.message || err));
+      setTimeout(() => setErrorMsg(""), 5000);
     }
   };
 
@@ -55,7 +74,7 @@ const mutation = useMutation({
           </div>
           <div>
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => setLocation("/admin/users")}
               className="px-4 py-2 bg-gray-100 rounded-md text-sm hover:bg-gray-200"
             >
               Volver
@@ -63,22 +82,38 @@ const mutation = useMutation({
           </div>
         </div>
 
+        {/* Mensajes de éxito y error */}
+        {successMsg && (
+          <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+            {successMsg}
+          </div>
+        )}
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            {errorMsg}
+          </div>
+        )}
+
         <div className="mb-4">
           <h3 className="text-sm font-semibold text-gray-700 mb-2">Roles actuales</h3>
           <div className="flex flex-wrap gap-2">
             {currentUser.roles?.length ? (
-              currentUser.roles.map((r) => (
-                <span
-                  key={r.id}
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                    r.name === "Admin"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-blue-100 text-blue-800"
-                  }`}
-                >
-                  {r.name}
-                </span>
-              ))
+              currentUser.roles.map((role, idx) => {
+                // role puede ser un string o un objeto
+                const roleName = typeof role === 'string' ? role : role.name;
+                return (
+                  <span
+                    key={idx}
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                      roleName === "Admin"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-blue-100 text-blue-800"
+                    }`}
+                  >
+                    {roleName}
+                  </span>
+                );
+              })
             ) : (
               <span className="text-sm text-gray-500">Sin roles asignados</span>
             )}
