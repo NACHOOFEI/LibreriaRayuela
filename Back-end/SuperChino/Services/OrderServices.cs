@@ -120,6 +120,31 @@ namespace LibreriaOnline.Services
             return null;
         }
 
+        public async Task<IEnumerable<OrderWithoutCustomerDTO>> GetByCustomerId(int userId)
+        {
+            var customer = await _customerRepository.GetOne(c => c.Id == userId);
+            if (customer == null)
+                throw new Exception("El cliente especificado no existe.");
+
+            var orders = await _repo.GetAll(c => c.CustomerId == userId);
+            if (orders != null)
+            { 
+                var ordersDtos = orders.Select(o => _mapper.Map<OrderWithoutCustomerDTO>(o));
+                foreach (var order in ordersDtos)
+                {
+                    var orderItemsDto = await _orderItemService.GetByOrderId(order.Id);
+                    if (orderItemsDto != null)
+                        order.Items = orderItemsDto;
+                }
+
+                return ordersDtos;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         //public async Task<OrderDTO> UpdateOne(int id, OrderUpdateDTO orderUpdateDTO)
         //{ 
         //    var order = await _repo.GetOne(o => o.Id == id);
