@@ -2,6 +2,7 @@
 using LibreriaOnline.Models.Order;
 using LibreriaOnline.Models.Order.Dto;
 using LibreriaOnline.Models.OrderItem;
+using LibreriaOnline.Models.Product;
 using LibreriaOnline.Models.Product.Dto;
 using LibreriaOnline.Repositories;
 
@@ -135,7 +136,14 @@ namespace LibreriaOnline.Services
                 {
                     var orderItemsDto = await _orderItemService.GetByOrderId(order.Id);
                     if (orderItemsDto != null)
-                        order.Items = orderItemsDto;
+                    {
+                        foreach (var item in orderItemsDto)
+                        {
+                            var product = await _productServices.GetById(item.Product.Id);
+                            item.Product = _mapper.Map<Product>(product);
+                        }
+                        order.Items = orderItemsDto;    
+                    }
                 }
 
                 return ordersDtos;
